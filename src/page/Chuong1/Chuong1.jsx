@@ -1,304 +1,311 @@
-import React, { useState, useEffect } from 'react';
+// src/pages/Chuong1.jsx
+import React, { useState, useCallback } from 'react';
+import { DndProvider, useDrag, useDrop } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
-// Component cho một bông hoa có thể kéo thả (cho Hoạt động 1)
-const DraggableFlower = ({ id, color, petals, diameter, top, left }) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [position, setPosition] = useState({ x: left, y: top });
-  const [initialMouse, setInitialMouse] = useState({ x: 0, y: 0 });
+//Đường dẫn hình ảnh
+import HinhAnhGacVuon from '../../assets/chuong1/nguoi-gac-vuon.png';
+import HinhAnhSuperbloom from '../../assets/chuong1/super-bloom.png';
+import HinhAnhVuonSacTo from '../../assets/chuong1/vuon-sac-to.png';
+import HinhAnhNhaBep from '../../assets/chuong1/nha-bep-thien-nhien.png';
 
-  const handleMouseDown = (e) => {
-    setIsDragging(true);
-    setInitialMouse({ x: e.clientX, y: e.clientY });
-  };
+// --- Dữ liệu cho các hoạt động ---
+const FLOWERS_DATA = [
+  { id: 1, color: 'Vàng', colorHex: '#FFD700', petals: 5, diameter: 7, pigment: 'Carotenoids' },
+  { id: 2, color: 'Tím', colorHex: '#8A2BE2', petals: 8, diameter: 6, pigment: 'Anthocyanins' },
+  { id: 3, color: 'Đỏ', colorHex: '#DC143C', petals: 6, diameter: 8, pigment: 'Anthocyanins' },
+  { id: 4, color: 'Cam', colorHex: '#FFA500', petals: 12, diameter: 9, pigment: 'Carotenoids' },
+  { id: 5, color: 'Đỏ Tươi', colorHex: '#FF4500', petals: 7, diameter: 7, pigment: 'Betalains' },
+];
+const PIGMENTS = ['Carotenoids', 'Anthocyanins', 'Betalains'];
+const ItemTypes = {
+  PROPERTY: 'property',
+};
 
-  const handleMouseMove = (e) => {
-    if (isDragging) {
-      const dx = e.clientX - initialMouse.x;
-      const dy = e.clientY - initialMouse.y;
-      setPosition({ x: position.x + dx, y: position.y + dy });
-      setInitialMouse({ x: e.clientX, y: e.clientY });
-    }
-  };
+// --- Các Component con cho Hoạt động Tương tác ---
+const DraggableProperty = ({ text, type, flowerId }) => {
+    const [{ isDragging }, drag] = useDrag(() => ({
+      type: ItemTypes.PROPERTY,
+      item: { text, type, flowerId },
+      collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
+    }));
+    return (
+      <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} className="p-2 m-1 bg-gray-200 rounded-md text-center cursor-pointer hover:bg-gray-300">
+        {text}
+      </div>
+    );
+};
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-  
-  // SVG đơn giản cho bông hoa
-  const flowerSvg = (
-    <svg width="60" height="60" viewBox="0 0 100 100" className="drop-shadow-md">
-      <circle cx="50" cy="50" r="15" fill="yellow" />
-      {[...Array(petals)].map((_, i) => (
-        <ellipse
-          key={i}
-          cx="50"
-          cy="50"
-          rx="20"
-          ry="35"
-          fill={color}
-          transform={`rotate(${(360 / petals) * i} 50 50)`}
-        />
-      ))}
-    </svg>
-  );
-
+const DropZone = ({ title, onDrop, droppedItems }) => {
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: ItemTypes.PROPERTY,
+    drop: (item) => onDrop(item, title),
+    collect: (monitor) => ({ isOver: !!monitor.isOver() }),
+  }));
   return (
-    <div
-      style={{ top: `${position.y}px`, left: `${position.x}px`, cursor: isDragging ? 'grabbing' : 'grab' }}
-      className="absolute"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp} // Ngừng kéo khi chuột rời khỏi
-    >
-      {flowerSvg}
-      <div className="text-center text-xs w-full mt-1">
-        {diameter}cm
+    <div ref={drop} className={`p-4 border-2 border-dashed rounded-lg min-h-[150px] transition-colors ${isOver ? 'bg-green-100 border-green-500' : 'bg-gray-50 border-gray-300'}`}>
+      <h3 className="text-lg font-semibold text-center text-gray-700 mb-2">{title}</h3>
+      <div className="flex flex-wrap gap-2 justify-center">
+        {droppedItems.map((item, index) => (
+          <div key={index} className="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">
+            {item.text}
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-// Component chính cho sách lật Chương 1
-export default function Chuong1() {
-  const [currentPage, setCurrentPage] = useState(0);
+const HoatDongGhepSacTo = () => {
+  const [pigmentMatches, setPigmentMatches] = useState({});
+  const [feedback2, setFeedback2] = useState('');
 
-  // Dữ liệu cho các trang sách
-  const pages = [
-    // Trang 1
-    {
-      content: (
-        <div className="flex flex-col items-center justify-center h-full text-center p-8">
-          <h2 className="text-3xl font-bold text-green-800 mb-4">Chương 1: Bí Mật Sắc Màu Rực Rỡ và Công Thức Của Thiên Nhiên</h2>
-          <div className="w-48 h-48 bg-green-200 rounded-full flex items-center justify-center mb-6 shadow-lg">
-             <img src="https://img.icons8.com/plasticine/100/sprout.png" alt="sprout" className="w-24 h-24"/>
-          </div>
-          <p className="text-gray-700 leading-relaxed max-w-md">
-            Alice cảm thấy mình đang đứng trên một ngọn đồi thoai thoải, bao quanh bởi một thảm thực vật xanh mướt. Nhưng lạ thay, không có một bông hoa nào! Bầu trời trong xanh, và không khí trong lành mang theo mùi đất ẩm dịu.
-          </p>
-        </div>
-      ),
-    },
-    // Trang 2
-    {
-      content: (
-        <div className="flex flex-col md:flex-row items-center h-full p-8 gap-8">
-          <div className="w-40 h-40 md:w-56 md:h-56 flex-shrink-0">
-             <img src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/128/external-gardener-professions-man-flaticons-lineal-color-flat-icons-2.png" alt="gardener" className="w-full h-full object-contain"/>
-          </div>
-          <div className="text-gray-700 leading-relaxed">
-            <p className="mb-4">"Chào mừng đến 'Đồng Cỏ Quan Sát'," một giọng nói ấm áp vang lên. Alice quay lại và thấy một ông lão với mái tóc bạc trắng, khuôn mặt hiền từ, đang đeo một chiếc kính lúp gắn trên mũ. Ông mặc một chiếc áo khoác màu nâu đất, điểm xuyết những hình ảnh hoa lá trừu tượng.</p>
-            <p className="mb-4">"Ta là <strong>Người Gác Vườn Kỳ Diệu</strong>," ông nói, nở nụ cười hiền hậu. "Ta có nhiệm vụ bảo vệ và quan sát những thảm hoa vĩ đại của Trái Đất."</p>
-            <p>"Chào ông, cháu là Alice," cô bé lễ phép đáp. "Nữ Hoàng Trắng đã gửi cháu đến đây để tìm hiểu về hoa nở."</p>
-          </div>
-        </div>
-      ),
-    },
-    // Trang 3
-    {
-       content: (
-        <div className="flex flex-col items-center h-full p-8 text-center">
-            <h3 className="text-2xl font-bold text-purple-700 mb-4">Hiện Tượng "Superbloom"</h3>
-            <div className="w-48 h-48 bg-blue-100 rounded-lg flex items-center justify-center mb-4 shadow-md overflow-hidden">
-                <img src="https://images.unsplash.com/photo-1552563932-d815e548318d?q=80&w=2070&auto=format&fit=crop" alt="Superbloom" className="w-full h-full object-cover"/>
-            </div>
-            <p className="text-gray-700 leading-relaxed max-w-lg">
-                Người Gác Vườn giải thích: "Đó chính là hiện tượng 'superbloom', một tấm thảm hoa lớn bằng cả một thành phố! Khi hàng tỷ hạt giống tỉnh giấc và cùng nhau nở rộ."
-            </p>
-            <div className="mt-4 text-sm text-left w-full max-w-lg bg-yellow-100 p-3 rounded-lg border border-yellow-300">
-                <p>🌿 <strong>Dữ liệu định tính:</strong> Màu sắc, vẻ đẹp của thảm hoa.</p>
-                <p>🔢 <strong>Dữ liệu định lượng:</strong> Số lượng hoa, diện tích, điều kiện môi trường.</p>
-            </div>
-        </div>
-      ),
-    },
-    // Trang 4
-    {
-      content: (
-        <div className="p-8 h-full">
-            <h3 className="text-2xl font-bold text-center text-pink-600 mb-4">Vườn Sắc Tố</h3>
-            <p className="text-center text-gray-700 mb-6">Màu sắc của hoa là những 'thư mời' đặc biệt, được tạo ra bởi những 'họa sĩ' bí mật:</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                <div className="bg-orange-100 p-4 rounded-lg shadow">
-                    <h4 className="font-bold text-orange-600">Carotenoids</h4>
-                    <p className="text-sm">Họa sĩ màu vàng, cam rực rỡ.</p>
-                </div>
-                <div className="bg-red-100 p-4 rounded-lg shadow">
-                    <h4 className="font-bold text-red-600">Anthocyanins</h4>
-                    <p className="text-sm">Họa sĩ màu tím, đỏ lãng mạn.</p>
-                </div>
-                <div className="bg-purple-100 p-4 rounded-lg shadow">
-                    <h4 className="font-bold text-purple-600">Betalains</h4>
-                    <p className="text-sm">Họa sĩ đặc biệt tạo màu tím, đỏ độc đáo.</p>
-                </div>
-            </div>
-        </div>
-      ),
-    },
-    // Trang 5
-    {
-      content: (
-        <div className="p-8 h-full">
-            <h3 className="text-2xl font-bold text-center text-blue-700 mb-4">Nhà Bếp Thiên Nhiên</h3>
-            <p className="text-center text-gray-700 mb-6">Để tạo ra superbloom, thiên nhiên cần một 'công thức' hoàn hảo từ các 'nguyên liệu' dữ liệu:</p>
-            <ul className="space-y-3 text-gray-700 list-disc list-inside bg-green-50 p-4 rounded-lg">
-                <li><strong>Mưa vừa đủ:</strong> Dữ liệu chuỗi thời gian về lượng mưa.</li>
-                <li><strong>Những năm khô trước đó:</strong> Dữ liệu lịch sử về hạn hán.</li>
-                <li><strong>Nhiệt độ tăng dần:</strong> Dữ liệu nhiệt độ đất và không khí.</li>
-                <li><strong>Đất đai phù hợp:</strong> Dữ liệu về thành phần đất (pH, dinh dưỡng).</li>
-            </ul>
-        </div>
-      )
-    },
-    // Trang 6
-    {
-      content: (
-        <div className="p-6 h-full">
-          <h3 className="text-xl font-bold text-center text-teal-600 mb-2">Trạm Thực Hành 1: Phân Loại Dữ Liệu</h3>
-          <p className="text-center text-sm text-gray-600 mb-4">Hãy kéo và thả những bông hoa vào đúng ô phân loại nhé!</p>
-          <div className="relative w-full h-80 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 mb-4">
-             {/* Hoa có thể kéo thả */}
-             <DraggableFlower id={1} color="#f87171" petals={5} diameter={5} top={20} left={20} />
-             <DraggableFlower id={2} color="#fbbf24" petals={8} diameter={7} top={100} left={80} />
-             <DraggableFlower id={3} color="#a78bfa" petals={6} diameter={6} top={40} left={150} />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="border border-blue-400 bg-blue-100 rounded-lg p-3 text-center h-24">
-              <h4 className="font-bold text-blue-800">Dữ liệu định tính</h4>
-              <p className="text-xs">(Màu sắc)</p>
-            </div>
-            <div className="border border-green-400 bg-green-100 rounded-lg p-3 text-center h-24">
-              <h4 className="font-bold text-green-800">Dữ liệu định lượng</h4>
-              <p className="text-xs">(Số cánh, đường kính)</p>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    // Trang 7
-    {
-      content: (
-        <SuperbloomSimulator />
-      )
-    },
-    // Trang 8
-    {
-      content: (
-        <div className="flex flex-col items-center justify-center h-full text-center p-8">
-            <h3 className="text-2xl font-bold text-yellow-600 mb-4">Bài học đúc kết</h3>
-            <p className="text-gray-700 leading-relaxed max-w-lg mb-6">
-                Superbloom là một hiện tượng kỳ vĩ, được tạo nên từ sự kết hợp của nhiều yếu tố môi trường. Mỗi yếu tố có thể được biểu diễn và phân tích bằng các loại dữ liệu khác nhau.
-            </p>
-            <div className="w-32 h-32">
-                <img src="https://img.icons8.com/external-flaticons-flat-flat-icons/128/external-idea-achievements-flaticons-flat-flat-icons.png" alt="idea" className="w-full h-full object-contain"/>
-            </div>
-            <p className="text-gray-600 mt-6 italic">
-                Người Gác Vườn mỉm cười: "Cháu đã sẵn sàng nhìn hoa bằng một con mắt khoa học hơn chưa, Alice?"
-            </p>
-        </div>
-      )
-    }
-  ];
-
-  const goToNextPage = () => {
-    setCurrentPage((prev) => Math.min(prev + 1, pages.length - 1));
+  const handlePigmentSelect = (flowerId, selectedPigment) => {
+    setPigmentMatches(prev => ({ ...prev, [flowerId]: selectedPigment }));
   };
 
-  const goToPreviousPage = () => {
-    setCurrentPage((prev) => Math.max(prev - 1, 0));
+  const checkPigmentMatches = () => {
+    const allSelected = FLOWERS_DATA.length === Object.keys(pigmentMatches).length;
+    if (!allSelected) {
+        setFeedback2('Bạn ơi, hãy chọn đủ sắc tố cho tất cả các bông hoa nhé!');
+        return;
+    }
+    const correctMatches = FLOWERS_DATA.every(
+      flower => pigmentMatches[flower.id] === flower.pigment
+    );
+    if (correctMatches) {
+      setFeedback2('Tuyệt vời! Bạn đã trở thành một chuyên gia về sắc tố hoa.');
+    } else {
+      setFeedback2('Vẫn còn một vài sắc tố chưa đúng. Hãy thử lại nào!');
+    }
   };
 
   return (
-    <div className="bg-amber-50 min-h-screen flex flex-col items-center justify-center p-4 font-sans">
-        <div className="w-full max-w-4xl aspect-[4/3] bg-white rounded-2xl shadow-2xl flex flex-col p-6 relative">
-            {/* Nội dung trang */}
-            <div className="flex-grow overflow-auto">
-                {pages[currentPage].content}
-            </div>
-
-            {/* Điều hướng */}
-            <div className="absolute bottom-4 left-6">
-                {currentPage > 0 && (
-                    <button onClick={goToPreviousPage} className="px-4 py-2 bg-yellow-400 text-white font-bold rounded-full hover:bg-yellow-500 transition-colors shadow-md">
-                        Trang trước
-                    </button>
-                )}
-            </div>
-            <div className="absolute bottom-4 right-6">
-                {currentPage < pages.length - 1 && (
-                    <button onClick={goToNextPage} className="px-4 py-2 bg-yellow-400 text-white font-bold rounded-full hover:bg-yellow-500 transition-colors shadow-md">
-                        Trang sau
-                    </button>
-                )}
-            </div>
-             {/* Số trang */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-gray-500 text-sm">
-                Trang {currentPage + 1} / {pages.length}
-            </div>
-        </div>
+    <div className="bg-white p-6 rounded-lg shadow-md mt-8">
+      <h4 className="text-xl font-semibold text-gray-800 mb-4">Hoạt động 1.2: Ghép nối Họa Sĩ Sắc Tố</h4>
+      <p className="mb-4">Mỗi màu sắc được tạo ra bởi một "họa sĩ" sắc tố. Hãy chọn đúng họa sĩ cho từng bông hoa nhé!</p>
+      <div className="space-y-4">
+        {FLOWERS_DATA.map(flower => (
+          <div key={flower.id} className="flex items-center gap-4">
+            <div style={{ backgroundColor: flower.colorHex }} className="w-10 h-10 rounded-full flex-shrink-0"></div>
+            <span className="font-medium w-20">{flower.color}</span>
+            <select 
+              onChange={(e) => handlePigmentSelect(flower.id, e.target.value)}
+              className="flex-grow p-2 border border-gray-300 rounded-md"
+              value={pigmentMatches[flower.id] || ''}
+            >
+              <option value="">Chọn sắc tố...</option>
+              {PIGMENTS.map(p => <option key={p} value={p}>{p}</option>)}
+            </select>
+          </div>
+        ))}
+      </div>
+      <button onClick={checkPigmentMatches} className="mt-4 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Kiểm tra</button>
+      {feedback2 && <p className={`mt-2 font-semibold ${feedback2.includes('Tuyệt vời') ? 'text-green-600' : (feedback2.includes('Bạn ơi') ? 'text-orange-500' : 'text-red-600')}`}>{feedback2}</p>}
     </div>
   );
 }
 
+// --- Component chính cho Chương 1 ---
 
-// Component mô phỏng cho Trang 7
-function SuperbloomSimulator() {
-    const [rain, setRain] = useState(50);
-    const [drought, setDrought] = useState(2); // years
-    const [temp, setTemp] = useState(20); // Celsius
-    const [bloomStrength, setBloomStrength] = useState(0);
+function Chuong1() {
+  const [qualitativeDropped, setQualitativeDropped] = useState([]);
+  const [quantitativeDropped, setQuantitativeDropped] = useState([]);
+  const [feedback1, setFeedback1] = useState('');
 
-    useEffect(() => {
-        // "Điểm ngọt" cho superbloom
-        const rainOptimal = rain > 60 && rain < 85;
-        const droughtOptimal = drought >= 2;
-        const tempOptimal = temp > 18 && temp < 25;
-        
-        let strength = 0;
-        if (rainOptimal) strength += 40;
-        if (droughtOptimal) strength += 30;
-        if (tempOptimal) strength += 30;
+  const handlePropertyDrop = useCallback((item, zoneTitle) => {
+    const isQualitative = item.type === 'qualitative';
+    const targetZoneIsQualitative = zoneTitle.includes('Định tính');
+    if (isQualitative === targetZoneIsQualitative) {
+      if (targetZoneIsQualitative) setQualitativeDropped(prev => [...prev, item]);
+      else setQuantitativeDropped(prev => [...prev, item]);
+      setFeedback1('Chính xác! Bạn đã phân loại đúng.');
+    } else {
+      setFeedback1('Chưa đúng rồi. Hãy xem lại định nghĩa về dữ liệu định tính và định lượng nhé!');
+    }
+  }, []);
 
-        // Thêm một chút ngẫu nhiên
-        strength = Math.min(100, strength + Math.random() * 5);
+  const [rain, setRain] = useState(50);
+  const [drought, setDrought] = useState(5);
+  const [temp, setTemp] = useState(50);
+  const [bloomStrength, setBloomStrength] = useState(0);
 
-        setBloomStrength(strength);
+  const calculateBloom = useCallback(() => {
+    const rainFactor = 1 - Math.abs(rain - 70) / 70;
+    const droughtFactor = drought / 10;
+    const tempFactor = 1 - Math.abs(temp - 60) / 60;
+    let strength = (rainFactor + droughtFactor + tempFactor) / 3 * 100;
+    setBloomStrength(Math.max(0, Math.min(100, strength)));
+  }, [rain, drought, temp]);
 
-    }, [rain, drought, temp]);
+  // --- [SỬA LỖI TẠI ĐÂY] ---
+  // Cập nhật component StorySection để hiển thị hình ảnh
+  const StorySection = ({ title, children, imageAlt, imageSrc }) => (
+    <div className="my-12 flex flex-col md:flex-row items-center gap-8">
+      <div className="md:w-1/2">
+        <h2 className="text-3xl font-bold text-green-700 mb-4">{title}</h2>
+        <div className="text-lg text-gray-700 leading-relaxed space-y-4">
+            {children}
+        </div>
+      </div>
+      <div className="md:w-1/2">
+        {/* Kiểm tra nếu có imageSrc thì hiển thị <img>, nếu không thì hiển thị placeholder */}
+        {imageSrc ? (
+          <img src={imageSrc} alt={imageAlt} className="w-full h-auto object-cover rounded-lg shadow-lg" />
+        ) : (
+          <div className="w-full h-80 bg-gray-200 rounded-lg flex items-center justify-center border">
+            <p className="text-gray-500 italic">{imageAlt}</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
 
-    return (
-        <div className="p-6 h-full flex flex-col">
-            <h3 className="text-xl font-bold text-center text-indigo-600 mb-2">Thí Nghiệm Biến Đổi Thời Tiết</h3>
-            <p className="text-center text-sm text-gray-600 mb-4">Điều chỉnh các thanh trượt để tạo ra một 'superbloom' mạnh nhất!</p>
-            
-            <div className="space-y-4 flex-grow">
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Lượng mưa (mm)</label>
-                    <input type="range" min="0" max="100" value={rain} onChange={(e) => setRain(e.target.value)} className="w-full" />
-                    <span className="text-xs text-gray-500">{rain} mm</span>
+  const DataStation = ({ title, children }) => (
+    <div className="my-16 p-8 bg-yellow-50 border-2 border-yellow-300 rounded-2xl shadow-lg">
+        <h2 className="text-4xl font-bold text-yellow-700 text-center mb-2">Trạm Thực Hành Dữ Liệu</h2>
+        <h3 className="text-2xl text-yellow-600 text-center mb-8 italic">"{title}"</h3>
+        {children}
+    </div>
+  );
+
+  return (
+    <div className="container mx-auto p-8 font-vietnam">
+      <header className="text-center mb-16">
+        <h1 className="text-5xl font-extrabold text-gray-800">Chương 1: Bí Mật Sắc Màu Rực Rỡ</h1>
+        <p className="text-2xl text-gray-600 mt-2">và Công Thức Của Thiên Nhiên</p>
+      </header>
+
+      {/* Truyền prop 'imageSrc' vào component StorySection */}
+      <StorySection 
+        title="Cuộc Gặp Gỡ Trên Đồng Cỏ Lặng"
+        imageAlt="Alice ngạc nhiên nhìn Người Gác Vườn Kỳ Diệu trên một ngọn đồi xanh mướt nhưng không có hoa."
+        imageSrc={HinhAnhGacVuon} 
+      >
+        <p>Alice cảm thấy mình đang đứng trên một ngọn đồi thoai thoải, bao quanh bởi một thảm thực vật xanh mướt. Nhưng lạ thay, không có một bông hoa nào! Bầu trời trong xanh, và không khí trong lành mang theo mùi đất ẩm dịu.</p>
+        <p>"Chào mừng đến 'Đồng Cỏ Quan Sát'," một giọng nói ấm áp vang lên. Alice quay lại và thấy một ông lão với mái tóc bạc trắng, khuôn mặt hiền từ, đang đeo một chiếc kính lúp gắn trên mũ. Ông mặc một chiếc áo khoác màu nâu đất, điểm xuyết những hình ảnh hoa lá trừu tượng. Tay ông cầm một cây gậy gỗ với một quả cầu pha lê nhỏ trên đỉnh.</p>
+        <p>"Ta là Người Gác Vườn Kỳ Diệu," ông nói, nở nụ cười hiền hậu. "Ta có nhiệm vụ bảo vệ và quan sát những thảm hoa vĩ đại của Trái Đất."</p>
+      </StorySection>
+
+      <StorySection 
+        title="Tấm Thảm Hoa Nhìn Từ Không Gian"
+        imageAlt="Hình ảnh 3D của hiện tượng 'superbloom' ở California hiện ra từ quả cầu pha lê, rực rỡ sắc màu."
+        imageSrc={HinhAnhSuperbloom}
+      >
+        <p>"Hãy tưởng tượng cháu là một phi hành gia," Người Gác Vườn nói. Ông nâng quả cầu pha lê lên, và một hình ảnh ba chiều hiện ra: những thảm hoa khổng lồ bao phủ một phần California, rộng lớn đến mức có thể nhìn thấy từ không gian.</p>
+        <p>"Đó chính là hiện tượng 'superbloom'," ông giải thích. "Khi hàng tỷ hạt giống ngủ yên đột nhiên tỉnh giấc và cùng nhau nở rộ. Chúng giống như những tấm thảm nhung đầy màu sắc, được thiên nhiên dệt nên. Đây là một ví dụ tuyệt vời về <strong>dữ liệu định tính</strong> (màu sắc, vẻ đẹp) được tạo ra từ hàng loạt <strong>dữ liệu định lượng</strong> (số lượng hoa, diện tích)."</p>
+      </StorySection>
+
+      <StorySection 
+        title="Vườn Sắc Tố"
+        imageAlt="Khu vườn tưởng tượng của các loại sắc tố, nơi mỗi bông hoa đều phát sáng rực rỡ."
+        imageSrc={HinhAnhVuonSacTo}
+      >
+        <p>"Màu sắc của hoa không chỉ để đẹp mắt đâu, Alice," Người Gác Vườn Kỳ Diệu dẫn Alice vào một "Vườn Sắc Tố" lung linh, nơi mỗi cánh hoa như được làm từ những viên pha lê nhỏ. "Đó là những 'thư mời' đặc biệt mà hoa gửi đến những người bạn nhỏ của mình: ong, bướm, và thậm chí cả chim ruồi! Mỗi màu sắc là một 'ngôn ngữ' riêng, thu hút những loài thụ phấn khác nhau. Chúng được tạo ra bởi những 'họa sĩ' bí mật:</p>
+        <ul className="list-disc list-inside space-y-2 pl-4">
+            <li><strong>Carotenoids</strong> – 'Họa sĩ màu vàng, cam', thích vẽ những màu rực rỡ như mặt trời.</li>
+            <li><strong>Anthocyanins</strong> – 'Họa sĩ màu tím, đỏ', lãng mạn như hoàng hôn tím biếc.</li>
+            <li><strong>Betalains</strong> – 'Họa sĩ đặc biệt', tạo nên những màu tím, đỏ độc đáo như rồng đỏ.</li>
+        </ul>
+      </StorySection>
+
+      <DataStation title="Giải Mã Công Thức Nở Hoa">
+        <DndProvider backend={HTML5Backend}>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+                <h4 className="text-xl font-semibold text-gray-800 mb-4">Hoạt động 1: Phân loại Dữ liệu</h4>
+                <p className="mb-4">Alice, hãy giúp ông phân loại các thuộc tính của những bông hoa này. Kéo các thuộc tính vào đúng hộp 'Định tính' hoặc 'Định lượng'.</p>
+                <div className="flex flex-wrap justify-center gap-4 mb-6">
+                    {FLOWERS_DATA.map(f => (
+                        <div key={f.id} className="p-3 border rounded-lg bg-gray-50 text-center">
+                            <div style={{backgroundColor: f.colorHex}} className="w-12 h-12 rounded-full mx-auto mb-2"></div>
+                            <DraggableProperty text={`Màu: ${f.color}`} type="qualitative" flowerId={f.id} />
+                            <DraggableProperty text={`Số cánh: ${f.petals}`} type="quantitative" flowerId={f.id} />
+                            <DraggableProperty text={`Đường kính: ${f.diameter}cm`} type="quantitative" flowerId={f.id} />
+                        </div>
+                    ))}
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Năm khô hạn trước đó</label>
-                    <input type="range" min="0" max="5" value={drought} onChange={(e) => setDrought(e.target.value)} className="w-full" />
-                    <span className="text-xs text-gray-500">{drought} năm</span>
+                <div className="grid md:grid-cols-2 gap-6">
+                    <DropZone title="Dữ liệu Định tính (Categorical Data)" onDrop={handlePropertyDrop} droppedItems={qualitativeDropped} />
+                    <DropZone title="Dữ liệu Định lượng (Numerical Data)" onDrop={handlePropertyDrop} droppedItems={quantitativeDropped} />
                 </div>
-                <div>
-                    <label className="block text-sm font-medium text-gray-700">Nhiệt độ (°C)</label>
-                    <input type="range" min="0" max="40" value={temp} onChange={(e) => setTemp(e.target.value)} className="w-full" />
-                    <span className="text-xs text-gray-500">{temp}°C</span>
-                </div>
+                {feedback1 && <p className={`mt-4 text-center font-semibold ${feedback1.includes('Chính xác') ? 'text-green-600' : 'text-red-600'}`}>{feedback1}</p>}
             </div>
+        </DndProvider>
+        <HoatDongGhepSacTo />
+      </DataStation>
 
-            <div className="mt-4 text-center">
-                <p className="font-bold">Độ mạnh Superbloom:</p>
-                <div className="w-full bg-gray-200 rounded-full h-4 mt-1">
-                    <div 
-                        className="bg-gradient-to-r from-green-400 to-blue-500 h-4 rounded-full transition-all duration-500" 
-                        style={{ width: `${bloomStrength}%` }}>
+      <StorySection 
+        title="Nhà Bếp Thiên Nhiên"
+        imageAlt="Alice và Người Gác Vườn đứng trong 'Nhà Bếp Thiên Nhiên', nơi các biểu đồ và dữ liệu về mưa, nhiệt độ đang tuôn chảy."
+        imageSrc={HinhAnhNhaBep}
+      >
+        <p>"Và để tạo ra một superbloom, thiên nhiên cần một 'công thức nấu ăn' hoàn hảo," Người Gác Vườn Kỳ Diệu dẫn Alice đến "Nhà Bếp Thiên Nhiên," nơi những hạt mưa dữ liệu lấp lánh rơi từ trên trần. "Và dữ liệu là những 'nguyên liệu' mà chúng ta cần để hiểu công thức đó:</p>
+        <ol className="list-decimal list-inside space-y-2 pl-4">
+            <li><strong>Nguyên liệu 1: Mưa vừa đủ (không quá nhiều!):</strong> Chúng ta cần <strong>dữ liệu chuỗi thời gian</strong> về lượng mưa trong nhiều tháng.</li>
+            <li><strong>Nguyên liệu 2: Những năm khô trước đó (tạo bất ngờ!):</strong> <strong>Dữ liệu lịch sử</strong> về hạn hán cho thấy "gia vị bí mật" này.</li>
+            <li><strong>Nguyên liệu 3: Nhiệt độ tăng dần (đánh thức hạt giống!):</strong> <strong>Dữ liệu nhiệt độ</strong> đất và không khí là "lửa" để "hầm" hạt giống.</li>
+            <li><strong>Nguyên liệu 4: Đất đai phù hợp (nơi an toàn!):</strong> <strong>Dữ liệu về thành phần đất</strong> (pH, dinh dưỡng) là "ngôi nhà" tốt.</li>
+        </ol>
+        <p>Ví dụ, những bông hoa California poppies có 'đồng hồ sinh học' riêng. Chúng 'đếm' số ngày có đủ ánh sáng, đủ độ ẩm, sử dụng <strong>dữ liệu sự kiện rời rạc</strong> để biết khi nào nở. Đây là một dạng <strong>phân tích tương quan</strong> giữa các yếu tố môi trường và chu kỳ sống thực vật."</p>
+      </StorySection>
+
+      <DataStation title="Thí nghiệm Biến Đổi Thời Tiết Mini">
+        <div className="bg-white p-6 rounded-lg shadow-md">
+            <p className="mb-6 text-center">Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường để tạo ra một 'superbloom' mạnh nhất. Cháu có thấy 'điểm ngọt' nào trong sự kết hợp các 'nguyên liệu' không?</p>
+            <div className="grid md:grid-cols-3 gap-6 items-center">
+                <div className="md:col-span-2 space-y-6">
+                    <div>
+                        <div className="flex justify-between items-center mb-1">
+                            <label className="font-medium">Lượng mưa 💧</label>
+                            <span className="font-bold text-blue-600">{rain} mm</span>
+                        </div>
+                        <input type="range" min="0" max="100" value={rain} onChange={e => setRain(e.target.value)} className="w-full" />
                     </div>
+                    <div>
+                        <div className="flex justify-between items-center mb-1">
+                           <label className="font-medium">Số năm khô hạn trước đó ☀️</label>
+                           <span className="font-bold text-orange-600">{drought} năm</span>
+                        </div>
+                        <input type="range" min="0" max="10" value={drought} onChange={e => setDrought(e.target.value)} className="w-full" />
+                    </div>
+                    <div>
+                        <div className="flex justify-between items-center mb-1">
+                            <label className="font-medium">Nhiệt độ ấm dần 🔥</label>
+                            <span className="font-bold text-red-600">{temp} °C</span>
+                        </div>
+                        <input type="range" min="0" max="100" value={temp} onChange={e => setTemp(e.target.value)} className="w-full" />
+                    </div>
+                    <button onClick={calculateBloom} className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">Tạo Superbloom!</button>
                 </div>
-                 <p className="text-lg font-bold mt-1" style={{color: `hsl(${bloomStrength*1.2}, 100%, 45%)`}}>{Math.round(bloomStrength)}%</p>
+                <div className="text-center">
+                    <h4 className="text-lg font-semibold mb-2">Sức mạnh Superbloom</h4>
+                    <div className="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-end overflow-hidden border-4 border-gray-300">
+                        <div className="w-full bg-gradient-to-t from-yellow-400 via-pink-500 to-purple-600 transition-all duration-500" style={{ height: `${bloomStrength}%` }}></div>
+                    </div>
+                    <p className="text-2xl font-bold mt-2">{Math.round(bloomStrength)}%</p>
+                </div>
             </div>
         </div>
-    );
+      </DataStation>
+
+      <div className="mt-16 text-center p-8 bg-green-50 rounded-lg">
+        <h2 className="text-3xl font-bold text-green-800 mb-4">Bài Học Đúc Kết</h2>
+        <p className="text-xl text-gray-700 max-w-3xl mx-auto">
+            Superbloom là một hiện tượng tự nhiên kỳ vĩ, là kết quả của sự tương quan giữa nhiều yếu tố môi trường. Bằng cách thu thập và phân tích các loại dữ liệu khác nhau, chúng ta có thể bắt đầu hiểu được ngôn ngữ bí mật của thiên nhiên.
+        </p>
+      </div>
+
+      <div className="mt-20 text-center">
+        <a 
+            href="/chuong2"
+            className="inline-block bg-green-600 text-white font-bold text-xl py-3 px-8 rounded-lg shadow-lg hover:bg-green-700 transition-transform transform hover:scale-105"
+        >
+            Tiếp tục: Sang Chương 2 →
+        </a>
+      </div>
+
+    </div>
+  );
 }
+
+export default Chuong1;
