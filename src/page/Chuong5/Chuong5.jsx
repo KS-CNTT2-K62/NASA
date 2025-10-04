@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Header from './components/Header';
 import BloomMap from './components/BloomMap';
 import TourDetail from './components/TourDetail';
+import FlowerImageDisplay from './components/FlowerImageDisplay';
 
 // Import hình ảnh minh họa (đảm bảo bạn có các file này trong src/assets)
 import actionQueenImg from '../../assets/chuong5/action_queen.jpg';
@@ -11,6 +12,7 @@ import beePollinationImg from '../../assets/chuong5/bee_pollination.png';
 import invasivePlantsImg from '../../assets/chuong5/invasive_plants.jpg';
 import superbloomTourImg from '../../assets/chuong5/superbloom_tour.jpg';
 import whiteQueenImg from '../../assets/chuong5/white_queen.png';
+import DataStorytellingStation from './components/DataStorytellingStation';
 
 
 function App() {
@@ -171,8 +173,24 @@ function App() {
         </div>
         
         {/* Component hiển thị chi tiết tour */}
-        <TourDetail selectedSite={selectedSite} />
+        {/* <TourDetail selectedSite={selectedSite} /> */}
+         {/* Bố cục mới cho TourDetail và FlowerImageDisplay */}
+        <div className="flex flex-col md:flex-row gap-8 mt-8">
+          {/* Component hiển thị chi tiết tour - chiếm 2/3 chiều rộng */}
+          <div className="md:w-2/3">
+            <TourDetail selectedSite={selectedSite} />
+          </div>
 
+          {/* Component hiển thị hình ảnh hoa - chiếm 1/3 chiều rộng và có tỷ lệ 1:1 (vuông) */}
+          <div className="md:w-1/3">
+            <div className="relative pt-[100%]"> {/* Tạo tỷ lệ 1:1 cho div cha */}
+              <div className="absolute top-0 left-0 w-full h-full"> {/* Đặt component con vào div có tỷ lệ */}
+                <FlowerImageDisplay selectedSite={selectedSite} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <DataStorytellingStation />      
       </main>
     </div>
   );
