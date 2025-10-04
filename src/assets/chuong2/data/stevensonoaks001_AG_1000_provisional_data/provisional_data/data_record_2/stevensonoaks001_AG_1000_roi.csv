@@ -1,0 +1,17 @@
+#
+# ROI List for stevensonoaks001
+#
+# Site: stevensonoaks001
+# Veg Type: AG
+# ROI ID Number: 1000
+# Owner: oscarz
+# Creation Date: 2023-03-31
+# Creation Time: 16:34:03
+# Update Date: 2025-08-10
+# Update Time: 16:04:33
+# Description: Vineyard row - control treatment
+#
+start_date,start_time,end_date,end_time,maskfile,sample_image
+2023-03-23,12:24:11,2023-07-10,23:59:59,stevensonoaks001_AG_1000_01.tif,stevensonoaks001_2023_03_23_122411.jpg
+2025-04-09,00:00:00,9999-12-31,00:00:00,stevensonoaks001_AG_1000_02.tif,stevensonoaks001_2025_04_11_114609.jpg
+

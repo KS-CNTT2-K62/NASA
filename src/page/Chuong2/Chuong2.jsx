@@ -1,19 +1,19 @@
 // src/pages/Chuong2/Chuong2.jsx
 
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link
 import PracticeStation from './components/PracticeStation';
 import Modal from './components/Modal';
 
 // Import ảnh từ thư mục assets
-import aliceImage from '../../assets/chuong2/alice.png';
-import detectiveImage from '../../assets/chuong2/tham-tu-pho-quang.png';
-import gardenImage from '../../assets/chuong2/vuon-quang-pho.png';
-import groundImage from '../../assets/chuong2/bac-si-hoa.png';
-import airImage from '../../assets/chuong2/tho-san-may.png';
-import spaceImage from '../../assets/chuong2/nguoi-gac-dem.png';
-import smaImage from '../../assets/chuong2/sma-visual.png';
+import aliceImage from '../../assets/chuong2/images/alice.png';
+import detectiveImage from '../../assets/chuong2/images/tham-tu-pho-quang.png';
+import gardenImage from '../../assets/chuong2/images/vuon-quang-pho.png';
+import groundImage from '../../assets/chuong2/images/bac-si-hoa.png';
+import airImage from '../../assets/chuong2/images/tho-san-may.png';
+import spaceImage from '../../assets/chuong2/images/nguoi-gac-dem.png';
+import smaImage from '../../assets/chuong2/images/sma-visual.png';
 
-// CSS không có thay đổi lớn
 const customStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@400&display=swap');
   .font-serif { font-family: 'Playfair Display', serif; }
@@ -36,9 +36,6 @@ const customStyles = `
     cursor: pointer;
     border: 4px solid transparent;
     transition: all 0.3s ease;
-    
-
-    
   }
   .platform-door:hover, .interactive-image:hover {
     transform: scale(1.05);
@@ -80,8 +77,9 @@ const Chuong2 = () => {
         
         <header className="sticky top-0 z-40 bg-white shadow-md">
             <div className="container mx-auto flex items-center justify-between p-4">
-             <a href="/" aria-current="page" className="font-serif text-2xl font-bold text-blue-800">BloomWatch</a>
+             <Link to="/" aria-current="page" className="font-serif text-2xl font-bold text-blue-800">BloomWatch</Link>
             <nav className="hidden items-center space-x-6 md:flex">
+              {/* Các link nhảy trong trang vẫn dùng thẻ <a> */}
               <a href="#StoryStart" className="text-gray-600 hover:text-blue-600">Câu Chuyện</a>
               <a href="#Platforms" className="text-gray-600 hover:text-blue-600">Đôi Mắt Quan Sát</a>
               <a href="#Analysis" className="text-gray-600 hover:text-blue-600">Giải Mã</a>
@@ -100,10 +98,8 @@ const Chuong2 = () => {
             </div>
           </section>
 
-          {/* CẬP NHẬT: Thay đổi bố cục cho đường gạch dọc */}
           <section id="StoryStart" className="storybook-section container mx-auto px-6">
             <div className="flex flex-col lg:flex-row items-center gap-8">
-              {/* Khối text bên trái */}
               <div className="lg:w-1/2 space-y-8">
                 <h2 className="text-4xl font-serif font-bold text-purple-700">Cuộc Gặp Gỡ Ở Vườn Quang Phổ</h2>
                 <div className="flex items-center gap-4">
@@ -115,11 +111,7 @@ const Chuong2 = () => {
                   <p className="text-lg italic text-gray-600">"Chào Alice, ta là <strong>Thám Tử Phổ Quang</strong>. Chào mừng đến với Vườn Quang Phổ!"</p>
                 </div>
               </div>
-
-              {/* Đường gạch dọc ở giữa */}
               <div className="hidden lg:block w-px h-64 bg-gray-300 rounded-full"></div>
-
-              {/* Khối ảnh bên phải */}
               <div className="lg:w-1/2">
                 <img 
                   src={gardenImage} 
@@ -177,7 +169,10 @@ const Chuong2 = () => {
             </div>
           </section>
 
-          <PracticeStation />
+          {/* ID được thêm vào đây để link neo hoạt động */}
+          <section id="Practice">
+            <PracticeStation />
+          </section>
 
           <section className="py-20 relative bg-gradient-to-br from-yellow-50 to-orange-100 overflow-hidden">
             <div className="fireworks-container">
@@ -195,13 +190,13 @@ const Chuong2 = () => {
             </div>
           </section>
 
-          <section className="py-16 bg-gray-800 text-white">
+          <section id="TOC" className="py-16 bg-gray-800 text-white">
             <div className="container mx-auto px-6 text-center">
               <p className="text-2xl font-serif italic text-yellow-300">"Tuyệt vời, Alice! Cháu đã sẵn sàng để 'dạy' máy tính cách nhìn hoa chưa?"</p>
               <p className="mt-2 text-gray-400">Chương tiếp theo: Thế giới của Trí Tuệ Nhân Tạo!</p>
               <div className="flex justify-center gap-6 mt-12">
-                <a href="/Chuong1" className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">&larr; Về Chương 1</a>
-                <a href="/Chuong3" className="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-lg transition-colors">Tới Chương 3 &rarr;</a>
+                <Link to="/Chuong1" className="bg-gray-700 hover:bg-gray-600 text-white font-bold py-3 px-6 rounded-lg transition-colors">&larr; Về Chương 1</Link>
+                <Link to="/Chuong3" className="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-3 px-6 rounded-lg transition-colors">Tới Chương 3 &rarr;</Link>
               </div>
             </div>
           </section>
@@ -209,6 +204,7 @@ const Chuong2 = () => {
         
         <footer className="bg-gray-900 py-6 text-center text-gray-400"><p><strong>BloomWatch Project © 2025</strong></p></footer>
 
+        {/* Các Modals không thay đổi */}
         <Modal 
           isOpen={activeModal === 'garden'} 
           onClose={() => setActiveModal(null)}
@@ -268,3 +264,4 @@ const Chuong2 = () => {
 };
 
 export default Chuong2;
+

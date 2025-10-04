@@ -1,0 +1,16 @@
+#
+# ROI List for aafcottawacfiaf14n
+#
+# Site: aafcottawacfiaf14n
+# Veg Type: AG
+# ROI ID Number: 1000
+# Owner: akpost
+# Creation Date: 2022-01-27
+# Creation Time: 15:54:26
+# Update Date: 2022-01-27
+# Update Time: 15:54:26
+# Description: Agricultural field
+#
+start_date,start_time,end_date,end_time,maskfile,sample_image
+2021-09-03,12:10:05,9999-12-31,00:00:00,aafcottawacfiaf14n_AG_1000_01.tif,aafcottawacfiaf14n_2021_09_03_121005.jpg
+

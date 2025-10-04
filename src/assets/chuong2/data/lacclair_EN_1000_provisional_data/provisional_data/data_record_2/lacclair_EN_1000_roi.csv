@@ -1,0 +1,16 @@
+#
+# ROI List for lacclair
+#
+# Site: lacclair
+# Veg Type: EN
+# ROI ID Number: 1000
+# Owner: oscarz
+# Creation Date: 2024-04-22
+# Creation Time: 16:17:51
+# Update Date: 2024-04-22
+# Update Time: 16:17:51
+# Description: Background evergreen needleleaf trees
+#
+start_date,start_time,end_date,end_time,maskfile,sample_image
+2014-08-23,07:00:00,9999-12-31,00:00:00,lacclair_EN_1000_01.tif,lacclair_2014_08_23_120008.jpg
+
