@@ -6,10 +6,10 @@ import { Link } from 'react-router-dom';
 import styles from './chuong1.module.css';
 
 //Đường dẫn hình ảnh
-import HinhAnhGacVuon from '../../assets/chuong1/nguoi-gac-vuon.png';
+import HinhAnhGacVuon from '../../assets/chuong1/1.png';
 import HinhAnhSuperbloom from '../../assets/chuong1/super-bloom.png';
-import HinhAnhVuonSacTo from '../../assets/chuong1/vuon-sac-to.png';
-import HinhAnhNhaBep from '../../assets/chuong1/nha-bep-thien-nhien.png';
+import HinhAnhVuonSacTo from '../../assets/chuong1/2.png';
+import HinhAnhNhaBep from '../../assets/chuong1/3.png';
 import HinhAnhSuperbloomHigh from '../../assets/chuong1/superbloom-high.jpg';
 import HinhAnhSuperbloomMedium from '../../assets/chuong1/superbloom-medium.jpg';
 import HinhAnhSuperbloomLow from '../../assets/chuong1/superbloom-low.jpg';
