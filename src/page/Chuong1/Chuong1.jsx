@@ -113,77 +113,168 @@ const HoatDongGhepSacTo = () => {
 
 // --- Component Hoạt Động Superbloom với ảnh thực tế từ API NASA ---
 const HoatDongSuperbloomThucTe = ({ DataStationComponent }) => {
+    // State cho tương tác người dùng
     const [rainfall, setRainfall] = useState(150);
     const [temperature, setTemperature] = useState(18);
     const [bloomStrength, setBloomStrength] = useState(0);
     
-    // THAY ĐỔI 1: Bỏ đi các state không cần thiết như isLoading, error
-    // const [isLoading, setIsLoading] = useState(true);
-    // const [error, setError] = useState(null);
-    // const [optimalConditions, setOptimalConditions] = useState({ rainfall: 300, temperature: 17 });
+    // State quản lý dữ liệu từ API
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [optimalConditions, setOptimalConditions] = useState(null);
+    const [yearExamples, setYearExamples] = useState(null);
     
-    const [imageUrl, setImageUrl] = useState(null); 
+    // State cho hình ảnh hiển thị
+    const [imageUrl, setImageUrl] = useState(HinhAnhSuperbloomNone); // Gán ảnh mặc định
     const [imageDescription, setImageDescription] = useState('');
-    
-    // THAY ĐỔI 2: Bỏ đi useEffect dùng để fetch data vì nó đang bị trống
-    // useEffect(() => { /* ... giữ nguyên ... */ }, []);
 
+    // Hàm xử lý dữ liệu thô từ API NASA POWER (VẪN GIỮ NGUYÊN)
+    const processApiData = (data) => {
+        const parameters = data.properties.parameter;
+        const monthlyRain = parameters.PRECTOTCORR;
+        const monthlyTemp = parameters.T2M;
+        const yearlyData = {};
+
+        for (const date in monthlyRain) {
+            const year = parseInt(date.substring(0, 4), 10);
+            const month = parseInt(date.substring(4, 6), 10);
+            if (!yearlyData[year]) {
+                yearlyData[year] = { year: year, winterRain: 0, springTemp: [], springMonthCount: 0 };
+            }
+            if (month === 11 || month === 12) {
+                 if (yearlyData[year + 1]) yearlyData[year + 1].winterRain += monthlyRain[date];
+            } else if (month === 1 || month === 2) {
+                yearlyData[year].winterRain += monthlyRain[date];
+            }
+            if ([3, 4, 5].includes(month)) {
+                yearlyData[year].springTemp.push(monthlyTemp[date]);
+                yearlyData[year].springMonthCount++;
+            }
+        }
+
+        const validYears = Object.values(yearlyData).filter(y => y.springMonthCount > 0 && y.winterRain > 0).map(y => ({
+            ...y,
+            avgSpringTemp: y.springTemp.reduce((a, b) => a + b, 0) / y.springMonthCount
+        }));
+        
+        validYears.sort((a, b) => b.winterRain - a.winterRain);
+        
+        if (validYears.length < 4) {
+             throw new Error("Không đủ dữ liệu lịch sử để phân loại các năm.");
+        }
+
+        const bestYear = validYears[0];
+        const mediumYear = validYears[Math.floor(validYears.length / 3)];
+        const lowYear = validYears[Math.floor(validYears.length * 2 / 3)];
+        const dryYear = validYears[validYears.length - 1];
+
+        return {
+            optimal: {
+                rainfall: bestYear.winterRain,
+                temperature: bestYear.avgSpringTemp
+            },
+            examples: {
+                high: `${bestYear.year}`,
+                medium: `${mediumYear.year}`,
+                low: `${lowYear.year}`,
+                none: `${dryYear.year}`
+            }
+        };
+    };
+
+    // useEffect để gọi API một lần khi component được tải (VẪN GIỮ NGUYÊN)
+    useEffect(() => {
+        const lat = 34.7;
+        const lon = -118.4;
+        const startYear = 2005;
+        const endYear = 2024;
+        const apiUrl = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${startYear}&end=${endYear}&format=JSON`;
+        
+        fetch(apiUrl)
+            .then(res => res.ok ? res.json() : Promise.reject('Network response was not ok'))
+            .then(data => {
+                const processedData = processApiData(data);
+                setOptimalConditions(processedData.optimal);
+                setYearExamples(processedData.examples);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.error("Failed to fetch NASA data:", err);
+                setError("Không thể tải dữ liệu thời tiết từ NASA. Vui lòng thử lại sau.");
+                setIsLoading(false);
+            });
+    }, []);
+
+    // useCallback để tính toán sức mạnh nở hoa và cập nhật ảnh (ĐÃ SỬA)
     const calculateBloom = useCallback(() => {
-        // Chúng ta có thể định nghĩa điều kiện lý tưởng ngay tại đây
-        const optimalConditions = { rainfall: 300, temperature: 17 };
+        if (!optimalConditions || !yearExamples) return;
 
         const rainDiff = Math.abs(rainfall - optimalConditions.rainfall);
         const rainScore = Math.max(0, 100 - (rainDiff / optimalConditions.rainfall) * 100);
+        
         const tempDiff = Math.abs(temperature - optimalConditions.temperature);
         const tempScore = Math.max(0, 100 - (tempDiff / optimalConditions.temperature) * 50);
+        
         const finalStrength = (rainScore * 0.7) + (tempScore * 0.3);
         setBloomStrength(finalStrength);
 
+        // *** THAY ĐỔI CHÍNH: Cập nhật ảnh từ source code thay vì API ***
         if (finalStrength > 85) {
             setImageUrl(HinhAnhSuperbloomHigh);
-            setImageDescription("Ảnh vệ tinh thực tế: Một mùa superbloom cực thịnh!");
+            setImageDescription(`Minh họa cho một mùa superbloom cực thịnh (ví dụ như năm ${yearExamples.high}).`);
         } else if (finalStrength > 60) {
             setImageUrl(HinhAnhSuperbloomMedium);
-            setImageDescription("Ảnh vệ tinh thực tế: Hoa nở rộ mạnh mẽ.");
+            setImageDescription(`Minh họa cho mùa hoa nở rộ mạnh mẽ (ví dụ như năm ${yearExamples.medium}).`);
         } else if (finalStrength > 30) {
             setImageUrl(HinhAnhSuperbloomLow);
-            setImageDescription("Ảnh vệ tinh thực tế: Hoa nở ở mức vừa phải.");
+            setImageDescription(`Minh họa cho mùa hoa nở ở mức vừa phải (ví dụ như năm ${yearExamples.low}).`);
         } else {
             setImageUrl(HinhAnhSuperbloomNone);
-            setImageDescription("Ảnh vệ tinh thực tế: Một năm khô hạn, không có superbloom.");
+            setImageDescription(`Minh họa cho một năm khô hạn, không có superbloom (ví dụ như năm ${yearExamples.none}).`);
         }
-    }, [rainfall, temperature]); // Bỏ optimalConditions khỏi dependency array
+    }, [rainfall, temperature, optimalConditions, yearExamples]);
 
-    // THAY ĐỔI 3: Cập nhật useEffect để chạy calculateBloom ngay khi component được tải
-    // và mỗi khi rainfall hoặc temperature thay đổi.
+    // useEffect để chạy lại tính toán khi dữ liệu thay đổi
     useEffect(() => {
-        calculateBloom();
-    }, [calculateBloom]);
+        if (!isLoading) {
+            calculateBloom();
+        }
+    }, [isLoading, calculateBloom]);
+
+    // Giao diện khi đang tải hoặc lỗi
+    if (isLoading || error) {
+        return (
+            <DataStationComponent title="Thí nghiệm Biến Đổi Thời Tiết Mini">
+                <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                    {isLoading ? "Đang tải và phân tích dữ liệu thời tiết 20 năm từ NASA..." : <span className="text-red-500">{error}</span>}
+                </div>
+            </DataStationComponent>
+        );
+    }
     
-    // Phần JSX trả về (return) không có gì thay đổi
-    // Bỏ đi câu lệnh if (isLoading || error)
-    
+    // Giao diện chính sau khi tải xong
     return (
         <DataStationComponent title="Thí nghiệm Biến Đổi Thời Tiết Mini">
             <div className="bg-white p-6 rounded-lg shadow-md">
-                {/* Phần JSX cho thanh trượt và mô tả vẫn giữ nguyên */}
-                <p className="mb-6 text-center">{`Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường. Điều kiện lý tưởng là mưa khoảng 300mm và nhiệt độ 17°C.`}</p>
-                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
+                <p className="mb-6 text-center">{`Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường. Dựa trên dữ liệu 20 năm của NASA tại California, điều kiện lý tưởng được xác định là mưa khoảng ${Math.round(optimalConditions.rainfall)}mm và nhiệt độ ${optimalConditions.temperature.toFixed(1)}°C.`}</p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
                     <div className="md:col-span-1 lg:col-span-2 space-y-6">
+                        {/* Thanh trượt điều khiển */}
                         <div>
                             <div className="flex justify-between items-center mb-1">
                                 <label className="font-medium">Lượng mưa mùa đông 💧</label>
                                 <span className="font-bold text-blue-600">{rainfall} mm</span>
                             </div>
-                            <input type="range" min="0" max="500" value={rainfall} onChange={e => setRainfall(Number(e.target.value))} className="w-full" />
+                            <input type="range" min="0" max="600" value={rainfall} onChange={e => setRainfall(Number(e.target.value))} className="w-full" />
                         </div>
                         <div>
                             <div className="flex justify-between items-center mb-1">
                                 <label className="font-medium">Nhiệt độ mùa xuân 🔥</label>
                                 <span className="font-bold text-red-600">{temperature} °C</span>
                             </div>
-                            <input type="range" min="5" max="30" value={temperature} onChange={e => setTemperature(Number(e.target.value))} className="w-full" />
+                            <input type="range" min="5" max="30" step="0.5" value={temperature} onChange={e => setTemperature(Number(e.target.value))} className="w-full" />
                         </div>
+                        {/* Hiển thị sức mạnh */}
                         <div className="text-center bg-gray-50 p-4 rounded-xl shadow-inner">
                             <h4 className="text-lg font-semibold mb-2">Sức mạnh Superbloom</h4>
                              <div className="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-end overflow-hidden border-4 border-gray-300">
@@ -192,11 +283,9 @@ const HoatDongSuperbloomThucTe = ({ DataStationComponent }) => {
                             <p className="text-3xl font-bold mt-2 text-purple-700">{Math.round(bloomStrength)}%</p>
                         </div>
                     </div>
+                    {/* Hiển thị ảnh từ source */}
                     <div className="md:col-span-1 lg:col-span-1 text-center flex flex-col items-center justify-center">
-                        {imageUrl ? 
-                            <img src={imageUrl} alt="Ảnh vệ tinh thực tế" className="w-full max-w-sm h-64 object-cover rounded-lg shadow-xl border-2 border-gray-200" />
-                            : <div className="w-full max-w-sm h-64 bg-gray-200 rounded-lg flex items-center justify-center">Đang tải ảnh...</div>
-                        }
+                        <img src={imageUrl} alt="Hình minh họa hiện tượng superbloom" className="w-full max-w-sm h-64 object-cover rounded-lg shadow-xl border-2 border-gray-200" />
                         <p className="text-sm text-gray-600 italic mt-2 max-w-sm">{imageDescription}</p>
                     </div>
                 </div>
