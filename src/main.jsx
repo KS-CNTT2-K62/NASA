@@ -3,12 +3,12 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, HashRouter } from 'react-router-dom' // Thêm dòng này
 import './index.css'
 import App from './App.jsx'
-const basename = "/NASA/"; 
+export const basename = "/NASA";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <HashRouter>
+    <BrowserRouter basename={basename}>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </StrictMode>,
 )
