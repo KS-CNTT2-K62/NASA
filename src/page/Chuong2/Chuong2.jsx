@@ -6,13 +6,13 @@ import PracticeStation from './components/PracticeStation';
 import Modal from './components/Modal';
 
 // Import ảnh từ thư mục assets
-import aliceImage from '../../assets/chuong2/images/alice.png';
-import detectiveImage from '../../assets/chuong2/images/tham-tu-pho-quang.png';
-import gardenImage from '../../assets/chuong2/images/vuon-quang-pho.png';
+import aliceImage from '../../assets/chuong2/images/Alice – Nhà Giải Mã Dữ Liệu.png';
+import detectiveImage from '../../assets/chuong2/images/thám tử phổ quang.png';
+import gardenImage from '../../assets/chuong2/images/3,5.png';
 import groundImage from '../../assets/chuong2/images/bac-si-hoa.png';
 import airImage from '../../assets/chuong2/images/tho-san-may.png';
 import spaceImage from '../../assets/chuong2/images/nguoi-gac-dem.png';
-import smaImage from '../../assets/chuong2/images/sma-visual.png';
+import smaImage from '../../assets/chuong2/images/5.png';
 
 const customStyles = `
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Roboto:wght@400&display=swap');
@@ -74,12 +74,11 @@ const Chuong2 = () => {
     <>
       <style>{customStyles}</style>
       <div className="bg-stone-50 text-gray-800 font-sans">
-        
+
         <header className="sticky top-0 z-40 bg-white shadow-md">
-            <div className="container mx-auto flex items-center justify-between p-4">
-             <Link to="/" aria-current="page" className="font-serif text-2xl font-bold text-blue-800">BloomWatch</Link>
+          <div className="container mx-auto flex items-center justify-between p-4">
+            <Link to="/" aria-current="page" className="font-serif text-2xl font-bold text-blue-800">BloomWatch</Link>
             <nav className="hidden items-center space-x-6 md:flex">
-              {/* Các link nhảy trong trang vẫn dùng thẻ <a> */}
               <a href="#StoryStart" className="text-gray-600 hover:text-blue-600">Câu Chuyện</a>
               <a href="#Platforms" className="text-gray-600 hover:text-blue-600">Đôi Mắt Quan Sát</a>
               <a href="#Analysis" className="text-gray-600 hover:text-blue-600">Giải Mã</a>
@@ -103,19 +102,19 @@ const Chuong2 = () => {
               <div className="lg:w-1/2 space-y-8">
                 <h2 className="text-4xl font-serif font-bold text-purple-700">Cuộc Gặp Gỡ Ở Vườn Quang Phổ</h2>
                 <div className="flex items-center gap-4">
-                  <img src={aliceImage} alt="Alice" className="w-28 h-28 rounded-full border-4 border-purple-200 flex-shrink-0"/>
+                  <img src={aliceImage} alt="Alice" className="w-28 h-28 rounded-full border-4 border-purple-200 flex-shrink-0" />
                   <p className="text-lg leading-relaxed text-gray-700">Khi Alice bước qua cánh cửa, cô bé thấy mình đang đứng trong một căn phòng kỳ lạ với những bức tường gương phản chiếu những dải ánh sáng đủ màu sắc.</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <img src={detectiveImage} alt="Thám Tử Phổ Quang" className="w-28 h-28 rounded-full border-4 border-blue-200 flex-shrink-0"/>
+                  <img src={detectiveImage} alt="Thám Tử Phổ Quang" className="w-28 h-28 rounded-full border-4 border-blue-200 flex-shrink-0" />
                   <p className="text-lg italic text-gray-600">"Chào Alice, ta là <strong>Thám Tử Phổ Quang</strong>. Chào mừng đến với Vườn Quang Phổ!"</p>
                 </div>
               </div>
               <div className="hidden lg:block w-px h-64 bg-gray-300 rounded-full"></div>
               <div className="lg:w-1/2">
-                <img 
-                  src={gardenImage} 
-                  alt="Garden of Spectrums" 
+                <img
+                  src={gardenImage}
+                  alt="Garden of Spectrums"
                   className="rounded-xl shadow-2xl interactive-image w-2/3 mx-auto"
                   onClick={() => setActiveModal('garden')}
                 />
@@ -130,18 +129,32 @@ const Chuong2 = () => {
                 <h2 className="text-4xl font-serif font-bold sparkle-text">Phòng Trưng Bày Đôi Mắt Quan Sát</h2>
                 <p className="mt-2 text-lg text-gray-600 max-w-3xl mx-auto">Thám Tử Phổ Quang dẫn Alice đến đây. "Để 'đọc' được những câu chuyện ánh sáng của hoa, chúng ta cần nhiều nền tảng quan sát viễn thám khác nhau," cô giải thích.</p>
               </div>
-              <div className="grid md:grid-cols-3 gap-10">
-                <div onClick={() => setActiveModal('ground')} className="platform-door bg-white rounded-lg p-6 text-center shadow-lg">
-                  <img src={groundImage} alt="Ground Observation" className="h-32 w-32 mx-auto mb-4 rounded-full"/>
-                  <h3 className="text-2xl font-bold text-green-700">Mặt Đất</h3>
+              <div  className='flex gap-20'>
+                <div className="flex flex-col gap-10 flex-1 w-0">
+                  <div className="platform-door bg-white rounded-lg p-6 text-center shadow-lg">
+                    Sử dụng máy đo phổ cầm tay ASD FieldSpec-4 để "khám bệnh" cho từng bông hoa, thu thập dữ liệu cực kỳ chi tiết.
+                    Độ phân giải không gian: Rất cao (chỉ vài centimet).
+                    Độ bao phủ không gian: Nhỏ (chỉ một khu vực nhỏ).
+                  </div>
+                  <div className="platform-door bg-white rounded-lg p-6 text-center shadow-lg">
+                    Sử dụng thiết bị AVIRIS-NG gắn trên máy bay bay ở độ cao 20km, giống như "chụp X-quang" cả một cánh đồng.
+                    Độ phân giải không gian: Trung bình (khoảng 1-5 mét).
+                    Độ phân giải phổ: Cao (rất nhiều dải màu).
+                    Độ bao phủ không gian: Lớn (cả một vùng rộng lớn).
+                  </div>
+                  <div className="platform-door bg-white rounded-lg p-6 text-center shadow-lg">
+                    Sử dụng vệ tinh EMIT trên Trạm Vũ trụ Quốc tế (ISS) ở độ cao 400km để "quan sát" cả một lục địa.
+
+                    Độ phân giải không gian: Thấp (mỗi pixel tương đương 60 mét).
+                    Độ bao phủ không gian: Cực kỳ lớn (quan sát toàn cầu).
+                  </div>
                 </div>
-                <div onClick={() => setActiveModal('air')} className="platform-door bg-white rounded-lg p-6 text-center shadow-lg">
-                  <img src={airImage} alt="Airborne Observation" className="h-32 w-32 mx-auto mb-4 rounded-full"/>
-                  <h3 className="text-2xl font-bold text-sky-700">Trên Không</h3>
-                </div>
-                <div onClick={() => setActiveModal('space')} className="platform-door bg-white rounded-lg p-6 text-center shadow-lg">
-                  <img src={spaceImage} alt="Space Observation" className="h-32 w-32 mx-auto mb-4 rounded-full"/>
-                  <h3 className="text-2xl font-bold text-indigo-700">Không Gian</h3>
+                <div className='flex-1 w-0'>
+                  <img
+                  src={gardenImage}
+                  alt="Garden of Spectrums"
+                  className="rounded-xl shadow-2xl interactive-image"
+                />
                 </div>
               </div>
             </div>
@@ -153,7 +166,7 @@ const Chuong2 = () => {
             </div>
             <div className="flex flex-col lg:flex-row items-center gap-12">
               <div className="lg:w-5/12">
-                <img src={smaImage} alt="Spectral Mixture Analysis Visualization" className="rounded-xl shadow-2xl"/>
+                <img src={smaImage} alt="Spectral Mixture Analysis Visualization" className="rounded-xl shadow-2xl" />
               </div>
               <div className="lg:w-7/12 space-y-6">
                 <p className="text-lg leading-relaxed italic text-gray-700">"Dữ liệu càng nhiều, câu chuyện càng đầy đủ," Thám Tử Phổ Quang nói. "Nhưng có một 'vấn đề' lớn với ảnh viễn thám – đó là <strong className="text-red-600">'pixel hỗn hợp'</strong>!"</p>
@@ -176,11 +189,11 @@ const Chuong2 = () => {
 
           <section className="py-20 relative bg-gradient-to-br from-yellow-50 to-orange-100 overflow-hidden">
             <div className="fireworks-container">
-              <div className="firework" style={{left: '10%', top: '80%', animationDelay: '0.2s'}}></div>
-              <div className="firework" style={{left: '85%', top: '70%', animationDelay: '0.5s'}}></div>
-              <div className="firework" style={{left: '50%', top: '90%', animationDelay: '0.8s'}}></div>
-              <div className="firework" style={{left: '25%', top: '60%', animationDelay: '1.2s'}}></div>
-              <div className="firework" style={{left: '75%', top: '85%', animationDelay: '0.4s'}}></div>
+              <div className="firework" style={{ left: '10%', top: '80%', animationDelay: '0.2s' }}></div>
+              <div className="firework" style={{ left: '85%', top: '70%', animationDelay: '0.5s' }}></div>
+              <div className="firework" style={{ left: '50%', top: '90%', animationDelay: '0.8s' }}></div>
+              <div className="firework" style={{ left: '25%', top: '60%', animationDelay: '1.2s' }}></div>
+              <div className="firework" style={{ left: '75%', top: '85%', animationDelay: '0.4s' }}></div>
             </div>
             <div className="container mx-auto px-6 text-center relative z-10">
               <h3 className="text-4xl font-serif font-bold sparkle-text mb-6">Bài Học Đúc Kết Chương 2</h3>
@@ -201,12 +214,12 @@ const Chuong2 = () => {
             </div>
           </section>
         </main>
-        
+
         <footer className="bg-gray-900 py-6 text-center text-gray-400"><p><strong>BloomWatch Project © 2025</strong></p></footer>
 
         {/* Các Modals không thay đổi */}
-        <Modal 
-          isOpen={activeModal === 'garden'} 
+        <Modal
+          isOpen={activeModal === 'garden'}
           onClose={() => setActiveModal(null)}
           title="Câu Chuyện Của Ánh Sáng"
           characterName="Lời Giải Thích Của Thám Tử"
@@ -218,8 +231,8 @@ const Chuong2 = () => {
             <p>Bằng cách phân tích những dải ánh sáng mà hoa 'văng ra' (gọi là <strong className="text-green-600">quang phổ phản xạ</strong>), chúng ta có thể biết được loài hoa đó là gì, nó khỏe mạnh ra sao.</p>
           </div>
         </Modal>
-        <Modal 
-          isOpen={activeModal === 'ground'} 
+        <Modal
+          isOpen={activeModal === 'ground'}
           onClose={() => setActiveModal(null)}
           title="Đôi Mắt Thứ Nhất"
           characterName="Bác Sĩ Hoa"
@@ -231,8 +244,8 @@ const Chuong2 = () => {
             <li><strong>Độ bao phủ không gian:</strong> <span className="font-bold text-red-700">Nhỏ</span> (chỉ một khu vực nhỏ).</li>
           </ul>
         </Modal>
-        <Modal 
-          isOpen={activeModal === 'air'} 
+        <Modal
+          isOpen={activeModal === 'air'}
           onClose={() => setActiveModal(null)}
           title="Đôi Mắt Thứ Hai"
           characterName="Thợ Săn Mây Quang Phổ"
@@ -245,8 +258,8 @@ const Chuong2 = () => {
             <li><strong>Độ bao phủ không gian:</strong> <span className="font-bold text-green-700">Lớn</span> (cả một vùng rộng lớn).</li>
           </ul>
         </Modal>
-        <Modal 
-          isOpen={activeModal === 'space'} 
+        <Modal
+          isOpen={activeModal === 'space'}
           onClose={() => setActiveModal(null)}
           title="Đôi Mắt Thứ Ba"
           characterName="Người Gác Đêm Vũ Trụ"
