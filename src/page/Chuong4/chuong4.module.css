@@ -20,17 +20,17 @@
 
 
 section {
-  /* Định nghĩa điểm snap cho mỗi section */
   scroll-snap-align: start;
-  
-  /* Mỗi section chiếm toàn bộ chiều cao màn hình */
   height: 100vh;
-  
-  /* Thêm để nội dung bên trong section có thể cuộn nếu quá dài */
   overflow-y: auto;
-
-  /* Giúp căn giữa nội dung trong section (tùy chọn) */
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+section *{
+  opacity: 0;
+  transition: 0.5s;
+}
+section.is-visible *{
+  opacity: 1;
 }
