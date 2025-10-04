@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "🌳 Rừng rậm Amazon, Brazil",
+    "nir": 0.55,
+    "red": 0.04
+  },
+  {
+    "id": 2,
+    "name": "🌾 Cánh đồng lúa, Đồng bằng sông Cửu Long",
+    "nir": 0.42,
+    "red": 0.07
+  },
+  {
+    "id": 3,
+    "name": "🏜️ Sa mạc Sahara, Algeria",
+    "nir": 0.28,
+    "red": 0.25
+  },
+  {
+    "id": 4,
+    "name": "🏙️ Trung tâm đô thị, Tokyo, Nhật Bản",
+    "nir": 0.15,
+    "red": 0.12
+  },
+  {
+    "id": 5,
+    "name": "💧 Vùng nước sâu, Biển Thái Bình Dương",
+    "nir": 0.03,
+    "red": 0.02
+  }
+]
