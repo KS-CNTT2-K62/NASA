@@ -1,5 +1,5 @@
 // src/pages/Chuong1.jsx
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -106,6 +106,162 @@ const HoatDongGhepSacTo = () => {
   );
 }
 
+// --- Component Hoạt Động Superbloom với ảnh thực tế từ API NASA ---
+// --- Component Hoạt Động Superbloom với ảnh thực tế từ API NASA (ĐÃ SỬA LỖI ẢNH ĐEN) ---
+const HoatDongSuperbloomThucTe = ({ DataStationComponent }) => {
+    const [rainfall, setRainfall] = useState(150);
+    const [temperature, setTemperature] = useState(18);
+    const [bloomStrength, setBloomStrength] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [optimalConditions, setOptimalConditions] = useState({ rainfall: 300, temperature: 17 });
+    
+    const [imageUrl, setImageUrl] = useState('');
+    const [imageDescription, setImageDescription] = useState('');
+
+    // Hàm tạo URL ảnh từ NASA Worldview Snapshot API (ĐÃ SỬA LỖI)
+    const getRealImageUrl = (date) => {
+        const bbox = "-118.8,34.5,-118.0,35.0"; // Bounding box cho Thung lũng Antelope
+        // Yêu cầu 3 lớp: Terra (sáng), Aqua (chiều) và bản đồ nền Blue Marble để không bao giờ bị ảnh đen
+        const layers = "MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Aqua_CorrectedReflectance_TrueColor,BlueMarble_ShadedRelief_Bathymetry";
+        const width = 600;
+        const height = 400;
+        
+        return `https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=${date}&BBOX=${bbox}&LAYERS=${layers}&FORMAT=image/jpeg&WIDTH=${width}&HEIGHT=${height}`;
+    };
+
+    const processApiData = (data) => {
+        const parameters = data.properties.parameter;
+        const monthlyRain = parameters.PRECTOTCORR;
+        const monthlyTemp = parameters.T2M;
+        const yearlyData = {};
+        for (const date in monthlyRain) {
+            const year = date.substring(0, 4);
+            const month = parseInt(date.substring(4, 6), 10);
+            if (!yearlyData[year]) {
+                yearlyData[year] = { winterRain: 0, springTemp: [], springMonthCount: 0 };
+            }
+            if ([11, 12, 1, 2].includes(month)) {
+                yearlyData[year].winterRain += monthlyRain[date];
+            }
+            if ([3, 4, 5].includes(month)) {
+                yearlyData[year].springTemp.push(monthlyTemp[date]);
+                yearlyData[year].springMonthCount++;
+            }
+        }
+        let maxRain = 0;
+        let bestYearData = { rainfall: 300, temperature: 17 };
+        for (const year in yearlyData) {
+            if (yearlyData[year].winterRain > maxRain && yearlyData[year].springMonthCount > 0) {
+                maxRain = yearlyData[year].winterRain;
+                const avgSpringTemp = yearlyData[year].springTemp.reduce((a, b) => a + b, 0) / yearlyData[year].springMonthCount;
+                bestYearData = { rainfall: maxRain, temperature: avgSpringTemp };
+            }
+        }
+        return bestYearData;
+    };
+
+    useEffect(() => {
+        const lat = 34.7;
+        const lon = -118.4;
+        const startYear = 2005;
+        const endYear = 2024;
+        const apiUrl = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${startYear}&end=${endYear}&format=JSON`;
+        fetch(apiUrl)
+            .then(res => res.ok ? res.json() : Promise.reject('Network response was not ok'))
+            .then(data => {
+                const optimal = processApiData(data);
+                setOptimalConditions(optimal);
+                setIsLoading(false);
+            })
+            .catch(err => {
+                console.error("Failed to fetch NASA data:", err);
+                setError("Không thể tải dữ liệu thời tiết từ NASA.");
+                setIsLoading(false);
+            });
+    }, []);
+
+    const calculateBloom = useCallback(() => {
+        const rainDiff = Math.abs(rainfall - optimalConditions.rainfall);
+        const rainScore = Math.max(0, 100 - (rainDiff / optimalConditions.rainfall) * 100);
+        const tempDiff = Math.abs(temperature - optimalConditions.temperature);
+        const tempScore = Math.max(0, 100 - (tempDiff / optimalConditions.temperature) * 50);
+        const finalStrength = (rainScore * 0.7) + (tempScore * 0.3);
+        setBloomStrength(finalStrength);
+
+        if (finalStrength > 85) {
+            setImageUrl(getRealImageUrl("2023-04-15"));
+            setImageDescription("Ảnh vệ tinh ngày 15/04/2023: Một mùa superbloom cực thịnh!");
+        } else if (finalStrength > 60) {
+            setImageUrl(getRealImageUrl("2019-04-10"));
+            setImageDescription("Ảnh vệ tinh ngày 10/04/2019: Hoa nở rộ mạnh mẽ.");
+        } else if (finalStrength > 30) {
+            setImageUrl(getRealImageUrl("2021-05-01"));
+            setImageDescription("Ảnh vệ tinh ngày 01/05/2021: Hoa nở ở mức vừa phải.");
+        } else {
+            setImageUrl(getRealImageUrl("2022-04-15"));
+            setImageDescription("Ảnh vệ tinh ngày 15/04/2022: Một năm khô hạn, không có superbloom.");
+        }
+    }, [rainfall, temperature, optimalConditions]);
+
+    useEffect(() => {
+        if (!isLoading) {
+            calculateBloom();
+        }
+    }, [isLoading, calculateBloom]);
+
+    if (isLoading || error) {
+        return (
+            <DataStationComponent title="Thí nghiệm Biến Đổi Thời Tiết Mini">
+                <div className="bg-white p-6 rounded-lg shadow-md text-center">
+                    {isLoading ? "Đang tải dữ liệu thời tiết từ NASA..." : <span className="text-red-500">{error}</span>}
+                </div>
+            </DataStationComponent>
+        );
+    }
+    
+    return (
+        <DataStationComponent title="Thí nghiệm Biến Đổi Thời Tiết Mini">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+                <p className="mb-6 text-center">{`Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường. Dựa trên dữ liệu 20 năm của NASA, điều kiện lý tưởng là mưa khoảng ${Math.round(optimalConditions.rainfall)}mm và nhiệt độ ${optimalConditions.temperature.toFixed(1)}°C.`}</p>
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
+                    <div className="md:col-span-1 lg:col-span-2 space-y-6">
+                        <div>
+                            <div className="flex justify-between items-center mb-1">
+                                <label className="font-medium">Lượng mưa mùa đông 💧</label>
+                                <span className="font-bold text-blue-600">{rainfall} mm</span>
+                            </div>
+                            <input type="range" min="0" max="500" value={rainfall} onChange={e => setRainfall(Number(e.target.value))} className="w-full" />
+                        </div>
+                        <div>
+                            <div className="flex justify-between items-center mb-1">
+                                <label className="font-medium">Nhiệt độ mùa xuân 🔥</label>
+                                <span className="font-bold text-red-600">{temperature} °C</span>
+                            </div>
+                            <input type="range" min="5" max="30" value={temperature} onChange={e => setTemperature(Number(e.target.value))} className="w-full" />
+                        </div>
+                        <div className="text-center bg-gray-50 p-4 rounded-xl shadow-inner">
+                            <h4 className="text-lg font-semibold mb-2">Sức mạnh Superbloom</h4>
+                             <div className="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-end overflow-hidden border-4 border-gray-300">
+                                <div className="w-full bg-gradient-to-t from-yellow-400 via-pink-500 to-purple-600 transition-all duration-500" style={{ height: `${bloomStrength}%` }}></div>
+                            </div>
+                            <p className="text-3xl font-bold mt-2 text-purple-700">{Math.round(bloomStrength)}%</p>
+                        </div>
+                    </div>
+                    <div className="md:col-span-1 lg:col-span-1 text-center flex flex-col items-center justify-center">
+                        {imageUrl ? 
+                            <img src={imageUrl} alt="Ảnh vệ tinh thực tế từ NASA" className="w-full max-w-sm h-64 object-cover rounded-lg shadow-xl border-2 border-gray-200" />
+                            : <div className="w-full max-w-sm h-64 bg-gray-200 rounded-lg flex items-center justify-center">Đang tải ảnh...</div>
+                        }
+                        <p className="text-sm text-gray-600 italic mt-2 max-w-sm">{imageDescription}</p>
+                    </div>
+                </div>
+            </div>
+        </DataStationComponent>
+    );
+};
+
+
 // --- Component chính cho Chương 1 ---
 
 function Chuong1() {
@@ -125,21 +281,6 @@ function Chuong1() {
     }
   }, []);
 
-  const [rain, setRain] = useState(50);
-  const [drought, setDrought] = useState(5);
-  const [temp, setTemp] = useState(50);
-  const [bloomStrength, setBloomStrength] = useState(0);
-
-  const calculateBloom = useCallback(() => {
-    const rainFactor = 1 - Math.abs(rain - 70) / 70;
-    const droughtFactor = drought / 10;
-    const tempFactor = 1 - Math.abs(temp - 60) / 60;
-    let strength = (rainFactor + droughtFactor + tempFactor) / 3 * 100;
-    setBloomStrength(Math.max(0, Math.min(100, strength)));
-  }, [rain, drought, temp]);
-
-  // --- [SỬA LỖI TẠI ĐÂY] ---
-  // Cập nhật component StorySection để hiển thị hình ảnh
   const StorySection = ({ title, children, imageAlt, imageSrc }) => (
     <div className="my-12 flex flex-col md:flex-row items-center gap-8">
       <div className="md:w-1/2">
@@ -149,7 +290,6 @@ function Chuong1() {
         </div>
       </div>
       <div className="md:w-1/2">
-        {/* Kiểm tra nếu có imageSrc thì hiển thị <img>, nếu không thì hiển thị placeholder */}
         {imageSrc ? (
           <img src={imageSrc} alt={imageAlt} className="w-full h-auto object-cover rounded-lg shadow-lg" />
         ) : (
@@ -176,7 +316,6 @@ function Chuong1() {
         <p className="text-2xl text-gray-600 mt-2">và Công Thức Của Thiên Nhiên</p>
       </header>
 
-      {/* Truyền prop 'imageSrc' vào component StorySection */}
       <StorySection 
         title="Cuộc Gặp Gỡ Trên Đồng Cỏ Lặng"
         imageAlt="Alice ngạc nhiên nhìn Người Gác Vườn Kỳ Diệu trên một ngọn đồi xanh mướt nhưng không có hoa."
@@ -249,44 +388,8 @@ function Chuong1() {
         <p>Ví dụ, những bông hoa California poppies có 'đồng hồ sinh học' riêng. Chúng 'đếm' số ngày có đủ ánh sáng, đủ độ ẩm, sử dụng <strong>dữ liệu sự kiện rời rạc</strong> để biết khi nào nở. Đây là một dạng <strong>phân tích tương quan</strong> giữa các yếu tố môi trường và chu kỳ sống thực vật."</p>
       </StorySection>
 
-      <DataStation title="Thí nghiệm Biến Đổi Thời Tiết Mini">
-        <div className="bg-white p-6 rounded-lg shadow-md">
-            <p className="mb-6 text-center">Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường để tạo ra một 'superbloom' mạnh nhất. Cháu có thấy 'điểm ngọt' nào trong sự kết hợp các 'nguyên liệu' không?</p>
-            <div className="grid md:grid-cols-3 gap-6 items-center">
-                <div className="md:col-span-2 space-y-6">
-                    <div>
-                        <div className="flex justify-between items-center mb-1">
-                            <label className="font-medium">Lượng mưa 💧</label>
-                            <span className="font-bold text-blue-600">{rain} mm</span>
-                        </div>
-                        <input type="range" min="0" max="100" value={rain} onChange={e => setRain(e.target.value)} className="w-full" />
-                    </div>
-                    <div>
-                        <div className="flex justify-between items-center mb-1">
-                           <label className="font-medium">Số năm khô hạn trước đó ☀️</label>
-                           <span className="font-bold text-orange-600">{drought} năm</span>
-                        </div>
-                        <input type="range" min="0" max="10" value={drought} onChange={e => setDrought(e.target.value)} className="w-full" />
-                    </div>
-                    <div>
-                        <div className="flex justify-between items-center mb-1">
-                            <label className="font-medium">Nhiệt độ ấm dần 🔥</label>
-                            <span className="font-bold text-red-600">{temp} °C</span>
-                        </div>
-                        <input type="range" min="0" max="100" value={temp} onChange={e => setTemp(e.target.value)} className="w-full" />
-                    </div>
-                    <button onClick={calculateBloom} className="w-full bg-blue-600 text-white font-bold py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors">Tạo Superbloom!</button>
-                </div>
-                <div className="text-center">
-                    <h4 className="text-lg font-semibold mb-2">Sức mạnh Superbloom</h4>
-                    <div className="w-32 h-32 mx-auto bg-gray-200 rounded-full flex items-end overflow-hidden border-4 border-gray-300">
-                        <div className="w-full bg-gradient-to-t from-yellow-400 via-pink-500 to-purple-600 transition-all duration-500" style={{ height: `${bloomStrength}%` }}></div>
-                    </div>
-                    <p className="text-2xl font-bold mt-2">{Math.round(bloomStrength)}%</p>
-                </div>
-            </div>
-        </div>
-      </DataStation>
+      <HoatDongSuperbloomThucTe DataStationComponent={DataStation} />
+
 
       <div className="mt-16 text-center p-8 bg-green-50 rounded-lg">
         <h2 className="text-3xl font-bold text-green-800 mb-4">Bài Học Đúc Kết</h2>
