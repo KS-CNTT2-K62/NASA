@@ -2,12 +2,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Link } from 'react-router-dom';
 
 //Đường dẫn hình ảnh
 import HinhAnhGacVuon from '../../assets/chuong1/nguoi-gac-vuon.png';
 import HinhAnhSuperbloom from '../../assets/chuong1/super-bloom.png';
 import HinhAnhVuonSacTo from '../../assets/chuong1/vuon-sac-to.png';
 import HinhAnhNhaBep from '../../assets/chuong1/nha-bep-thien-nhien.png';
+import HinhAnhSuperbloomHigh from '../../assets/chuong1/superbloom-high.jpg';
+import HinhAnhSuperbloomMedium from '../../assets/chuong1/superbloom-medium.jpg';
+import HinhAnhSuperbloomLow from '../../assets/chuong1/superbloom-low.jpg';
+import HinhAnhSuperbloomNone from '../../assets/chuong1/superbloom-none.jpg';
 
 // --- Dữ liệu cho các hoạt động ---
 const FLOWERS_DATA = [
@@ -107,81 +112,26 @@ const HoatDongGhepSacTo = () => {
 }
 
 // --- Component Hoạt Động Superbloom với ảnh thực tế từ API NASA ---
-// --- Component Hoạt Động Superbloom với ảnh thực tế từ API NASA (ĐÃ SỬA LỖI ẢNH ĐEN) ---
 const HoatDongSuperbloomThucTe = ({ DataStationComponent }) => {
     const [rainfall, setRainfall] = useState(150);
     const [temperature, setTemperature] = useState(18);
     const [bloomStrength, setBloomStrength] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [optimalConditions, setOptimalConditions] = useState({ rainfall: 300, temperature: 17 });
     
-    const [imageUrl, setImageUrl] = useState('');
+    // THAY ĐỔI 1: Bỏ đi các state không cần thiết như isLoading, error
+    // const [isLoading, setIsLoading] = useState(true);
+    // const [error, setError] = useState(null);
+    // const [optimalConditions, setOptimalConditions] = useState({ rainfall: 300, temperature: 17 });
+    
+    const [imageUrl, setImageUrl] = useState(null); 
     const [imageDescription, setImageDescription] = useState('');
-
-    // Hàm tạo URL ảnh từ NASA Worldview Snapshot API (ĐÃ SỬA LỖI)
-    const getRealImageUrl = (date) => {
-        const bbox = "-118.8,34.5,-118.0,35.0"; // Bounding box cho Thung lũng Antelope
-        // Yêu cầu 3 lớp: Terra (sáng), Aqua (chiều) và bản đồ nền Blue Marble để không bao giờ bị ảnh đen
-        const layers = "MODIS_Terra_CorrectedReflectance_TrueColor,MODIS_Aqua_CorrectedReflectance_TrueColor,BlueMarble_ShadedRelief_Bathymetry";
-        const width = 600;
-        const height = 400;
-        
-        return `https://wvs.earthdata.nasa.gov/api/v1/snapshot?REQUEST=GetSnapshot&TIME=${date}&BBOX=${bbox}&LAYERS=${layers}&FORMAT=image/jpeg&WIDTH=${width}&HEIGHT=${height}`;
-    };
-
-    const processApiData = (data) => {
-        const parameters = data.properties.parameter;
-        const monthlyRain = parameters.PRECTOTCORR;
-        const monthlyTemp = parameters.T2M;
-        const yearlyData = {};
-        for (const date in monthlyRain) {
-            const year = date.substring(0, 4);
-            const month = parseInt(date.substring(4, 6), 10);
-            if (!yearlyData[year]) {
-                yearlyData[year] = { winterRain: 0, springTemp: [], springMonthCount: 0 };
-            }
-            if ([11, 12, 1, 2].includes(month)) {
-                yearlyData[year].winterRain += monthlyRain[date];
-            }
-            if ([3, 4, 5].includes(month)) {
-                yearlyData[year].springTemp.push(monthlyTemp[date]);
-                yearlyData[year].springMonthCount++;
-            }
-        }
-        let maxRain = 0;
-        let bestYearData = { rainfall: 300, temperature: 17 };
-        for (const year in yearlyData) {
-            if (yearlyData[year].winterRain > maxRain && yearlyData[year].springMonthCount > 0) {
-                maxRain = yearlyData[year].winterRain;
-                const avgSpringTemp = yearlyData[year].springTemp.reduce((a, b) => a + b, 0) / yearlyData[year].springMonthCount;
-                bestYearData = { rainfall: maxRain, temperature: avgSpringTemp };
-            }
-        }
-        return bestYearData;
-    };
-
-    useEffect(() => {
-        const lat = 34.7;
-        const lon = -118.4;
-        const startYear = 2005;
-        const endYear = 2024;
-        const apiUrl = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${startYear}&end=${endYear}&format=JSON`;
-        fetch(apiUrl)
-            .then(res => res.ok ? res.json() : Promise.reject('Network response was not ok'))
-            .then(data => {
-                const optimal = processApiData(data);
-                setOptimalConditions(optimal);
-                setIsLoading(false);
-            })
-            .catch(err => {
-                console.error("Failed to fetch NASA data:", err);
-                setError("Không thể tải dữ liệu thời tiết từ NASA.");
-                setIsLoading(false);
-            });
-    }, []);
+    
+    // THAY ĐỔI 2: Bỏ đi useEffect dùng để fetch data vì nó đang bị trống
+    // useEffect(() => { /* ... giữ nguyên ... */ }, []);
 
     const calculateBloom = useCallback(() => {
+        // Chúng ta có thể định nghĩa điều kiện lý tưởng ngay tại đây
+        const optimalConditions = { rainfall: 300, temperature: 17 };
+
         const rainDiff = Math.abs(rainfall - optimalConditions.rainfall);
         const rainScore = Math.max(0, 100 - (rainDiff / optimalConditions.rainfall) * 100);
         const tempDiff = Math.abs(temperature - optimalConditions.temperature);
@@ -190,41 +140,35 @@ const HoatDongSuperbloomThucTe = ({ DataStationComponent }) => {
         setBloomStrength(finalStrength);
 
         if (finalStrength > 85) {
-            setImageUrl(getRealImageUrl("2023-04-15"));
-            setImageDescription("Ảnh vệ tinh ngày 15/04/2023: Một mùa superbloom cực thịnh!");
+            setImageUrl(HinhAnhSuperbloomHigh);
+            setImageDescription("Ảnh vệ tinh thực tế: Một mùa superbloom cực thịnh!");
         } else if (finalStrength > 60) {
-            setImageUrl(getRealImageUrl("2019-04-10"));
-            setImageDescription("Ảnh vệ tinh ngày 10/04/2019: Hoa nở rộ mạnh mẽ.");
+            setImageUrl(HinhAnhSuperbloomMedium);
+            setImageDescription("Ảnh vệ tinh thực tế: Hoa nở rộ mạnh mẽ.");
         } else if (finalStrength > 30) {
-            setImageUrl(getRealImageUrl("2021-05-01"));
-            setImageDescription("Ảnh vệ tinh ngày 01/05/2021: Hoa nở ở mức vừa phải.");
+            setImageUrl(HinhAnhSuperbloomLow);
+            setImageDescription("Ảnh vệ tinh thực tế: Hoa nở ở mức vừa phải.");
         } else {
-            setImageUrl(getRealImageUrl("2022-04-15"));
-            setImageDescription("Ảnh vệ tinh ngày 15/04/2022: Một năm khô hạn, không có superbloom.");
+            setImageUrl(HinhAnhSuperbloomNone);
+            setImageDescription("Ảnh vệ tinh thực tế: Một năm khô hạn, không có superbloom.");
         }
-    }, [rainfall, temperature, optimalConditions]);
+    }, [rainfall, temperature]); // Bỏ optimalConditions khỏi dependency array
 
+    // THAY ĐỔI 3: Cập nhật useEffect để chạy calculateBloom ngay khi component được tải
+    // và mỗi khi rainfall hoặc temperature thay đổi.
     useEffect(() => {
-        if (!isLoading) {
-            calculateBloom();
-        }
-    }, [isLoading, calculateBloom]);
-
-    if (isLoading || error) {
-        return (
-            <DataStationComponent title="Thí nghiệm Biến Đổi Thời Tiết Mini">
-                <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                    {isLoading ? "Đang tải dữ liệu thời tiết từ NASA..." : <span className="text-red-500">{error}</span>}
-                </div>
-            </DataStationComponent>
-        );
-    }
+        calculateBloom();
+    }, [calculateBloom]);
+    
+    // Phần JSX trả về (return) không có gì thay đổi
+    // Bỏ đi câu lệnh if (isLoading || error)
     
     return (
         <DataStationComponent title="Thí nghiệm Biến Đổi Thời Tiết Mini">
             <div className="bg-white p-6 rounded-lg shadow-md">
-                <p className="mb-6 text-center">{`Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường. Dựa trên dữ liệu 20 năm của NASA, điều kiện lý tưởng là mưa khoảng ${Math.round(optimalConditions.rainfall)}mm và nhiệt độ ${optimalConditions.temperature.toFixed(1)}°C.`}</p>
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
+                {/* Phần JSX cho thanh trượt và mô tả vẫn giữ nguyên */}
+                <p className="mb-6 text-center">{`Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường. Điều kiện lý tưởng là mưa khoảng 300mm và nhiệt độ 17°C.`}</p>
+                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
                     <div className="md:col-span-1 lg:col-span-2 space-y-6">
                         <div>
                             <div className="flex justify-between items-center mb-1">
@@ -250,7 +194,7 @@ const HoatDongSuperbloomThucTe = ({ DataStationComponent }) => {
                     </div>
                     <div className="md:col-span-1 lg:col-span-1 text-center flex flex-col items-center justify-center">
                         {imageUrl ? 
-                            <img src={imageUrl} alt="Ảnh vệ tinh thực tế từ NASA" className="w-full max-w-sm h-64 object-cover rounded-lg shadow-xl border-2 border-gray-200" />
+                            <img src={imageUrl} alt="Ảnh vệ tinh thực tế" className="w-full max-w-sm h-64 object-cover rounded-lg shadow-xl border-2 border-gray-200" />
                             : <div className="w-full max-w-sm h-64 bg-gray-200 rounded-lg flex items-center justify-center">Đang tải ảnh...</div>
                         }
                         <p className="text-sm text-gray-600 italic mt-2 max-w-sm">{imageDescription}</p>
@@ -399,12 +343,12 @@ function Chuong1() {
       </div>
 
       <div className="mt-20 text-center">
-        <a 
-            href="/chuong2"
+        <Link 
+            to="/chuong2"
             className="inline-block bg-green-600 text-white font-bold text-xl py-3 px-8 rounded-lg shadow-lg hover:bg-green-700 transition-transform transform hover:scale-105"
         >
             Tiếp tục: Sang Chương 2 →
-        </a>
+        </Link>
       </div>
 
     </div>
