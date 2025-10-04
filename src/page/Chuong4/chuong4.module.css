@@ -1,0 +1,36 @@
+.scroll-container {
+  /* Bật tính năng scroll snap theo chiều dọc */
+  scroll-snap-type: y mandatory;
+  
+  /* Bắt buộc phải có overflow để scroll snap hoạt động */
+  overflow-y: scroll;
+  
+  /* Chiều cao của container bằng chiều cao màn hình */
+  height: 100vh;
+}
+
+/* Ẩn thanh cuộn trên các trình duyệt hỗ trợ */
+.scroll-container {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scroll-container::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+
+section {
+  /* Định nghĩa điểm snap cho mỗi section */
+  scroll-snap-align: start;
+  
+  /* Mỗi section chiếm toàn bộ chiều cao màn hình */
+  height: 100vh;
+  
+  /* Thêm để nội dung bên trong section có thể cuộn nếu quá dài */
+  overflow-y: auto;
+
+  /* Giúp căn giữa nội dung trong section (tùy chọn) */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
