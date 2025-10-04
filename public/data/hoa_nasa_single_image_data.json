@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "Khu vực 1: Thảm thực vật tươi tốt (Đồng bằng sông Cửu Long, Việt Nam)",
+    "red": 0.07,
+    "nir": 0.55,
+    "nasa_image_url": "https://eoimages.gsfc.nasa.gov/images/imagerecords/13000/13982/terra_mekong_21sep04_250m.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Khu vực 2: Vùng đất khô cằn (Sa mạc Sahara)",
+    "red": 0.25,
+    "nir": 0.28,
+    "nasa_image_url": "https://eoimages.gsfc.nasa.gov/images/imagerecords/153000/153320/saharaflooding_tmo_20240814_lrg.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Khu vực 3: Bề mặt nước (Biển Ả Rập)",
+    "red": 0.02,
+    "nir": 0.01,
+    "nasa_image_url": "https://eoimages.gsfc.nasa.gov/images/imagerecords/46000/46030/pakin_tmo_2009266_lrg.jpg"
+  }
+]

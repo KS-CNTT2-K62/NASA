@@ -45,7 +45,7 @@ function App() {
 
     useEffect(() => {
         // Tải dữ liệu cho Hoạt động 3
-        fetch('/data/hoa_nasa_data.json')
+        fetch('/data/hoa_nasa_single_image_data.json')
             .then(response => {
                 if (!response.ok) throw new Error('Không tìm thấy file hoa_nasa_single_image_data.json');
                 return response.json();
@@ -144,11 +144,20 @@ function App() {
     };
     const calculateRendvi = (nir, red) => (nir + red === 0) ? 0 : (nir - red) / (nir + red);
 
-    const getOverlayStyleByRendvi = (rendvi) => {
-        const opacity = Math.max(0, 1 - (rendvi - 0.1) / 0.3) * 0.7;
+    const getImageStyleByRendvi = (rendvi) => {
+        // Ánh xạ tuyến tính giá trị RENDVI sang các giá trị của bộ lọc CSS
+        // Clamp RENDVI to a 0-1 range for easier mapping
+        const normalizedRendvi = Math.max(0, Math.min(1, (rendvi + 0.2) / 0.8));
+
+        // Khi RENDVI cao (gần 1), màu sắc rực rỡ
+        // Khi RENDVI thấp (gần 0), màu sắc úa vàng
+        const saturation = 0.6 + normalizedRendvi * 0.6; // Bão hòa từ 60% đến 120%
+        const hueRotation = -40 + normalizedRendvi * 40; // Xoay màu từ -40deg (vàng) về 0deg (bình thường)
+        const sepia = 0.5 - normalizedRendvi * 0.5; // Hiệu ứng nâu cổ từ 50% về 0%
+
         return {
-            backgroundColor: `rgba(189, 142, 71, ${opacity})`,
-            transition: 'background-color 0.3s ease'
+            filter: `saturate(${saturation}) hue-rotate(${hueRotation}deg) sepia(${sepia})`,
+            transition: 'filter 0.3s ease' // Hiệu ứng chuyển mượt mà
         };
     };
 
@@ -275,16 +284,13 @@ function App() {
 
                                         return (
                                             <div key={item.id} className="bg-slate-100 p-4 rounded-lg border grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                                                <div className="md:col-span-1 w-full aspect-square bg-black rounded-md relative">
+                                                <div className="md:col-span-1 w-full aspect-square bg-black rounded-md">
                                                     <img
                                                         className="w-full h-full object-cover rounded-md"
                                                         src={item.nasa_image_url}
                                                         alt={`NASA false-color image of ${item.name}`}
+                                                        style={getImageStyleByRendvi(rendvi)}
                                                     />
-                                                    <div
-                                                        className="absolute top-0 left-0 w-full h-full rounded-md pointer-events-none"
-                                                        style={getOverlayStyleByRendvi(rendvi)}
-                                                    ></div>
                                                 </div>
 
                                                 <div className="md:col-span-2">
@@ -296,7 +302,7 @@ function App() {
                                                         </div>
                                                     </div>
                                                     <div className="text-center text-sm text-slate-500 mb-4 p-2 bg-sky-50 rounded-md">
-                                                        Kéo thanh trượt để thay đổi giá trị quang phổ và quan sát lớp phủ màu mô phỏng sức khỏe thực vật thay đổi trên ảnh.
+                                                        Kéo thanh trượt và quan sát màu sắc của thảm thực vật (vùng màu đỏ) trên ảnh thay đổi.
                                                     </div>
                                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-600">
                                                         <div>
