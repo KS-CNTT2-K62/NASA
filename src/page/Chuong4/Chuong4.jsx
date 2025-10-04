@@ -1,4 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
+import anh1 from '../../assets/chuong4/8.png';
+import anh2 from '../../assets/chuong4/9,5.png';
+import anh3 from '../../assets/chuong4/9.png';
 import flower1 from '../../assets/chuong4/flower1.png';
 import flower2 from '../../assets/chuong4/flower2.png';
 import flower3 from '../../assets/chuong4/flower3.png';
@@ -144,24 +147,33 @@ function App() {
       </section>
 
       <section style={{ backgroundColor: '#1a3a69' }} className="py-16 px-6 md:px-12 text-white">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto gap-4 flex items-center">
           <div className="space-y-6 text-lg leading-relaxed">
             <p>Alice và Giáo Sư Học Máy bước vào "Đài Quan Sát Toàn Cầu," một căn phòng tròn với một quả địa cầu khổng lồ ở giữa, trên đó những chấm sáng lấp lánh hiển thị các điểm nở hoa trên khắp thế giới và những biểu đồ dữ liệu thời gian thực đang chạy. Một người đàn ông vui vẻ, đeo kính và đội mũ rơm, đang hướng dẫn mọi người, và một bà cụ hiền từ đang điều chỉnh một chiếc đồng hồ nhỏ.</p>
             <p>"Chào Alice!" người đàn ông niềm nở. "Ta là <strong className="text-cyan-300">Người Kiến Tạo Tương Lai</strong>. Chúng ta kết nối mọi người và mọi công nghệ để 'đọc' những 'câu chuyện toàn cầu' về hoa nở và 'dự đoán tương lai' Trái Đất."</p>
-            <p>Người Kiến Tạo Tương Lai chỉ vào đám đông đang chụp ảnh hoa và chia sẻ trên điện thoại. "Để có cái nhìn toàn diện, chúng ta cần sự giúp đỡ của 'mọi người' – đó là <strong className="text-cyan-300">Khoa học Công Dân (Citizen Science)</strong>! Những người bình thường như cháu sử dụng ứng dụng như 'GLOBE Observer' hoặc 'iNaturalist' để thu thập dữ liệu có cấu trúc về hoa nở (ảnh, vị trí GPS, thời gian, màu sắc). Đây là một cách tuyệt vời để thu thập <strong className="text-cyan-300">Dữ liệu lớn (Big Data)</strong> về phân bố không gian và chuỗi thời gian của hiện tượng hoa nở."</p>
           </div>
+          <img src={anh2} alt="Đài Quan Sát Toàn Cầu" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
         </div>
       </section>
       <section style={{ backgroundColor: '#1a3a69' }} className="py-16 px-6 md:px-12 text-white">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto gap-4 flex items-center">
+          <div className="space-y-6 text-lg leading-relaxed">
+            <p>Người Kiến Tạo Tương Lai chỉ vào đám đông đang chụp ảnh hoa và chia sẻ trên điện thoại. "Để có cái nhìn toàn diện, chúng ta cần sự giúp đỡ của 'mọi người' – đó là <strong className="text-cyan-300">Khoa học Công Dân (Citizen Science)</strong>! Những người bình thường như cháu sử dụng ứng dụng như 'GLOBE Observer' hoặc 'iNaturalist' để thu thập dữ liệu có cấu trúc về hoa nở (ảnh, vị trí GPS, thời gian, màu sắc). Đây là một cách tuyệt vời để thu thập <strong className="text-cyan-300">Dữ liệu lớn (Big Data)</strong> về phân bố không gian và chuỗi thời gian của hiện tượng hoa nở."</p>
+          </div>
+          <img src={anh3} alt="Đài Quan Sát Toàn Cầu" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
+        </div>
+      </section>
+      <section style={{ backgroundColor: '#1a3a69' }} className=" text-white">
+        <div className="max-w-4xl mx-auto gap-4 flex items-center">
           <div className="space-y-6 text-lg leading-relaxed">
             <p>Bà cụ hiền từ bước đến. "Chào Alice," bà nói. "Ta là <strong className="text-cyan-300">Người Giữ Đồng Hồ Sinh Học Trái Đất</strong>. Những bông hoa này giống như 'đồng hồ sinh học của Trái Đất' vậy. Chúng 'kể' cho chúng ta về biến đổi khí hậu qua <strong className="text-cyan-300">phenology</strong> – 'lịch sống của thực vật'. Dữ liệu nở hoa đang 'rung chuông cảnh báo' qua ba cách:"</p>
             <ul className="list-disc list-inside space-y-2 pl-4 bg-white/5 p-4 rounded-lg">
-              <li><strong className="text-yellow-300">Thay đổi thời gian nở:</strong> "Dữ liệu hoa anh đào Nhật Bản suốt 1200 năm là dữ liệu lịch sử (Historical Data) quý giá, cho thấy hoa nở sớm hơn đến 10 ngày so với 100 năm trước – một xu hướng dữ liệu rõ ràng về sự ấm lên."</li>
+              <li><strong className="text-yellow-300">Thay đổi thời gian nở:</strong> "Dữ liệu hoa anh đào Nhật Bản suốt 1200 năm cho thấy hoa nở sớm hơn đến 10 ngày so với 100 năm trước – một xu hướng dữ liệu rõ ràng về sự ấm lên."</li>
               <li><strong className="text-yellow-300">Thay đổi cường độ:</strong> "Superbloom mạnh hơn hoặc yếu hơn bất thường, là dữ liệu định lượng về 'sức khỏe' của hoa."</li>
               <li><strong className="text-yellow-300">Thay đổi phân bố:</strong> "Hoa xuất hiện ở nơi không ngờ hoặc biến mất khỏi nơi quen thuộc – đây là dữ liệu không gian về 'di cư' của hoa."</li>
             </ul>
           </div>
+          <img src={anh1} alt="Dữ liệu cảnh báo" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
         </div>
       </section>
 

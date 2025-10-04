@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './chuong3.module.css'
 import { Link } from 'react-router-dom';
-
+import anh1 from '../../assets/chuong3/6.png';
+import anh2 from '../../assets/chuong3/7.png';
 // ===== COMPONENT TÁI SỬ DỤNG =====
 const PracticeStation = ({ title, challenge, concepts, children }) => (
     <div className="bg-white p-6 rounded-2xl shadow-xl mt-8 text-slate-700">
@@ -205,17 +206,25 @@ function App() {
             </section>
 
             <section className="bg-sky-50 py-16 px-6 md:px-12 text-slate-700">
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-4xl mx-auto flex">
                     <div className="space-y-6 text-lg leading-relaxed">
                         <p>Alice và Thám Tử Phổ Quang bước vào "Trường Học Máy Móc," một căn phòng rộng lớn với hàng chục "Robot Học Sinh" đang ngồi trước màn hình. Một người phụ nữ trẻ với mái tóc búi cao, đeo kính và mặc áo blouse trắng, đang giảng bài.</p>
                         <p>"Chào mừng đến 'Trường Học Máy Móc'," cô ấy nói. "Ta là <strong className="text-sky-600 font-semibold">Giáo Sư Học Máy</strong>. Hôm nay, chúng ta sẽ 'dạy' những chú robot này cách 'nhìn', 'hiểu' và thậm chí 'đếm' hoa!"</p>
                         <p>"Tất cả là nhờ <strong className="text-sky-600 font-semibold">Học Máy (Machine Learning)</strong>," Giáo Sư giải thích. "Để máy tính học hiệu quả, đầu tiên chúng ta cần 'giảm hành lý' cho nó bằng <strong className="text-sky-600 font-semibold">PCA – Phân tích Thành phần Chính</strong>. PCA sẽ tìm ra những 'thông tin quan trọng nhất' để máy tính tập trung vào."</p>
+                    </div>
+                    <img src={anh1} alt="Học máy và PCA" className="w-1/2 h-auto ml-8 rounded-lg shadow-lg object-cover" />
+                </div>
+            </section>
+            <section className="bg-sky-50 py-16 px-6 md:px-12 text-slate-700">
+                <div className="max-w-4xl mx-auto flex">
+                    <div className="space-y-6 text-lg leading-relaxed">
                         <p>Giáo Sư Học Máy hào hứng. "Tiếp theo, chúng ta dùng <strong className="text-sky-600 font-semibold">GMM – Mô hình Hỗn hợp Gaussian</strong>. Nó sẽ giúp máy tính tự động 'xếp' những bông hoa giống nhau vào cùng một nhóm. Đây gọi là <strong className="text-sky-600 font-semibold">phân cụm không giám sát (Unsupervised Clustering)</strong>."</p>
                         <ul className="list-disc list-inside space-y-2 pl-4 bg-sky-100 p-4 rounded-lg text-slate-600">
                             <li><strong className="text-teal-600">MRBI (Mixture Residual Bloom Index):</strong> Một 'chỉ số ma thuật' để 'tìm' và 'đếm' hoa vàng.</li>
                             <li><strong className="text-teal-600">RENDVI (Red-Edge Normalized Difference Vegetation Index):</strong> 'Nhiệt kế của sự sống xanh' giúp chúng ta 'đo' sức khỏe của lá cây.</li>
                         </ul>
                     </div>
+                    <img src={anh2} alt="GMM và RENDVI" className="w-1/2 h-auto ml-8 rounded-lg shadow-lg object-cover" />
                 </div>
             </section>
 
