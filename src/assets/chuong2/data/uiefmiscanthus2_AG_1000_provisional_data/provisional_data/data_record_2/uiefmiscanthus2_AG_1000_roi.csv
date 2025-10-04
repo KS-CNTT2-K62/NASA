@@ -1,0 +1,16 @@
+#
+# ROI List for uiefmiscanthus2
+#
+# Site: uiefmiscanthus2
+# Veg Type: AG
+# ROI ID Number: 1000
+# Owner: bijan
+# Creation Date: 2019-10-28
+# Creation Time: 16:24:16
+# Update Date: 2019-10-28
+# Update Time: 16:24:16
+# Description: AG in foreground
+#
+start_date,start_time,end_date,end_time,maskfile,sample_image
+2019-04-03,16:17:58,9999-12-31,00:00:00,uiefmiscanthus2_AG_1000_01.tif,uiefmiscanthus2_2019_06_28_115659.jpg
+

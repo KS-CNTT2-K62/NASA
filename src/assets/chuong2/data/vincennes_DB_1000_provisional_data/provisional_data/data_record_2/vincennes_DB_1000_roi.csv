@@ -1,0 +1,16 @@
+#
+# ROI List for vincennes
+#
+# Site: vincennes
+# Veg Type: DB
+# ROI ID Number: 1000
+# Owner: oscarz
+# Creation Date: 2024-08-25
+# Creation Time: 15:51:01
+# Update Date: 2024-08-25
+# Update Time: 15:51:02
+# Description: Deciduous broadleaf canopy
+#
+start_date,start_time,end_date,end_time,maskfile,sample_image
+2024-06-19,00:00:00,9999-12-31,00:00:00,vincennes_DB_1000_01.tif,vincennes_2024_06_19_120932.jpg
+

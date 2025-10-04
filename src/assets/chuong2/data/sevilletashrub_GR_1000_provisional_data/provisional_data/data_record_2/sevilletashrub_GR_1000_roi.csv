@@ -1,0 +1,16 @@
+#
+# ROI List for sevilletashrub
+#
+# Site: sevilletashrub
+# Veg Type: GR
+# ROI ID Number: 1000
+# Owner: oscarz
+# Creation Date: 2024-04-23
+# Creation Time: 16:25:56
+# Update Date: 2025-02-22
+# Update Time: 23:05:00
+# Description: Grasses growing in center of FOV
+#
+start_date,start_time,end_date,end_time,maskfile,sample_image
+2014-11-15,14:00:06,2024-03-22,13:00:26,sevilletashrub_GR_1000_01.tif,sevilletashrub_2024_03_22_130026.jpg
+2024-04-16,15:00:06,9999-12-31,00:00:00,sevilletashrub_GR_1000_01.tif,sevilletashrub_2024_04_16_150006.jpg

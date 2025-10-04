@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>PHENOCAM</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="refresh" content="120" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <style>
+     #siteinfo {
+       padding: 5px 0 5px 0;
+       width: 80%;
+       margin: 15px 0 0 10px;
+     }
+
+     #roiinfo {
+       margin: 15px 0 0 10px;
+     }
+
+     #roitsimage {
+       border-top: thick solid #cccccc;
+       margin: 15px 0 0 10px;
+     }
+
+     #roitsimage img {
+       border: 1px solid black;
+       margin: 10px;
+     }
+
+     #roimasklist {
+       border-top: thick solid #cccccc;
+       margin: 15px 0px 10px 10px;
+       padding: 0px;
+     }
+
+
+     #roimasklist ul {
+       list-style: none;
+       padding: 10px 0 0 0;
+     }
+
+     .roimaskentry {
+       border-top: thick solid #cccccc;
+       padding: 5px;
+       margin: 0 0 10px 0;
+     }
+
+
+     .roimaskinfo ul {
+       /* border: 1px solid #ff00ff; */
+       width: 400px;
+       height: 250px;
+       padding: 5px;
+     }
+
+     .roimaskinfo li {
+       list-style: none;
+       padding: 2px;
+     }
+
+     .roimaskoverlay img {
+       border: 2px solid black;
+       height: 250px;
+       position: absolute;
+       margin: -248px 0px 5px 470px;
+     }
+
+     .togglemask-button {
+       width: 100px;
+       padding: 2px;
+       text-align: center;
+       border-top: 1px solid #aaaaaa;
+       border-bottom: 3px solid #aaaaaa;
+       border-right: 3px solid #aaaaaa;
+       border-left: 1px solid #aaaaaa;
+       color: blue;
+       background-color: white;
+     }
+
+     .togglemask-button:hover {
+       background-color: #ffff00;
+       cursor: pointer;
+     }
+
+
+     .hidden {
+       display: none;
+     }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+     $(document).ready(function() {
+       $('.togglemask-button').bind('click', function() {
+         $(this).closest('.roimaskentry').find('.overlaymask').toggleClass('hidden');
+       });
+     });
+    </script>
+
+
+  <div id="siteinfo">
+    <h2>PhenoCam Data Record 2</h2>
+    <h3>Site Name: <a href="https://phenocam.nau.edu/webcam/sites/NEON.D05.TREE.DP1.00033/">NEON.D05.TREE.DP1.00033</a></h3>
+    <h4>Location: NEON Site - D05 (Great Lakes) Treehaven, Wisconsin - tower top</h4>
+    <ul>
+      <li><strong>Lat:</strong> 45.49373</li>
+      <li><strong>Lon:</strong> -89.58572</li>
+      <li><strong>Elev(m):</strong> 474</li>
+      <li><strong>Image Count:</strong> 92585</li>
+      <li><strong>Start Date:</strong> 2016-12-15 </li>
+      <li><strong>Last Date:</strong> 2025-10-01 </li>
+    </ul>
+  </div>
+
+  <div id="roiinfo">
+    <h3>ROI Name: DB_1000 (canopy level DB in foreground)</h3> 
+  </div>
+
+  <div id="roimasklist">
+    <h3>ROI Mask List ( 2 )</h3>
+    (<a href="NEON.D05.TREE.DP1.00033_DB_1000_roi.csv">Mask CSV file</a>)
+    <ul>
+      
+	<li>
+	  <div class="roimaskentry">
+	    <div class="roimaskinfo">
+	      <ul>
+		<li>Mask: 1</li>
+		<li>Start Date: Dec. 15, 2016, noon</li>
+		<li>End Date: Jan. 17, 2017, 9:30 a.m.</li>
+		<li>Mask File: <a href="NEON.D05.TREE.DP1.00033_DB_1000_01.tif">NEON.D05.TREE.DP1.00033_DB_1000_01.tif</a></li>
+		<li><div class="togglemask-button">Toggle Mask</div></li>
+	      </ul>
+	    </div> <!-- /roimaskinfo -->
+	    <div class="roimaskoverlay">
+	      <img style="z-index: 100;" src="NEON.D05.TREE.DP1.00033_2016_12_15_120006.jpg" alt="ROI sample image"/>
+	      <img class="overlaymask" style="z-index: 1000;" src="NEON.D05.TREE.DP1.00033_DB_1000_01_overlay.png" alt="ROI overlay image" />
+	    </div>
+	  </div>
+	</li>
+      
+	<li>
+	  <div class="roimaskentry">
+	    <div class="roimaskinfo">
+	      <ul>
+		<li>Mask: 2</li>
+		<li>Start Date: Jan. 19, 2017, noon</li>
+		<li>End Date: Dec. 31, 9999, midnight</li>
+		<li>Mask File: <a href="NEON.D05.TREE.DP1.00033_DB_1000_02.tif">NEON.D05.TREE.DP1.00033_DB_1000_02.tif</a></li>
+		<li><div class="togglemask-button">Toggle Mask</div></li>
+	      </ul>
+	    </div> <!-- /roimaskinfo -->
+	    <div class="roimaskoverlay">
+	      <img style="z-index: 100;" src="NEON.D05.TREE.DP1.00033_2017_01_19_120006.jpg" alt="ROI sample image"/>
+	      <img class="overlaymask" style="z-index: 1000;" src="NEON.D05.TREE.DP1.00033_DB_1000_02_overlay.png" alt="ROI overlay image" />
+	    </div>
+	  </div>
+	</li>
+      
+    </ul>
+  </div>
+
+  </body>
+</html>
