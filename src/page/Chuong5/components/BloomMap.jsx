@@ -18,7 +18,7 @@ const geojsonData = {
     {"type":"Feature","properties":{"id":null,"Site":"Bear Valley Wildflower","Type":"Wild","Season":"Spring","Area":8588.013},"geometry":{"type":"MultiPolygon","coordinates":[[[[-122.44319946723189,39.21607568779576],[-122.37103954766044,39.042357362901534],[-122.41166290978956,39.023114717682475],[-122.49023704443402,39.204316293495225],[-122.44319946723189,39.21607568779576]]]]}},
     {"type":"Feature","properties":{"id":null,"Site":"North Table Mountain Ecological Reserve","Type":"Wild","Season":"Spring","Area":5820.88},"geometry":{"type":"MultiPolygon","coordinates":[[[[-121.54924381633397,39.64140725256345],[-121.50751628794504,39.611001146605616],[-121.52304281013626,39.55924607263485],[-121.5722101304085,39.54857158862838],[-121.60811521297572,39.5825358559217],[-121.58029686071643,39.629762360920026],[-121.54924381633397,39.64140725256345]]]]}},
     {"type":"Feature","properties":{"id":null,"Site":"Channel Islands National Park","Type":"Wild","Season":"Spring","Area":104288.437},"geometry":{"type":"MultiPolygon","coordinates":[[[[-119.51018562158119,34.036519854333356],[-119.55301828755374,33.98874495767166],[-119.70787484914682,33.95579675307739],[-119.8413150775363,33.95579675307739],[-120.11313776565639,33.88166329274027],[-120.4772154264231,34.02828280318479],[-120.37013376149172,34.07441028961677],[-120.24163576357405,34.00686647019851],[-119.91709594832047,34.080999930535626],[-119.58267167168859,34.06782064869792],[-119.51018562158119,34.036519854333356]]]]}},
-    {"type":"Feature","properties":{"id":null,"Site":"Black Canyon City","Type":"Wild","Season":"Spring","Area":50042.022},"geometry":{"type":"MultiPolygon","coordinates":[[[[-112.00941839467387,34.2676455039118],[-112.00847492376558,34.11857710040123],[-112.1185465297333,34.00881998473628],[-112.20660381450747,33.94057558903629],[-120.7483555665275,34.007247533222454],[-112.20125747936046,34.03964003440724],[-112.18962133815816,34.26795999421457],[-112.00941839467387,34.2676455039118]]]]}},
+    {"type":"Feature","properties":{"id":null,"Site":"Black Canyon City","Type":"Wild","Season":"Spring","Area":50042.022},"geometry":{"type":"MultiPolygon","coordinates":[[[[-112.00941839467387,34.2676455039118],[-112.00847492376558,34.11857710040123],[-112.1185465297333,34.00881998473628],[-112.20660381450747,33.94057558903629],[-112.24835556652750,34.007247533222454],[-112.20125747936046,34.03964003440724],[-112.18962133815816,34.26795999421457],[-112.00941839467387,34.2676455039118]]]]}},
     {"type":"Feature","properties":{"id":null,"Site":"Suguaro Lake","Type":"Wild","Season":"Spring","Area":22712.212},"geometry":{"type":"MultiPolygon","coordinates":[[[[-111.47637011189126,33.67577816440084],[-111.47794282154042,33.515361780185735],[-111.61634127066718,33.52007990913324],[-111.61005043207051,33.683641712646676],[-111.47637011189126,33.67577816440084]]]]}},
     {"type":"Feature","properties":{"id":null,"Site":"San Carlos Reservation","Type":"Wild","Season":"Spring","Area":330037.786},"geometry":{"type":"MultiPolygon","coordinates":[[[[-110.22272126377828,33.502810598146155],[-109.87470400573562,33.33213546776508],[-110.00404375297752,33.10145736185941],[-110.18271928009521,32.93611582930274],[-110.50006835064752,33.112124557508224],[-110.66674328266029,33.192128524874356],[-110.69474467123844,33.388138244921365],[-110.58273911692585,33.52681178835599],[-110.38139579905443,33.56948057095126],[-110.22272126377828,33.502810598146155]]]]}},
     {"type":"Feature","properties":{"id":null,"Site":"Golden Valley","Type":"Wild","Season":"Spring","Area":159482.179},"geometry":{"type":"MultiPolygon","coordinates":[[[[-114.06653717305578,35.19077366694902],[-114.12637054562938,34.918573957917005],[-114.14659591100637,34.79806448921243],[-114.19041753598985,34.76351282336007],[-114.27384716816994,34.75087196999945],[-114.35980497102216,34.798907212769805],[-114.431436473399,34.885707739179395],[-114.48874167530047,35.01717261412984],[-114.50559614644797,35.13936752994916],[-114.43396464407112,35.22616805635875],[-114.159236764367,35.233752568375124],[-114.06653717305578,35.19077366694902]]]]}},
@@ -32,7 +32,7 @@ const geojsonData = {
   ]
 };
 
-function BloomMap() {
+function BloomMap({ onSiteSelect, selectedSiteName }) {
   const position = [36.7783, -119.4179];
   const zoomLevel = 6;
 
@@ -44,6 +44,12 @@ function BloomMap() {
   };
   
   const onEachFeature = (feature, layer) => {
+    // Thêm sự kiện click
+    layer.on({
+      click: () => {
+        onSiteSelect(feature.properties);
+      }
+    });
     if (feature.properties && feature.properties.Site) {
       const { Site, Type, Season, Area } = feature.properties;
       const seasonIcon = getSeasonIcon(Season);
@@ -64,13 +70,19 @@ function BloomMap() {
   };
 
   const styleByType = (feature) => {
+    const isSelected = feature.properties.Site === selectedSiteName;
+    const baseStyle = {
+      weight: isSelected ? 4 : 1.5,
+      color: isSelected ? '#ffc107' : 'white', // Màu vàng để highlight
+    };
+
     switch (feature.properties.Type) {
       case 'Wild':
-        return { fillColor: "#228B22", fillOpacity: 0.6, color: "white", weight: 1.5 };
+        return { ...baseStyle, fillColor: "#228B22", fillOpacity: 0.6 };
       case 'Plantation':
-        return { fillColor: "#FF8C00", fillOpacity: 0.7, color: "white", weight: 1.5 };
+        return { ...baseStyle, fillColor: "#FF8C00", fillOpacity: 0.7 };
       default:
-        return { fillColor: "grey", fillOpacity: 0.5, color: "white", weight: 1 };
+        return { ...baseStyle, fillColor: "grey", fillOpacity: 0.5 };
     }
   };
 
@@ -82,6 +94,7 @@ function BloomMap() {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
         <GeoJSON 
+          key={selectedSiteName} // Thêm key để React re-render khi lựa chọn thay đổi
           data={geojsonData} 
           style={styleByType}
           onEachFeature={onEachFeature}
