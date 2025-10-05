@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 import anh1 from '../../assets/chuong4/8.png';
 import anh2 from '../../assets/chuong4/9,5.png';
@@ -24,7 +25,7 @@ const CustomLineChart = ({ data, width = 500, height = 300 }) => {
   const chartHeight = height - padding.top - padding.bottom;
 
   if (!data || data.datasets.every(ds => ds.data.length === 0)) {
-    return (<div style={{ width, height }} className="flex items-center justify-center bg-gray-100 text-gray-500 rounded-lg">Chưa có dữ liệu</div>);
+    return (<div style={{ width, height }} className="flex items-center justify-center bg-gray-100 text-gray-500 rounded-lg">No data yet</div>);
   }
 
   const allDataPoints = data.datasets.flatMap(ds => ds.data);
@@ -37,54 +38,54 @@ const CustomLineChart = ({ data, width = 500, height = 300 }) => {
   const getY = (value) => padding.top + chartHeight - ((value - yMin) / yRange) * chartHeight;
 
   return (
-    <div className="bg-white/90 p-4 rounded-lg text-gray-800 flex flex-col items-center">
-      <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
-        <g className="text-xs text-gray-500">
-          {[0, 0.25, 0.5, 0.75, 1].map(tick => {
-            const yValue = yMin + tick * yRange;
-            const yPos = getY(yValue);
-            return (<g key={tick}><text x={padding.left - 8} y={yPos + 4} textAnchor="end" fill="currentColor">{yValue.toFixed(1)}</text><line x1={padding.left} y1={yPos} x2={padding.left + chartWidth} y2={yPos} stroke="#e5e7eb" /></g>);
+      <div className="bg-white/90 p-4 rounded-lg text-gray-800 flex flex-col items-center">
+        <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`}>
+          <g className="text-xs text-gray-500">
+            {[0, 0.25, 0.5, 0.75, 1].map(tick => {
+              const yValue = yMin + tick * yRange;
+              const yPos = getY(yValue);
+              return (<g key={tick}><text x={padding.left - 8} y={yPos + 4} textAnchor="end" fill="currentColor">{yValue.toFixed(1)}</text><line x1={padding.left} y1={yPos} x2={padding.left + chartWidth} y2={yPos} stroke="#e5e7eb" /></g>);
+            })}
+            {data.labels.map((label, index) => (<text key={label} x={getX(index)} y={height - padding.bottom + 15} textAnchor="middle" className="fill-current">{label}</text>))}
+          </g>
+          {data.datasets.map(dataset => {
+            const pathD = dataset.data.map((point, index) => `${index === 0 ? 'M' : 'L'} ${getX(index)} ${getY(point)}`).join(' ');
+            return <path key={dataset.label} d={pathD} fill="none" stroke={dataset.color} strokeWidth="2" />;
           })}
-          {data.labels.map((label, index) => (<text key={label} x={getX(index)} y={height - padding.bottom + 15} textAnchor="middle" className="fill-current">{label}</text>))}
-        </g>
-        {data.datasets.map(dataset => {
-          const pathD = dataset.data.map((point, index) => `${index === 0 ? 'M' : 'L'} ${getX(index)} ${getY(point)}`).join(' ');
-          return <path key={dataset.label} d={pathD} fill="none" stroke={dataset.color} strokeWidth="2" />;
-        })}
-      </svg>
-      <div className="flex justify-center flex-wrap gap-4 mt-2 text-sm">
-        {data.datasets.map(ds => (<div key={ds.label} className="flex items-center gap-2"><div className="w-4 h-1" style={{ backgroundColor: ds.color }}></div><span>{ds.label}</span></div>))}
+        </svg>
+        <div className="flex justify-center flex-wrap gap-4 mt-2 text-sm">
+          {data.datasets.map(ds => (<div key={ds.label} className="flex items-center gap-2"><div className="w-4 h-1" style={{ backgroundColor: ds.color }}></div><span>{ds.label}</span></div>))}
+        </div>
       </div>
-    </div>
   );
 };
 
 // Dữ liệu giả cho Hoạt động 2
 const kyotoData = {
   labels: ['1920', '1940', '1960', '1980', '2000', '2020'],
-  datasets: [{ label: 'Ngày hoa anh đào nở ở Kyoto', data: [105, 102, 100, 98, 95, 92], color: 'rgb(255, 99, 132)' }],
+  datasets: [{ label: 'Cherry Blossom Peak Bloom Day in Kyoto', data: [105, 102, 100, 98, 95, 92], color: 'rgb(255, 99, 132)' }],
 };
 
 const PracticeStation = ({ title, challenge, concepts, children }) => (
-  <div className="bg-white/10 p-6 rounded-2xl shadow-lg backdrop-blur-sm">
-    <h3 className="text-2xl font-bold text-yellow-300 mb-3 text-center">{title}</h3>
-    <p className="mb-4 italic">"{challenge}"</p>
-    <div className="my-4">{children}</div>
-    <p className="text-sm font-semibold text-white/80 mt-4"><span className="font-bold text-yellow-300">Khái niệm học thêm:</span> {concepts}</p>
-  </div>
+    <div className="bg-white/10 p-6 rounded-2xl shadow-lg backdrop-blur-sm">
+      <h3 className="text-2xl font-bold text-yellow-300 mb-3 text-center">{title}</h3>
+      <p className="mb-4 italic">"{challenge}"</p>
+      <div className="my-4">{children}</div>
+      <p className="text-sm font-semibold text-white/80 mt-4"><span className="font-bold text-yellow-300">Further concepts:</span> {concepts}</p>
+    </div>
 );
 
 function App() {
   const [phenologyData, setPhenologyData] = useState({
     labels: [],
-    datasets: [{ label: 'Nhiệt độ (°C)', data: [], color: 'rgb(75, 192, 192)' }, { label: 'Lượng mưa (mm)', data: [], color: 'rgb(54, 162, 235)' }]
+    datasets: [{ label: 'Temperature (°C)', data: [], color: 'rgb(75, 192, 192)' }, { label: 'Precipitation (mm)', data: [], color: 'rgb(54, 162, 235)' }]
   });
   const [newDataPoint, setNewDataPoint] = useState({ week: '', temp: '', rain: '' });
 
   const handleAddData = (e) => {
     e.preventDefault();
     if (!newDataPoint.week || !newDataPoint.temp || !newDataPoint.rain) return;
-    const newLabels = [...phenologyData.labels, `Tuần ${newDataPoint.week}`];
+    const newLabels = [...phenologyData.labels, `Week ${newDataPoint.week}`];
     const newTempData = [...phenologyData.datasets[0].data, parseFloat(newDataPoint.temp)];
     const newRainData = [...phenologyData.datasets[1].data, parseFloat(newDataPoint.rain)];
     setPhenologyData({ labels: newLabels, datasets: [{ ...phenologyData.datasets[0], data: newTempData }, { ...phenologyData.datasets[1], data: newRainData }] });
@@ -92,32 +93,32 @@ function App() {
   };
 
   const sensors = [
-    { id: '1', name: 'Máy ảnh RGB', icon: <CameraIcon />, img: flower1 },
-    { id: '2', name: 'Cảm biến quang phổ', icon: <BeakerIcon />, img: flower2 },
-    { id: '3', name: 'Cảm biến nhiệt', icon: <ThermometerIcon />, img: flower3 },
+    { id: '1', name: 'RGB Camera', icon: <CameraIcon />, img: flower1 },
+    { id: '2', name: 'Spectral Sensor', icon: <BeakerIcon />, img: flower2 },
+    { id: '3', name: 'Thermal Sensor', icon: <ThermometerIcon />, img: flower3 },
   ];
   const [equippedSensors, setEquippedSensors] = useState(sensors[0]);
 
 
   const futureTechs = [
-    { icon: <SatelliteIcon className="h-8 w-8 text-cyan-300" />, title: "Vệ tinh thông minh hơn", description: "Thế hệ vệ tinh như 'EMIT 2.0' với cảm biến hyperspectral nhạy hơn, thu thập dữ liệu quang phổ chi tiết, cải thiện độ phân giải." },
-    { icon: <CpuChipIcon className="h-8 w-8 text-cyan-300" />, title: "AI học sâu (Deep Learning AI)", description: "Mạng lưới thần kinh nhân tạo 'học' từ hàng triệu ảnh hoa, không chỉ nhận diện mà còn 'dự đoán' sức khỏe, sâu bệnh qua các mô hình học máy phức tạp." },
-    { icon: <DroneIcon className="h-8 w-8 text-cyan-300" />, title: "Drone tự động", description: "Bay theo 'lịch trình nở hoa' đã lập trình, chụp ảnh và thu thập dữ liệu quang phổ liên tục, sử dụng GPS để có dữ liệu địa lý chính xác." },
-    { icon: <IotIcon className="h-8 w-8 text-cyan-300" />, title: "Mạng cảm biến IoT", description: "Cảm biến siêu nhỏ gắn trên hoa hoặc trong đất, 'ghi nhận' dữ liệu thời gian thực về nhiệt độ, độ ẩm, dinh dưỡng, tạo thành một mạng lưới dữ liệu khổng lồ." },
+    { icon: <SatelliteIcon className="h-8 w-8 text-cyan-300" />, title: "Smarter Satellites", description: "Next-generation satellites like 'EMIT 2.0' with more sensitive hyperspectral sensors, collecting detailed spectral data and improving resolution." },
+    { icon: <CpuChipIcon className="h-8 w-8 text-cyan-300" />, title: "Deep Learning AI", description: "Artificial neural networks that 'learn' from millions of flower images, not only identifying them but also 'predicting' health and disease through complex machine learning models." },
+    { icon: <DroneIcon className="h-8 w-8 text-cyan-300" />, title: "Autonomous Drones", description: "Flying on a pre-programmed 'bloom schedule', continuously capturing images and collecting spectral data, using GPS for precise geographic information." },
+    { icon: <IotIcon className="h-8 w-8 text-cyan-300" />, title: "IoT Sensor Networks", description: "Micro-sensors attached to flowers or in the soil, 'recording' real-time data on temperature, humidity, and nutrition, forming a massive data network." },
   ];
 
   const scrollContainerRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          entry.target.classList.toggle(styles['is-visible'], entry.isIntersecting);
-        });
-      },
-      {
-        threshold: 0.5,
-      }
+        (entries) => {
+          entries.forEach(entry => {
+            entry.target.classList.toggle(styles['is-visible'], entry.isIntersecting);
+          });
+        },
+        {
+          threshold: 0.5,
+        }
     );
 
     const sections = Array.from(scrollContainerRef.current.children);
@@ -133,122 +134,122 @@ function App() {
   }, []);
 
   return (
-    <div className={"bg-gray-100 font-sans " + styles["scroll-container"]} ref={scrollContainerRef}>
-      <section style={{ backgroundColor: '#1d80c3' }} className="text-white text-center py-20 px-4 relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full bg-blue-500 opacity-20" style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/cubes.png")` }}></div>
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-5xl md:text-9xl font-bold tracking-tight mb-8">Chương 4</h1>
-          <p className="mt-4 text-2xl md:text-3xl font-light">Hoa Kể Chuyện Toàn Cầu và Dự Đoán Tương Lai</p>
-          <div className="mt-8 bg-black/20 p-4 rounded-lg text-left text-blue-100">
-            <h3 className="font-bold text-lg mb-2">Mục tiêu học tập:</h3>
-            <p>Hiểu vai trò của Khoa học Công Dân, tầm nhìn toàn cầu về hoa nở, ứng dụng dữ liệu trong biến đổi khí hậu (phenology) và các công nghệ tương lai.</p>
-          </div>
-        </div>
-      </section>
-
-      <section style={{ backgroundColor: '#1a3a69' }} className="py-16 px-6 md:px-12 text-white">
-        <div className="max-w-4xl mx-auto gap-4 flex items-center">
-          <div className="space-y-6 text-lg leading-relaxed">
-            <p>Alice và Giáo Sư Học Máy bước vào "Đài Quan Sát Toàn Cầu," một căn phòng tròn với một quả địa cầu khổng lồ ở giữa, trên đó những chấm sáng lấp lánh hiển thị các điểm nở hoa trên khắp thế giới và những biểu đồ dữ liệu thời gian thực đang chạy. Một người đàn ông vui vẻ, đeo kính và đội mũ rơm, đang hướng dẫn mọi người, và một bà cụ hiền từ đang điều chỉnh một chiếc đồng hồ nhỏ.</p>
-            <p>"Chào Alice!" người đàn ông niềm nở. "Ta là <strong className="text-cyan-300">Người Kiến Tạo Tương Lai</strong>. Chúng ta kết nối mọi người và mọi công nghệ để 'đọc' những 'câu chuyện toàn cầu' về hoa nở và 'dự đoán tương lai' Trái Đất."</p>
-          </div>
-          <img src={anh2} alt="Đài Quan Sát Toàn Cầu" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
-        </div>
-      </section>
-      <section style={{ backgroundColor: '#1a3a69' }} className="py-16 px-6 md:px-12 text-white">
-        <div className="max-w-4xl mx-auto gap-4 flex items-center">
-          <div className="space-y-6 text-lg leading-relaxed">
-            <p>Người Kiến Tạo Tương Lai chỉ vào đám đông đang chụp ảnh hoa và chia sẻ trên điện thoại. "Để có cái nhìn toàn diện, chúng ta cần sự giúp đỡ của 'mọi người' – đó là <strong className="text-cyan-300">Khoa học Công Dân (Citizen Science)</strong>! Những người bình thường như cháu sử dụng ứng dụng như 'GLOBE Observer' hoặc 'iNaturalist' để thu thập dữ liệu có cấu trúc về hoa nở (ảnh, vị trí GPS, thời gian, màu sắc). Đây là một cách tuyệt vời để thu thập <strong className="text-cyan-300">Dữ liệu lớn (Big Data)</strong> về phân bố không gian và chuỗi thời gian của hiện tượng hoa nở."</p>
-          </div>
-          <img src={anh3} alt="Đài Quan Sát Toàn Cầu" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
-        </div>
-      </section>
-      <section style={{ backgroundColor: '#1a3a69' }} className=" text-white">
-        <div className="max-w-4xl mx-auto gap-4 flex items-center">
-          <div className="space-y-6 text-lg leading-relaxed">
-            <p>Bà cụ hiền từ bước đến. "Chào Alice," bà nói. "Ta là <strong className="text-cyan-300">Người Giữ Đồng Hồ Sinh Học Trái Đất</strong>. Những bông hoa này giống như 'đồng hồ sinh học của Trái Đất' vậy. Chúng 'kể' cho chúng ta về biến đổi khí hậu qua <strong className="text-cyan-300">phenology</strong> – 'lịch sống của thực vật'. Dữ liệu nở hoa đang 'rung chuông cảnh báo' qua ba cách:"</p>
-            <ul className="list-disc list-inside space-y-2 pl-4 bg-white/5 p-4 rounded-lg">
-              <li><strong className="text-yellow-300">Thay đổi thời gian nở:</strong> "Dữ liệu hoa anh đào Nhật Bản suốt 1200 năm cho thấy hoa nở sớm hơn đến 10 ngày so với 100 năm trước – một xu hướng dữ liệu rõ ràng về sự ấm lên."</li>
-              <li><strong className="text-yellow-300">Thay đổi cường độ:</strong> "Superbloom mạnh hơn hoặc yếu hơn bất thường, là dữ liệu định lượng về 'sức khỏe' của hoa."</li>
-              <li><strong className="text-yellow-300">Thay đổi phân bố:</strong> "Hoa xuất hiện ở nơi không ngờ hoặc biến mất khỏi nơi quen thuộc – đây là dữ liệu không gian về 'di cư' của hoa."</li>
-            </ul>
-          </div>
-          <img src={anh1} alt="Dữ liệu cảnh báo" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
-        </div>
-      </section>
-
-      <section style={{ backgroundColor: '#1a3a69' }} className="py-18 px-6 md:px-12 text-white">
-        {/* --- Phần Công nghệ Tương lai --- */}
-        <div className="max-w-4xl mx-auto">
-          <p>Người Kiến Tạo Tương Lai tiếp lời: "Và chúng ta đang 'thiết kế' những 'công nghệ mơ ước' để giúp chúng ta quan sát tốt hơn nữa. Hãy tưởng tượng:"</p>
-          <div className="grid md:grid-cols-2 gap-6 my-10">
-            {futureTechs.map(tech => (
-              <div key={tech.title} className="bg-white/10 p-5 rounded-xl flex gap-4 items-start">
-                <div>{tech.icon}</div>
-                <div>
-                  <h4 className="font-bold text-xl mb-1 text-cyan-300">{tech.title}</h4>
-                  <p className="text-blue-100 text-base">{tech.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-          <p className="text-lg leading-relaxed">"Với những công nghệ này, chúng ta sẽ có thể 'dự báo bloom' chính xác như 'dự báo thời tiết' vậy, sử dụng các mô hình dự đoán dựa trên phân tích dữ liệu lớn và thuật toán học máy."</p>
-        </div>
-      </section >
-
-      <section style={{ backgroundColor: '#6d28d9' }} className="px-6 md:px-12 text-white">
-        <div className="max-w-4xl mx-auto">
-          <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-8">
-            <PracticeStation title="Trạm thực hành dữ liệu: Sáng Tạo Công Nghệ Tương Lai" challenge="Kiến Trúc Sư Tương Lai đưa Alice một 'bảng phác thảo ý tưởng' ảo. 'Alice, nếu cháu có một 'cỗ máy drone' để nghiên cứu hoa, cháu sẽ trang bị cho nó những 'cảm biến' gì (ví dụ: máy ảnh RGB, cảm biến quang phổ, cảm biến nhiệt độ) để thu thập dữ liệu đa quang phổ và dữ liệu môi trường? Hãy 'vẽ concept' và 'giải thích cách hoạt động' của nó.'" concepts="Dữ liệu đa quang phổ (Multispectral Data), Cảm biến (Sensors), Hệ thống tự động (Automated Systems).">
-              <p>Hình ảnh chỉ mang tính chất tham khảo từ nội dung AI, không phải là dữ liệu thực tế</p>
-              <div className="grid md:grid-cols-2 gap-6 items-center">
-                <div>
-                  <h4 className="font-bold mb-3">Chọn cảm biến để trang bị:</h4>
-                  <div className="flex flex-col gap-3">
-                    {sensors.map(sensor => (<button key={sensor.id} onClick={() => setEquippedSensors(sensor)} className={`flex items-center gap-2 p-2 rounded-lg transition-all ${equippedSensors.id == sensor.id ? 'bg-green-400 text-black' : 'bg-white/20 hover:bg-white/30'}`}>{sensor.icon}{sensor.name}</button>))}
-                  </div>
-                </div>
-                <div className="text-center">
-                  <h4 className="font-bold mb-2">Drone Nghiên Cứu Hoa</h4>
-                  <div className="relative w-64 h-64 bg-gray-300 rounded-full mx-auto flex items-center justify-center">
-                    <img
-                      src={equippedSensors.img}
-                      alt="Drone" className=" object-cover rounded-full" />
-
-                  </div>
-                  <div className="mt-4"><h5 className="font-semibold">Cảm biến đã trang bị:</h5><div className="flex justify-center flex-wrap gap-2 mt-2"><span key={equippedSensors.id} className="flex items-center gap-1 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">{equippedSensors.icon} {equippedSensors.name}</span>{!equippedSensors && <p className="text-sm italic">Chưa có cảm biến nào</p>}</div></div>
-                </div>
-              </div>
-            </PracticeStation>
-          </div>
-        </div>
-      </section>
-
-      <section style={{ backgroundColor: '#f97316' }} className="py-14 px-6 md:px-12 text-white">
-        <div className="max-w-4xl mx-auto text-center flex-1">
-          <h2 className="text-3xl font-bold mb-6">Bài học đúc kết</h2>
-          <p className="text-xl leading-relaxed mb-6 bg-black/10 p-4 rounded-lg">
-            Dữ liệu hoa nở trên quy mô toàn cầu, được thu thập qua Khoa học Công Dân và các công nghệ tiên tiến (vệ tinh, AI, IoT), là chìa khóa để hiểu về phenology và tác động của biến đổi khí hậu. Các mô hình dự đoán sẽ trở nên chính xác hơn với sự phát triển của Học Máy và Dữ liệu lớn.
-          </p>
-          <p className="text-lg italic mb-8">Kết thúc Chương 4: Alice đã có một cái nhìn toàn diện về hoa nở và tương lai của Trái Đất. Người Kiến Tạo Tương Lai gật đầu.</p>
-          <blockquote className="font-bold text-2xl border-l-4 border-yellow-300 pl-4">"Tuyệt vời, Alice! Cháu đã thấy 'dữ liệu cảnh báo' chúng ta như thế nào rồi đó. Giờ thì, hãy cùng biến những 'hiểu biết' này thành 'hành động'!"</blockquote>
-        </div>
-        <footer className="w-full max-w-5xl mx-auto mt-0 pt-8 border-t border-white/20">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-sm text-white/70">
-            </p>
-            <div className="flex items-center gap-6">
-              <Link to="/chuong3" className="font-medium hover:text-yellow-300 transition-colors">
-                ← Quay lại Chương 3
-              </Link>
-              <Link to="/chuong5" className="bg-yellow-300 text-orange-900 font-bold py-2 px-5 rounded-full hover:bg-white hover:text-orange-900 transition-colors shadow-lg">
-                Chuyển tới Chương 5 →
-              </Link>
+      <div className={"bg-gray-100 font-sans " + styles["scroll-container"]} ref={scrollContainerRef}>
+        <section style={{ backgroundColor: '#1d80c3' }} className="text-white text-center py-20 px-4 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-blue-500 opacity-20" style={{ backgroundImage: `url("https://www.transparenttextures.com/patterns/cubes.png")` }}></div>
+          <div className="relative z-10 max-w-4xl mx-auto">
+            <h1 className="text-5xl md:text-9xl font-bold tracking-tight mb-8">Chapter 4</h1>
+            <p className="mt-4 text-2xl md:text-3xl font-light">Flowers Tell Global Stories and Predict the Future</p>
+            <div className="mt-8 bg-black/20 p-4 rounded-lg text-left text-blue-100">
+              <h3 className="font-bold text-lg mb-2">Learning objectives:</h3>
+              <p>Understand the role of Citizen Science, global perspectives on blooms, climate-change applications (phenology), and future technologies.</p>
             </div>
           </div>
-        </footer>
-      </section>
-    </div >
+        </section>
+
+        <section style={{ backgroundColor: '#1a3a69' }} className="py-16 px-6 md:px-12 text-white">
+          <div className="max-w-4xl mx-auto gap-4 flex items-center">
+            <div className="space-y-6 text-lg leading-relaxed">
+              <p>Alice and the Professor of Machine Learning entered the "Global Observatory," a circular room with a giant globe in the center, on which sparkling dots displayed bloom locations around the world and real-time data charts were running. A cheerful man, wearing glasses and a straw hat, was guiding people, and a gentle old woman was adjusting a small clock.</p>
+              <p>"Hello, Alice!" the man said warmly. "I am the <strong className="text-cyan-300">Future Shaper</strong>. We connect all people and all technologies to 'read' the 'global stories' of flower blooms and 'predict' the Earth's future."</p>
+            </div>
+            <img src={anh2} alt="Global Observatory" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
+          </div>
+        </section>
+        <section style={{ backgroundColor: '#1a3a69' }} className="py-16 px-6 md:px-12 text-white">
+          <div className="max-w-4xl mx-auto gap-4 flex items-center">
+            <div className="space-y-6 text-lg leading-relaxed">
+              <p>The Future Shaper pointed to a crowd taking pictures of flowers and sharing them on their phones. "To get a comprehensive view, we need the help of 'everyone' – that is <strong className="text-cyan-300">Citizen Science</strong>! Ordinary people like you use apps like 'GLOBE Observer' or 'iNaturalist' to collect structured data on blooms (photos, GPS location, time, color). This is a fantastic way to gather <strong className="text-cyan-300">Big Data</strong> on the spatial distribution and time series of the bloom phenomenon."</p>
+            </div>
+            <img src={anh3} alt="Global Observatory" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
+          </div>
+        </section>
+        <section style={{ backgroundColor: '#1a3a69' }} className=" text-white">
+          <div className="max-w-4xl mx-auto gap-4 flex items-center">
+            <div className="space-y-6 text-lg leading-relaxed">
+              <p>The gentle old woman approached. "Hello, Alice," she said. "I am the <strong className="text-cyan-300">Keeper of Earth's Biological Clock</strong>. These flowers are like the 'Earth's biological clocks.' They 'tell' us about climate change through <strong className="text-cyan-300">phenology</strong> – the 'life schedule of plants'. The bloom data is 'sounding the alarm' in three ways:"</p>
+              <ul className="list-disc list-inside space-y-2 pl-4 bg-white/5 p-4 rounded-lg">
+                <li><strong className="text-yellow-300">Change in bloom timing:</strong> "Japanese cherry blossom data over 1200 years shows that flowers are blooming up to 10 days earlier than 100 years ago – a clear data trend indicating warming."</li>
+                <li><strong className="text-yellow-300">Change in intensity:</strong> "Unusually stronger or weaker superblooms provide quantitative data on the 'health' of the flowers."</li>
+                <li><strong className="text-yellow-300">Change in distribution:</strong> "Flowers appearing in unexpected places or disappearing from familiar ones – this is spatial data on the 'migration' of flowers."</li>
+              </ul>
+            </div>
+            <img src={anh1} alt="Warning data" className="w-1/2 h-auto mt-8 rounded-lg shadow-lg object-cover" />
+          </div>
+        </section>
+
+        <section style={{ backgroundColor: '#1a3a69' }} className="py-18 px-6 md:px-12 text-white">
+          {/* --- Phần Công nghệ Tương lai --- */}
+          <div className="max-w-4xl mx-auto">
+            <p>The Future Shaper continued: "And we are 'designing' the 'dream technologies' to help us observe even better. Just imagine:"</p>
+            <div className="grid md:grid-cols-2 gap-6 my-10">
+              {futureTechs.map(tech => (
+                  <div key={tech.title} className="bg-white/10 p-5 rounded-xl flex gap-4 items-start">
+                    <div>{tech.icon}</div>
+                    <div>
+                      <h4 className="font-bold text-xl mb-1 text-cyan-300">{tech.title}</h4>
+                      <p className="text-blue-100 text-base">{tech.description}</p>
+                    </div>
+                  </div>
+              ))}
+            </div>
+            <p className="text-lg leading-relaxed">"With these technologies, we will be able to 'forecast blooms' as accurately as a 'weather forecast,' using predictive models based on big data analysis and machine learning algorithms."</p>
+          </div>
+        </section >
+
+        <section style={{ backgroundColor: '#6d28d9' }} className="px-6 md:px-12 text-white">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-8">
+              <PracticeStation title="Data Practice Station: Inventing Future Technology" challenge="The Future Architect gives Alice a virtual 'idea sketchpad.' 'Alice, if you had a 'drone machine' to study flowers, what 'sensors' would you equip it with (e.g., RGB camera, spectral sensor, thermal sensor) to collect multispectral and environmental data? Let's 'draft a concept' and 'explain how it would work.'" concepts="Multispectral Data, Sensors, Automated Systems.">
+                <p>Images are for reference from AI content only, not actual data</p>
+                <div className="grid md:grid-cols-2 gap-6 items-center">
+                  <div>
+                    <h4 className="font-bold mb-3">Select a sensor to equip:</h4>
+                    <div className="flex flex-col gap-3">
+                      {sensors.map(sensor => (<button key={sensor.id} onClick={() => setEquippedSensors(sensor)} className={`flex items-center gap-2 p-2 rounded-lg transition-all ${equippedSensors.id == sensor.id ? 'bg-green-400 text-black' : 'bg-white/20 hover:bg-white/30'}`}>{sensor.icon}{sensor.name}</button>))}
+                    </div>
+                  </div>
+                  <div className="text-center">
+                    <h4 className="font-bold mb-2">Flower Research Drone</h4>
+                    <div className="relative w-64 h-64 bg-gray-300 rounded-full mx-auto flex items-center justify-center">
+                      <img
+                          src={equippedSensors.img}
+                          alt="Drone" className=" object-cover rounded-full" />
+
+                    </div>
+                    <div className="mt-4"><h5 className="font-semibold">Equipped Sensor:</h5><div className="flex justify-center flex-wrap gap-2 mt-2"><span key={equippedSensors.id} className="flex items-center gap-1 bg-blue-500 text-white text-xs font-semibold px-2 py-1 rounded-full">{equippedSensors.icon} {equippedSensors.name}</span>{!equippedSensors && <p className="text-sm italic">No sensor equipped</p>}</div></div>
+                  </div>
+                </div>
+              </PracticeStation>
+            </div>
+          </div>
+        </section>
+
+        <section style={{ backgroundColor: '#f97316' }} className="py-14 px-6 md:px-12 text-white">
+          <div className="max-w-4xl mx-auto text-center flex-1">
+            <h2 className="text-3xl font-bold mb-6">Key Takeaways</h2>
+            <p className="text-xl leading-relaxed mb-6 bg-black/10 p-4 rounded-lg">
+              Global-scale bloom data, collected through Citizen Science and advanced technologies (satellites, AI, IoT), is the key to understanding phenology and the impacts of climate change. Predictive models will become more accurate with the development of Machine Learning and Big Data.
+            </p>
+            <p className="text-lg italic mb-8">End of Chapter 4: Alice now had a comprehensive view of flower blooms and the future of the Earth. The Future Shaper nodded.</p>
+            <blockquote className="font-bold text-2xl border-l-4 border-yellow-300 pl-4">"Excellent, Alice! You've seen how the 'data warns' us. Now, let's turn this 'knowledge' into 'action'!"</blockquote>
+          </div>
+          <footer className="w-full max-w-5xl mx-auto mt-0 pt-8 border-t border-white/20">
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <p className="text-sm text-white/70">
+              </p>
+              <div className="flex items-center gap-6">
+                <Link to="/chuong3" className="font-medium hover:text-yellow-300 transition-colors">
+                  ← Back to Chapter 3
+                </Link>
+                <Link to="/chuong5" className="bg-yellow-300 text-orange-900 font-bold py-2 px-5 rounded-full hover:bg-white hover:text-orange-900 transition-colors shadow-lg">
+                  Go to Chapter 5 →
+                </Link>
+              </div>
+            </div>
+          </footer>
+        </section>
+      </div >
   );
 }
 

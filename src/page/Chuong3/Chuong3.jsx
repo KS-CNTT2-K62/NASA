@@ -10,23 +10,23 @@ const PracticeStation = ({ title, challenge, concepts, children }) => (
         <p className="mb-4 italic text-slate-600">"{challenge}"</p>
         <div className="my-4">{children}</div>
         <p className="text-sm font-semibold text-slate-500 mt-4">
-            <span className="font-bold text-sky-600">Khái niệm học thêm:</span> {concepts}
+            <span className="font-bold text-sky-600">Further concepts:</span> {concepts}
         </p>
     </div>
 );
 
 // ===== DỮ LIỆU VÀ LOGIC CHO CÁC HOẠT ĐỘNG (Phần 1 & 2 không đổi) =====
 const allFeatures = [
-    'Chiều dài cánh hoa', 'Độ rộng cánh hoa', 'Tỷ lệ dài/rộng', 'Độ cong cánh hoa', 'Màu sắc (Red)',
-    'Màu sắc (Green)', 'Màu sắc (Blue)', 'Độ bão hòa màu', 'Độ sáng', 'Số lượng nhụy', 'Chiều dài nhụy',
-    'Màu sắc nhụy', 'Hình dạng lá', 'Kích thước lá', 'Độ dày lá', 'Kết cấu thân', 'Chiều cao cây',
-    'Độ phản xạ UV', 'Độ phản xạ IR', 'Mùi hương (int)'
+    'Petal Length', 'Petal Width', 'Length/Width Ratio', 'Petal Curvature', 'Color (Red)',
+    'Color (Green)', 'Color (Blue)', 'Color Saturation', 'Brightness', 'Pistil Count', 'Pistil Length',
+    'Pistil Color', 'Leaf Shape', 'Leaf Size', 'Leaf Thickness', 'Stem Texture', 'Plant Height',
+    'UV Reflectance', 'IR Reflectance', 'Scent (int)'
 ];
 const importanceScores = {
-    'Tỷ lệ dài/rộng': 10, 'Chiều dài cánh hoa': 9, 'Độ phản xạ IR': 9, 'Màu sắc (Red)': 8, 'Kích thước lá': 8,
-    'Độ rộng cánh hoa': 7, 'Độ sáng': 7, 'Độ phản xạ UV': 6, 'Chiều cao cây': 6, 'Độ bão hòa màu': 5,
-    'Hình dạng lá': 5, 'Số lượng nhụy': 4, 'Độ cong cánh hoa': 4, 'Độ dày lá': 3, 'Màu sắc (Green)': 3,
-    'Chiều dài nhụy': 2, 'Kết cấu thân': 2, 'Màu sắc (Blue)': 1, 'Màu sắc nhụy': 1, 'Mùi hương (int)': 1,
+    'Length/Width Ratio': 10, 'Petal Length': 9, 'IR Reflectance': 9, 'Color (Red)': 8, 'Leaf Size': 8,
+    'Petal Width': 7, 'Brightness': 7, 'UV Reflectance': 6, 'Plant Height': 6, 'Color Saturation': 5,
+    'Leaf Shape': 5, 'Pistil Count': 4, 'Petal Curvature': 4, 'Leaf Thickness': 3, 'Color (Green)': 3,
+    'Pistil Length': 2, 'Stem Texture': 2, 'Color (Blue)': 1, 'Pistil Color': 1, 'Scent (int)': 1,
 };
 const clusterColors = ['#9ca3af', '#ec4899', '#38bdf8', '#34d399'];
 
@@ -75,20 +75,20 @@ function App() {
         // Tải dữ liệu cho Hoạt động 3
         fetch(publicURL + '/data/hoa_nasa_single_image_data.json')
             .then(response => {
-                if (!response.ok) throw new Error('Không tìm thấy file hoa_nasa_single_image_data.json');
+                if (!response.ok) throw new Error('Could not find file hoa_nasa_single_image_data.json');
                 return response.json();
             })
             .then(data => setLocationData(data))
             .then(() => setIsLoading(true))
             .catch(error => {
-                console.error("Lỗi khi tải dữ liệu NASA:", error);
+                console.error("Error loading NASA data:", error);
                 setDataError(prev => ({ ...prev, rendvi: error.message }));
             });
 
         // Tải dữ liệu cho Hoạt động 2
         fetch(publicURL + '/data/iris_data_rich.json')
             .then(response => {
-                if (!response.ok) throw new Error('Không tìm thấy file iris_data_rich.json');
+                if (!response.ok) throw new Error('Could not find file iris_data_rich.json');
                 return response.json();
             })
             .then(data => {
@@ -114,7 +114,7 @@ function App() {
                 setIsLoading(true)
             })
             .catch(error => {
-                console.error("Lỗi khi tải dữ liệu Iris:", error);
+                console.error("Error loading Iris data:", error);
                 setDataError(prev => ({ ...prev, iris: error.message }));
             });
     }, []);
@@ -133,10 +133,10 @@ function App() {
     const handleEvaluation = () => {
         const score = selectedFeatures.reduce((acc, feature) => acc + (importanceScores[feature] || 0), 0);
         let message = '';
-        if (score >= 44) message = "Tuyệt vời! Bạn đã chọn được những đặc trưng tinh túy nhất.";
-        else if (score >= 35) message = "Lựa chọn rất tốt! Bộ dữ liệu của bạn giữ lại được nhiều thông tin quan trọng.";
-        else if (score >= 25) message = "Khá ổn. Có vẻ một vài đặc trưng bạn chọn chưa phải là tối ưu nhất.";
-        else message = "Cần tối ưu hơn. Hãy thử lại để chọn các đặc trưng có điểm thông tin cao hơn nhé.";
+        if (score >= 44) message = "Excellent! You have selected the most essential features.";
+        else if (score >= 35) message = "A very good selection! Your dataset retains a lot of important information.";
+        else if (score >= 25) message = "Pretty good. It seems some of the features you chose might not be the most optimal.";
+        else message = "Needs optimization. Try again to select features with higher information scores.";
         setEvaluationResult({ score, message });
         setShowScores(true);
     };
@@ -175,19 +175,14 @@ function App() {
     const calculateRendvi = (nir, red) => (nir + red === 0) ? 0 : (nir - red) / (nir + red);
 
     const getImageStyleByRendvi = (rendvi) => {
-        // Ánh xạ tuyến tính giá trị RENDVI sang các giá trị của bộ lọc CSS
-        // Clamp RENDVI to a 0-1 range for easier mapping
         const normalizedRendvi = Math.max(0, Math.min(1, (rendvi + 0.2) / 0.8));
-
-        // Khi RENDVI cao (gần 1), màu sắc rực rỡ
-        // Khi RENDVI thấp (gần 0), màu sắc úa vàng
-        const saturation = 0.6 + normalizedRendvi * 0.6; // Bão hòa từ 60% đến 120%
-        const hueRotation = -40 + normalizedRendvi * 40; // Xoay màu từ -40deg (vàng) về 0deg (bình thường)
-        const sepia = 0.5 - normalizedRendvi * 0.5; // Hiệu ứng nâu cổ từ 50% về 0%
+        const saturation = 0.6 + normalizedRendvi * 0.6;
+        const hueRotation = -40 + normalizedRendvi * 40;
+        const sepia = 0.5 - normalizedRendvi * 0.5;
 
         return {
             filter: `saturate(${saturation}) hue-rotate(${hueRotation}deg) sepia(${sepia})`,
-            transition: 'filter 0.3s ease' // Hiệu ứng chuyển mượt mà
+            transition: 'filter 0.3s ease'
         };
     };
 
@@ -196,11 +191,11 @@ function App() {
             <section className="text-white text-center py-20 px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 to-cyan-400">
                 <div className="absolute top-0 left-0 w-full h-full bg-black/10"></div>
                 <div className="relative z-10 max-w-4xl mx-auto">
-                    <h1 className="text-5xl md:text-8xl font-bold tracking-tight mb-8 drop-shadow-lg">Chương 3</h1>
-                    <p className="mt-4 text-2xl md:text-3xl font-light">Khi Máy Móc "Nhìn", "Hiểu" và "Đếm" Hoa</p>
+                    <h1 className="text-5xl md:text-8xl font-bold tracking-tight mb-8 drop-shadow-lg">Chapter 3</h1>
+                    <p className="mt-4 text-2xl md:text-3xl font-light">When Machines “See”, “Understand”, and “Count” Flowers</p>
                     <div className="mt-8 bg-black/20 backdrop-blur-sm p-4 rounded-lg text-left text-sky-100">
-                        <h3 className="font-bold text-lg mb-2">Mục tiêu học tập:</h3>
-                        <p>Hiểu các khái niệm cơ bản về Học Máy, giảm chiều dữ liệu (PCA), phân cụm không giám sát (GMM) và các chỉ số thực vật (RENDVI) trong việc phân tích dữ liệu hoa nở.</p>
+                        <h3 className="font-bold text-lg mb-2">Learning objectives:</h3>
+                        <p>Understand basics of Machine Learning, dimensionality reduction (PCA), unsupervised clustering (GMM), and vegetation indices (RENDVI) for analyzing bloom data.</p>
                     </div>
                 </div>
             </section>
@@ -208,74 +203,74 @@ function App() {
             <section className="bg-sky-50 py-16 px-6 md:px-12 text-slate-700">
                 <div className="max-w-4xl mx-auto flex">
                     <div className="space-y-6 text-lg leading-relaxed">
-                        <p>Alice và Thám Tử Phổ Quang bước vào "Trường Học Máy Móc," một căn phòng rộng lớn với hàng chục "Robot Học Sinh" đang ngồi trước màn hình. Một người phụ nữ trẻ với mái tóc búi cao, đeo kính và mặc áo blouse trắng, đang giảng bài.</p>
-                        <p>"Chào mừng đến 'Trường Học Máy Móc'," cô ấy nói. "Ta là <strong className="text-sky-600 font-semibold">Giáo Sư Học Máy</strong>. Hôm nay, chúng ta sẽ 'dạy' những chú robot này cách 'nhìn', 'hiểu' và thậm chí 'đếm' hoa!"</p>
-                        <p>"Tất cả là nhờ <strong className="text-sky-600 font-semibold">Học Máy (Machine Learning)</strong>," Giáo Sư giải thích. "Để máy tính học hiệu quả, đầu tiên chúng ta cần 'giảm hành lý' cho nó bằng <strong className="text-sky-600 font-semibold">PCA – Phân tích Thành phần Chính</strong>. PCA sẽ tìm ra những 'thông tin quan trọng nhất' để máy tính tập trung vào."</p>
+                        <p>Alice and the Spectral Detective entered the "Machine School," a large room with dozens of "Student Robots" sitting in front of screens. A young woman with her hair in a high bun, wearing glasses and a white lab coat, was giving a lecture.</p>
+                        <p>"Welcome to the 'Machine School'," she said. "I am <strong className="text-sky-600 font-semibold">Professor Machine Learning</strong>. Today, we will 'teach' these robots how to 'see,' 'understand,' and even 'count' flowers!"</p>
+                        <p>"It's all thanks to <strong className="text-sky-600 font-semibold">Machine Learning</strong>," the Professor explained. "For a computer to learn effectively, we first need to 'lighten its luggage' using <strong className="text-sky-600 font-semibold">PCA – Principal Component Analysis</strong>. PCA will find the 'most important information' for the computer to focus on."</p>
                     </div>
-                    <img src={anh1} alt="Học máy và PCA" className="w-1/2 h-auto ml-8 rounded-lg shadow-lg object-cover" />
+                    <img src={anh1} alt="Machine Learning and PCA" className="w-1/2 h-auto ml-8 rounded-lg shadow-lg object-cover" />
                 </div>
             </section>
             <section className="bg-sky-50 py-16 px-6 md:px-12 text-slate-700">
                 <div className="max-w-4xl mx-auto flex">
                     <div className="space-y-6 text-lg leading-relaxed">
-                        <p>Giáo Sư Học Máy hào hứng. "Tiếp theo, chúng ta dùng <strong className="text-sky-600 font-semibold">GMM – Mô hình Hỗn hợp Gaussian</strong>. Nó sẽ giúp máy tính tự động 'xếp' những bông hoa giống nhau vào cùng một nhóm. Đây gọi là <strong className="text-sky-600 font-semibold">phân cụm không giám sát (Unsupervised Clustering)</strong>."</p>
+                        <p>The Professor of Machine Learning was excited. "Next, we use <strong className="text-sky-600 font-semibold">GMM – Gaussian Mixture Model</strong>. It will help the computer automatically 'sort' similar flowers into the same group. This is called <strong className="text-sky-600 font-semibold">Unsupervised Clustering</strong>."</p>
                         <ul className="list-disc list-inside space-y-2 pl-4 bg-sky-100 p-4 rounded-lg text-slate-600">
-                            <li><strong className="text-teal-600">MRBI (Mixture Residual Bloom Index):</strong> Một 'chỉ số ma thuật' để 'tìm' và 'đếm' hoa vàng.</li>
-                            <li><strong className="text-teal-600">RENDVI (Red-Edge Normalized Difference Vegetation Index):</strong> 'Nhiệt kế của sự sống xanh' giúp chúng ta 'đo' sức khỏe của lá cây.</li>
+                            <li><strong className="text-teal-600">MRBI (Mixture Residual Bloom Index):</strong> A 'magic index' to 'find' and 'count' yellow flowers.</li>
+                            <li><strong className="text-teal-600">RENDVI (Red-Edge Normalized Difference Vegetation Index):</strong> The 'thermometer of green life' that helps us 'measure' the health of plant leaves.</li>
                         </ul>
                     </div>
-                    <img src={anh2} alt="GMM và RENDVI" className="w-1/2 h-auto ml-8 rounded-lg shadow-lg object-cover" />
+                    <img src={anh2} alt="GMM and RENDVI" className="w-1/2 h-auto ml-8 rounded-lg shadow-lg object-cover" />
                 </div>
             </section>
 
             <section className="bg-slate-200 px-6 md:px-12">
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-bold text-center mb-8 text-slate-800">Trạm Thực Hành Dữ Liệu</h2>
+                    <h2 className="text-4xl font-bold text-center mb-8 text-slate-800">Data Practice Station</h2>
 
                     {dataError && (
                         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg relative mb-6" role="alert">
-                            <strong className="font-bold">Lỗi tải dữ liệu! </strong>
-                            <span className="block sm:inline">Không thể tải các file dữ liệu. Hãy đảm bảo bạn đã tạo thư mục `public/data` và đặt các file JSON vào đúng chỗ.</span>
+                            <strong className="font-bold">Data loading error! </strong>
+                            <span className="block sm:inline">Could not load the data files. Please ensure you have created the `public/data` directory and placed the JSON files in the correct location.</span>
                         </div>
                     )}
 
                     <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-8">
-                        <PracticeStation title="Hoạt động 1: Gói Ghém Hành Lý Dữ Liệu (PCA)" challenge="Cháu hãy thử 'giảm chiều dữ liệu' bằng cách 'chọn 5 đặc trưng quan trọng nhất' để mô tả mỗi loài hoa. Đây là một 'phiên bản đơn giản' của PCA." concepts="Đặc trưng dữ liệu (Features), Giảm chiều dữ liệu (Dimensionality Reduction), Trích xuất đặc trưng (Feature Extraction).">
+                        <PracticeStation title="Activity 1: Packing the Data Luggage (PCA)" challenge="Try to 'reduce the data's dimensionality' by 'selecting the 5 most important features' to describe each flower species. This is a 'simplified version' of PCA." concepts="Data Features, Dimensionality Reduction, Feature Extraction.">
                             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                 <div className="lg:col-span-2">
-                                    <h4 className="font-bold mb-3 text-slate-800">Chọn 5 đặc trưng quan trọng nhất từ 20 đặc trưng sau:</h4>
+                                    <h4 className="font-bold mb-3 text-slate-800">Select the 5 most important features from the following 20:</h4>
                                     <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-4 gap-y-2 p-4 bg-slate-100 rounded-lg">
                                         {allFeatures.map(feature => (
                                             <label key={feature} className={`flex items-center gap-2 p-1 rounded transition-colors ${selectedFeatures.includes(feature) ? 'text-sky-600 font-semibold' : 'hover:bg-slate-200'} ${showScores ? 'cursor-not-allowed opacity-60' : 'cursor-pointer'}`}>
                                                 <input type="checkbox" className="form-checkbox h-4 w-4 rounded text-sky-500 focus:ring-sky-400 focus:ring-2"
-                                                    checked={selectedFeatures.includes(feature)} onChange={() => handleFeatureSelect(feature)}
-                                                    disabled={showScores || (!selectedFeatures.includes(feature) && selectedFeatures.length >= 5)}
+                                                       checked={selectedFeatures.includes(feature)} onChange={() => handleFeatureSelect(feature)}
+                                                       disabled={showScores || (!selectedFeatures.includes(feature) && selectedFeatures.length >= 5)}
                                                 />
-                                                <span className="text-sm">{feature} {showScores && <strong className="text-teal-600">({importanceScores[feature]}đ)</strong>}</span>
+                                                <span className="text-sm">{feature} {showScores && <strong className="text-teal-600">({importanceScores[feature]}pts)</strong>}</span>
                                             </label>
                                         ))}
                                     </div>
                                 </div>
                                 <div className="lg:col-span-1 bg-slate-100 p-4 rounded-lg flex flex-col">
-                                    <h4 className="font-bold mb-2 text-center text-slate-800">Đặc trưng đã chọn: {selectedFeatures.length}/5</h4>
+                                    <h4 className="font-bold mb-2 text-center text-slate-800">Features selected: {selectedFeatures.length}/5</h4>
                                     <ul className="list-disc list-inside space-y-1 mb-4 flex-grow text-slate-600">
-                                        {selectedFeatures.length > 0 ? selectedFeatures.map(f => <li key={f}>{f}</li>) : <p className="italic text-center">Chưa chọn đặc trưng nào.</p>}
+                                        {selectedFeatures.length > 0 ? selectedFeatures.map(f => <li key={f}>{f}</li>) : <p className="italic text-center">No features selected yet.</p>}
                                     </ul>
 
                                     {selectedFeatures.length === 5 && !evaluationResult && (
-                                        <button onClick={handleEvaluation} className="w-full bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors shadow-md">Đánh giá lựa chọn</button>
+                                        <button onClick={handleEvaluation} className="w-full bg-green-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-600 transition-colors shadow-md">Evaluate Selection</button>
                                     )}
 
                                     {evaluationResult && (
                                         <div className="text-center bg-white/50 p-3 rounded-lg">
-                                            <p className="text-lg font-bold text-slate-800">Tổng điểm thông tin:</p>
+                                            <p className="text-lg font-bold text-slate-800">Total Information Score:</p>
                                             <p className="text-4xl font-bold text-sky-600 my-1 drop-shadow-sm">{evaluationResult.score}</p>
                                             <p className="text-sm italic text-slate-600">"{evaluationResult.message}"</p>
                                         </div>
                                     )}
 
                                     {showScores && (
-                                        <button onClick={resetPCA} className="w-full mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-sky-600 transition-colors shadow-md">Thử lại</button>
+                                        <button onClick={resetPCA} className="w-full mt-4 bg-sky-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-sky-600 transition-colors shadow-md">Try Again</button>
                                     )}
                                 </div>
                             </div>
@@ -285,15 +280,15 @@ function App() {
             </section>
             <section>
                 <div className="max-w-6xl mx-auto">
-                    <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">Trạm Thực Hành Dữ Liệu</h2>
-                    <PracticeStation title="Hoạt động 2: Nhóm Hoa Không Cần Chỉ Dẫn (GMM)" challenge="Hãy 'sử dụng mô hình GMM' ảo để 'nhóm' các bông hoa này thành 3 nhóm 'có vẻ giống nhau' nhất mà không cần biết tên loài. Cháu có thấy 'những nhóm ẩn' nào được tạo ra không?" concepts="Phân cụm (Clustering), Khoảng cách dữ liệu (Data Distance), Phân loại không giám sát (Unsupervised Classification).">
+                    <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">Data Practice Station</h2>
+                    <PracticeStation title="Activity 2: Grouping Flowers Without Labels (GMM)" challenge="Let's 'use a virtual GMM model' to 'group' these flowers into the 3 most 'apparently similar' groups without knowing their species names. Do you see any 'hidden groups' being formed?" concepts="Clustering, Data Distance, Unsupervised Classification.">
                         <div className="grid md:grid-cols-3 gap-6 items-center">
                             <div className="md:col-span-1 flex flex-col items-center gap-4">
                                 <p className="text-center">
-                                    {flowerPoints.length} điểm dữ liệu từ bộ <strong className="text-teal-600">Iris dataset</strong> kinh điển được sắp xếp ngẫu nhiên. Nhấn nút để thuật toán GMM tự động tìm ra 3 cụm dựa trên chiều dài và độ rộng cánh hoa.
+                                    {flowerPoints.length} data points from the classic <strong className="text-teal-600">Iris dataset</strong> are arranged randomly. Press the button to let the GMM algorithm automatically find 3 clusters based on petal length and width.
                                 </p>
                                 {!isClustered ?
-                                    <button onClick={handleCluster} disabled={flowerPoints.length === 0} className="w-full bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow-md disabled:bg-slate-400">Phân cụm hoa</button> :
+                                    <button onClick={handleCluster} disabled={flowerPoints.length === 0} className="w-full bg-teal-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-teal-600 transition-colors shadow-md disabled:bg-slate-400">Cluster Flowers</button> :
                                     <button onClick={resetGMM} className="w-full bg-slate-500 text-white font-bold py-2 px-4 rounded-lg hover:bg-slate-600 transition-colors shadow-md">Reset</button>
                                 }
                             </div>
@@ -307,9 +302,9 @@ function App() {
                                             top: `${isClustered ? p.finalY : p.initialY}%`,
                                             backgroundColor: clusterColors[p.cluster]
                                         }}
-                                        title={`Loài: ${p.species}`}
+                                        title={`Species: ${p.species}`}
                                     ></div>
-                                )) : <p className="text-center text-slate-500 p-4">Đang tải dữ liệu...</p>}
+                                )) : <p className="text-center text-slate-500 p-4">Loading data...</p>}
                             </div>
                         </div>
                     </PracticeStation>
@@ -322,11 +317,11 @@ function App() {
                 return (
                     <section>
                         <div className="max-w-6xl mx-auto">
-                            <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">Trạm Thực Hành Dữ Liệu</h2>
+                            <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">Data Practice Station</h2>
                             <PracticeStation
-                                title="Hoạt động 3: Tính Chỉ Số Sức Sống (RENDVI)"
-                                challenge="Hãy 'tính chỉ số RENDVI' cho mỗi bông hoa bằng 'công thức ma thuật' (NIR - Red) / (NIR + Red) để đánh giá 'sức khỏe xanh' của chúng. Hoa nào có RENDVI cao nhất?"
-                                concepts="Chỉ số thực vật (Vegetation Index), Quang phổ cận hồng ngoại (Near-Infrared Spectrum), Định lượng sức sống thực vật (Quantifying Vegetation Vigor)."
+                                title="Activity 3: Calculating the Vigor Index (RENDVI)"
+                                challenge="Let's 'calculate the RENDVI index' for each location using the 'magic formula' (NIR - Red) / (NIR + Red) to assess their 'green health'. Which location has the highest RENDVI?"
+                                concepts="Vegetation Index, Near-Infrared Spectrum, Quantifying Vegetation Vigor."
                             >
                                 <div className="space-y-6">
                                     <div key={item.id} className="bg-slate-100 p-4 rounded-lg border grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
@@ -348,15 +343,15 @@ function App() {
                                                 </div>
                                             </div>
                                             <div className="text-center text-sm text-slate-500 mb-4 p-2 bg-sky-50 rounded-md">
-                                                Kéo thanh trượt và quan sát màu sắc của thảm thực vật (vùng màu đỏ) trên ảnh thay đổi.
+                                                Drag the sliders and observe how the color of the vegetation (the reddish areas) in the image changes.
                                             </div>
                                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-slate-600">
                                                 <div>
-                                                    <label>Phản xạ Đỏ (Red): {item.red}</label>
+                                                    <label>Red Reflectance (Red): {item.red}</label>
                                                     <input type="range" min="0" max="1" step="0.01" value={item.red} onChange={(e) => handleLocationDataChange(item.id, 'red', e.target.value)} className="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-red-500" />
                                                 </div>
                                                 <div>
-                                                    <label>Phản xạ Cận hồng ngoại (NIR): {item.nir}</label>
+                                                    <label>Near-Infrared Reflectance (NIR): {item.nir}</label>
                                                     <input type="range" min="0" max="1" step="0.01" value={item.nir} onChange={(e) => handleLocationDataChange(item.id, 'nir', e.target.value)} className="w-full h-2 bg-slate-300 rounded-lg appearance-none cursor-pointer accent-purple-500" />
                                                 </div>
                                             </div>
@@ -371,12 +366,12 @@ function App() {
 
             <section className="py-16 px-6 md:px-12 text-white bg-gradient-to-br from-amber-400 to-orange-500">
                 <div className="max-w-4xl mx-auto text-center flex-1">
-                    <h2 className="text-3xl font-bold mb-6 drop-shadow">Bài học đúc kết</h2>
+                    <h2 className="text-3xl font-bold mb-6 drop-shadow">Key Takeaways</h2>
                     <p className="text-xl leading-relaxed mb-6 bg-black/10 p-4 rounded-lg backdrop-blur-sm">
-                        Học Máy và các chỉ số thực vật là những công cụ mạnh mẽ để máy tính có thể "nhìn", "hiểu" và "đếm" hoa từ dữ liệu quang phổ, giúp chúng ta trích xuất thông tin quan trọng và phát hiện các mẫu hình ẩn giấu.
+                        Machine Learning and vegetation indices are powerful tools that allow computers to "see", "understand", and "count" flowers from spectral data, helping us extract important information and discover hidden patterns.
                     </p>
-                    <p className="text-lg italic mb-8">Kết thúc Chương 3: Alice cảm thấy bộ não của mình được mở rộng với những khái niệm mới.</p>
-                    <blockquote className="font-bold text-2xl border-l-4 border-yellow-200 pl-4">"Tuyệt vời, Alice! Cháu đã giúp những chú robot này hiểu được ngôn ngữ của hoa. Giờ thì, hãy cùng 'tập hợp sức mạnh' để quan sát hoa trên quy mô toàn cầu!"</blockquote>
+                    <p className="text-lg italic mb-8">End of Chapter 3: Alice felt her mind expand with new concepts.</p>
+                    <blockquote className="font-bold text-2xl border-l-4 border-yellow-200 pl-4">"Excellent, Alice! You've helped these robots understand the language of flowers. Now, let's 'join forces' to observe flowers on a global scale!"</blockquote>
                 </div>
                 <footer className="w-full max-w-5xl mx-auto mt-0 pt-8 border-t border-white/20">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -384,10 +379,10 @@ function App() {
                         </p>
                         <div className="flex items-center gap-6">
                             <Link to="/chuong2" className="font-medium hover:text-yellow-300 transition-colors">
-                                ← Quay về Chương 2
+                                ← Back to Chapter 2
                             </Link>
                             <Link to="/chuong4" className="bg-yellow-300 text-orange-900 font-bold py-2 px-5 rounded-full hover:bg-white hover:text-orange-900 transition-colors shadow-lg">
-                                Chuyển tới Chương 4 →
+                                Go to Chapter 4 →
                             </Link>
                         </div>
                     </div>

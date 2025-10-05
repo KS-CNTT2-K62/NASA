@@ -13,11 +13,11 @@ function App() {
           <div className="container mx-auto flex justify-between items-center">
             <div className="text-2xl font-bold">A Global Learning Hub for Planetary Observation</div>
             <div className="space-x-4 font-bold text-lg">
-              <Link to="/chuong1" className="text-slate-600 hover:text-sky-600 transition-colors">Chương 1</Link>
-              <Link to="/chuong2" className="text-slate-600 hover:text-sky-600 transition-colors">Chương 2</Link>
-              <Link to="/chuong3" className="text-slate-600 hover:text-sky-600 transition-colors">Chương 3</Link>
-              <Link to="/chuong4" className="text-slate-600 hover:text-sky-600 transition-colors">Chương 4</Link>
-              <Link to="/chuong5" className="text-slate-600 hover:text-sky-600 transition-colors">Chương 5</Link>
+              <Link to="/chuong1" className="text-slate-600 hover:text-sky-600 transition-colors">Chapter 1</Link>
+              <Link to="/chuong2" className="text-slate-600 hover:text-sky-600 transition-colors">Chapter 2</Link>
+              <Link to="/chuong3" className="text-slate-600 hover:text-sky-600 transition-colors">Chapter 3</Link>
+              <Link to="/chuong4" className="text-slate-600 hover:text-sky-600 transition-colors">Chapter 4</Link>
+              <Link to="/chuong5" className="text-slate-600 hover:text-sky-600 transition-colors">Chapter 5</Link>
             </div>
           </div>
         </nav>

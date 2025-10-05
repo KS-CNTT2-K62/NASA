@@ -15,135 +15,135 @@ import genericRedFlower from '../../assets/chuong5/red_flower.jpg';
 
 export const locationDetails = {
   "Antelope Valley California Poppy Reserve": {
-    flowers: "Owl’s clovers, cream cups, và Anh túc California (California poppy).",
-    transport: "Chủ yếu đi bộ trên các con đường mòn được quy định sẵn để bảo vệ hoa.",
-    activities: "Tham gia các tour tham quan có hướng dẫn viên, chụp ảnh phong cảnh và tìm hiểu về hệ sinh thái hoa dại.",
+    flowers: "Owl's clovers, cream cups, and California poppy.",
+    transport: "Primarily walking on designated trails to protect the flowers.",
+    activities: "Joining guided tours, landscape photography, and learning about the wildflower ecosystem.",
     imageUrl: antelopeValleyFlowers // Thêm đường dẫn ảnh
   },
   "Carrizo Plain National Monument": {
-    flowers: "Orange fiddlenecks, goldfields, và Anh túc California.",
-    transport: "Nên sử dụng xe 4WD (xe hai cầu) để di chuyển trên các con đường đất. Một số khu vực có thể đi bộ.",
-    activities: "Cắm trại dưới bầu trời đầy sao, chụp ảnh superbloom trên diện rộng, đi bộ đường dài và quan sát động vật hoang dã.",
+    flowers: "Orange fiddlenecks, goldfields, and California poppy.",
+    transport: "A 4WD vehicle is recommended for traveling on dirt roads. Some areas are accessible on foot.",
+    activities: "Camping under the starry sky, large-scale superbloom photography, hiking, and wildlife observation.",
     imageUrl: carrizoPlainFlowers // Thêm đường dẫn ảnh
   },
   "Chino Hills": {
-    flowers: "Anh túc California (California poppy) và nhiều loại hoa dại khác.",
-    transport: "Lý tưởng cho xe đạp địa hình và đi bộ. Có nhiều đường mòn với các cấp độ khác nhau.",
-    activities: "Dã ngoại cùng gia đình, đạp xe khám phá, đi bộ và tận hưởng không khí trong lành.",
+    flowers: "California poppy and many other types of wildflowers.",
+    transport: "Ideal for mountain biking and hiking. There are many trails with varying difficulty levels.",
+    activities: "Family picnics, exploring by bike, hiking, and enjoying the fresh air.",
     imageUrl: chinoHillsFlowers // Thêm đường dẫn ảnh
   },
   "Anza-Borrego Desert State Park": {
-    flowers: "Hoa sa mạc đa dạng, bao gồm cả Anh túc California.",
-    transport: "Kết hợp giữa xe 4WD cho các vùng sâu và đi bộ trên các cung đường mòn sa mạc.",
-    activities: "Ngắm sao vào ban đêm (bầu trời rất trong), tìm hiểu về hệ sinh thái sa mạc, khám phá các khe núi.",
+    flowers: "Diverse desert flowers, including the California poppy.",
+    transport: "A mix of 4WD for remote areas and hiking on desert trails.",
+    activities: "Stargazing at night (very clear skies), learning about the desert ecosystem, and exploring slot canyons.",
     imageUrl: anzaBorregoFlowers // Thêm đường dẫn ảnh
   },
   "Montaña de Oro State Park": {
-    flowers: "Nhiều loài hoa dại ven biển đặc trưng của California.",
-    transport: "Đi bộ đường dài, đạp xe trên các tuyến đường mòn. Có thể lái xe đến một số khu vực.",
-    activities: "Ngắm cảnh đại dương, đi bộ dọc bờ biển, dã ngoại và chụp ảnh hoàng hôn.",
+    flowers: "Many coastal wildflower species typical of California.",
+    transport: "Hiking and biking on trails. Driving is possible to some areas.",
+    activities: "Ocean viewing, walking along the coast, picnicking, and sunset photography.",
     imageUrl: genericBlueFlower // Ảnh minh họa chung
   },
   "Figueroa Mountain": {
-    flowers: "Rất nhiều loài hoa dại, bao gồm Anh túc California và lupine.",
-    transport: "Đường đồi núi, chủ yếu là lái xe và đi bộ. Một số đoạn cần xe 4WD.",
-    activities: "Ngắm hoa vào mùa xuân, đi bộ đường dài, cắm trại và ngắm cảnh toàn khu vực.",
+    flowers: "Numerous wildflower species, including California poppy and lupine.",
+    transport: "Mountain roads, primarily driving and hiking. Some sections require a 4WD.",
+    activities: "Viewing flowers in the spring, hiking, camping, and enjoying scenic views of the entire area.",
     imageUrl: genericOrangeFlower // Ảnh minh họa chung
   },
   "Red Hills Recreational Managment Area": {
-    flowers: "Hoa dại sa mạc và đồi núi, bao gồm fiddlenecks và goldfields.",
-    transport: "Chủ yếu lái xe trên đường đất và đi bộ trên các đường mòn.",
-    activities: "Khám phá địa chất độc đáo, tìm hiểu về lịch sử khai thác vàng và ngắm hoa dại.",
+    flowers: "Desert and hill wildflowers, including fiddlenecks and goldfields.",
+    transport: "Mainly driving on dirt roads and hiking on trails.",
+    activities: "Exploring the unique geology, learning about the history of gold mining, and viewing wildflowers.",
     imageUrl: genericRedFlower // Ảnh minh họa chung
   },
   "Jepson Prairie Preserve": {
-    flowers: "Các loài hoa dại đồng cỏ vernal pool hiếm gặp.",
-    transport: "Đi bộ trên các đường mòn được quy định sẵn.",
-    activities: "Tham gia các tour có hướng dẫn viên để tìm hiểu về hệ sinh thái vernal pool.",
+    flowers: "Rare vernal pool prairie wildflower species.",
+    transport: "Walking on designated trails.",
+    activities: "Joining guided tours to learn about the vernal pool ecosystem.",
     imageUrl: genericBlueFlower // Ảnh minh họa chung
   },
   "Bear Valley Wildflower": {
-    flowers: "Nhiều loài hoa dại núi rừng và đồng cỏ.",
-    transport: "Đi bộ hoặc lái xe trên các con đường nông thôn.",
-    activities: "Ngắm hoa dại, dã ngoại và thư giãn giữa thiên nhiên.",
+    flowers: "Many species of mountain forest and meadow wildflowers.",
+    transport: "Walking or driving on rural roads.",
+    activities: "Wildflower viewing, picnicking, and relaxing in nature.",
     imageUrl: genericOrangeFlower // Ảnh minh họa chung
   },
   "North Table Mountain Ecological Reserve": {
-    flowers: "Nhiều loài hoa dại trên cao nguyên đá bazan, bao gồm buttercups và poppies.",
-    transport: "Đi bộ trên các đường mòn.",
-    activities: "Ngắm thác nước nhỏ vào mùa mưa, chụp ảnh hoa dại và phong cảnh độc đáo.",
+    flowers: "Many wildflower species on the basalt plateau, including buttercups and poppies.",
+    transport: "Hiking on trails.",
+    activities: "Viewing small waterfalls during the rainy season, photographing wildflowers and the unique landscape.",
     imageUrl: genericRedFlower // Ảnh minh họa chung
   },
   "Channel Islands National Park": {
-    flowers: "Các loài hoa dại đặc hữu của đảo, bao gồm Island Mallow.",
-    transport: "Đi thuyền đến đảo, sau đó đi bộ trên các đường mòn.",
-    activities: "Quan sát chim biển, cá voi (mùa), lặn biển, đi bộ đường dài và cắm trại.",
+    flowers: "Endemic island wildflowers, including the Island Mallow.",
+    transport: "Travel by boat to the island, then hike on the trails.",
+    activities: "Seabird and whale watching (in season), scuba diving, hiking, and camping.",
     imageUrl: genericBlueFlower // Ảnh minh họa chung
   },
   "Black Canyon City": {
-    flowers: "Hoa dại sa mạc Arizona, bao gồm chollas và ocotillo.",
-    transport: "Lái xe qua đường cao tốc và khám phá các con đường địa phương.",
-    activities: "Đi bộ đường dài, quan sát động vật hoang dã sa mạc và khám phá cảnh quan đá.",
+    flowers: "Arizona desert wildflowers, including chollas and ocotillo.",
+    transport: "Driving via the highway and exploring local roads.",
+    activities: "Hiking, observing desert wildlife, and exploring the rocky landscape.",
     imageUrl: genericOrangeFlower // Ảnh minh họa chung
   },
   "Suguaro Lake": {
-    flowers: "Cây xương rồng Saguaro nở hoa và các loài hoa dại ven hồ.",
-    transport: "Lái xe, đi thuyền trên hồ.",
-    activities: "Đi thuyền, câu cá, chèo thuyền kayak và ngắm cảnh hồ.",
+    flowers: "Blooming Saguaro cacti and lakeside wildflowers.",
+    transport: "Driving, boating on the lake.",
+    activities: "Boating, fishing, kayaking, and enjoying the lake scenery.",
     imageUrl: genericRedFlower // Ảnh minh họa chung
   },
   "San Carlos Reservation": {
-    flowers: "Hoa dại sa mạc và núi rừng trong khu bảo tồn.",
-    transport: "Di chuyển bằng xe cơ giới trên các tuyến đường quy định.",
-    activities: "Tìm hiểu văn hóa thổ dân, đi bộ đường dài và quan sát thiên nhiên.",
+    flowers: "Desert and mountain forest wildflowers within the reservation.",
+    transport: "Travel by motor vehicle on designated routes.",
+    activities: "Learning about native culture, hiking, and nature observation.",
     imageUrl: genericBlueFlower // Ảnh minh họa chung
   },
   "Golden Valley": {
-    flowers: "Hoa dại sa mạc phong phú, bao gồm brittlebush và desert marigold.",
-    transport: "Lái xe trên các tuyến đường chính và đường đất.",
-    activities: "Khám phá phong cảnh sa mạc rộng lớn, chụp ảnh và tìm hiểu về hệ thực vật khô hạn.",
+    flowers: "Abundant desert wildflowers, including brittlebush and desert marigold.",
+    transport: "Driving on main roads and dirt tracks.",
+    activities: "Exploring the vast desert landscape, photography, and learning about arid vegetation.",
     imageUrl: genericOrangeFlower // Ảnh minh họa chung
   },
   "Estrella Mountain Regional Park": {
-    flowers: "Hoa dại sa mạc nở rộ sau mưa.",
-    transport: "Lái xe đến công viên và đi bộ trên các đường mòn.",
-    activities: "Đi bộ đường dài, đạp xe, cưỡi ngựa và dã ngoại.",
+    flowers: "Desert wildflowers blooming profusely after rain.",
+    transport: "Drive to the park and walk on the trails.",
+    activities: "Hiking, biking, horseback riding, and picnicking.",
     imageUrl: genericRedFlower // Ảnh minh họa chung
   },
   "Picacho Peak State Park": {
-    flowers: "Hàng ngàn cây xương rồng Saguaro nở hoa và hoa dại sa mạc khác.",
-    transport: "Lái xe đến chân núi và đi bộ lên đỉnh.",
-    activities: "Đi bộ đường dài lên đỉnh Picacho Peak để ngắm cảnh, dã ngoại.",
+    flowers: "Thousands of blooming Saguaro cacti and other desert wildflowers.",
+    transport: "Drive to the base of the mountain and hike to the peak.",
+    activities: "Hiking up Picacho Peak for the views, picnicking.",
     imageUrl: genericBlueFlower // Ảnh minh họa chung
   },
   "South Mountain Park and Preserve": {
-    flowers: "Hoa dại sa mạc và cây xanh của dãy núi South Mountain.",
-    transport: "Lái xe lên núi và đi bộ trên các đường mòn.",
-    activities: "Ngắm cảnh thành phố Phoenix từ trên cao, đi bộ đường dài và đạp xe.",
+    flowers: "Desert wildflowers and the greenery of the South Mountain range.",
+    transport: "Drive up the mountain and hike on the trails.",
+    activities: "Viewing the city of Phoenix from above, hiking, and biking.",
     imageUrl: genericOrangeFlower // Ảnh minh họa chung
   },
   "Gold Butte National Monument": {
-    flowers: "Hoa dại sa mạc đa dạng, bao gồm hoa xương rồng.",
-    transport: "Cần xe 4WD cho hầu hết các khu vực. Đường không trải nhựa.",
-    activities: "Khám phá các địa điểm khảo cổ, phong cảnh đá đỏ và quan sát động vật hoang dã.",
+    flowers: "Diverse desert wildflowers, including cactus blossoms.",
+    transport: "A 4WD vehicle is needed for most areas. Unpaved roads.",
+    activities: "Exploring archaeological sites, red rock landscapes, and observing wildlife.",
     imageUrl: genericRedFlower // Ảnh minh họa chung
   },
   "Lompoc Flower Fields": {
-    flowers: "Những cánh đồng hoa được trồng quy mô lớn, với nhiều màu sắc rực rỡ (thường là larkspurs, delphiniums).",
-    transport: "Dễ dàng tiếp cận bằng ô tô, có khu vực đậu xe.",
-    activities: "Chụp ảnh phong cảnh hoa, mua hoa tươi và tham quan các vườn ươm.",
+    flowers: "Large-scale cultivated flower fields with vibrant colors (usually larkspurs, delphiniums).",
+    transport: "Easily accessible by car, with parking areas.",
+    activities: "Photographing flower landscapes, buying fresh flowers, and visiting nurseries.",
     imageUrl: genericBlueFlower // Ảnh minh họa chung
   },
   "Carlsbad Ranch": {
-    flowers: "Cánh đồng hoa Ranunculus (hoa Mao Lương) nổi tiếng với hàng triệu bông hoa màu sắc.",
-    transport: "Dễ dàng tiếp cận bằng ô tô, có khu vực đậu xe.",
-    activities: "Chụp ảnh, tham quan vườn hoa, mua hoa và các sản phẩm liên quan.",
+    flowers: "Famous fields of Ranunculus flowers with millions of colorful blooms.",
+    transport: "Easily accessible by car, with parking areas.",
+    activities: "Photography, touring the flower gardens, buying flowers and related products.",
     imageUrl: genericOrangeFlower // Ảnh minh họa chung
   },
   "Yolo sunflowers": {
-    flowers: "Những cánh đồng hoa hướng dương khổng lồ nở rộ.",
-    transport: "Chủ yếu lái xe dọc theo các con đường nông thôn để ngắm hoa.",
-    activities: "Chụp ảnh, ngắm cảnh hoàng hôn trên cánh đồng hoa hướng dương.",
+    flowers: "Vast fields of blooming giant sunflowers.",
+    transport: "Mainly driving along rural roads to view the flowers.",
+    activities: "Photography, watching the sunset over the sunflower fields.",
     imageUrl: sunflowerField // Ảnh minh họa chung
   }
 };

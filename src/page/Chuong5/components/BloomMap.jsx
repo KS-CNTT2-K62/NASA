@@ -1,4 +1,5 @@
 // src/components/BloomMap.jsx
+/* eslint-disable no-loss-of-precision */
 import React from 'react';
 import { MapContainer, TileLayer, GeoJSON, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
@@ -60,9 +61,9 @@ function BloomMap({ onSiteSelect, selectedSiteName }) {
       const popupContent = `
         <div style="font-family: Arial, sans-serif;">
           <h3 style="margin-bottom: 5px;"><strong>${Site}</strong></h3>
-          <p style="margin: 2px 0;"><strong>Loại:</strong> ${Type === 'Wild' ? 'Hoang dã' : 'Trồng trọt'}</p>
-          <p style="margin: 2px 0;"><strong>Mùa:</strong> ${Season || 'N/A'} ${seasonIcon}</p>
-          <p style="margin: 2px 0;"><strong>Diện tích:</strong> ${areaInHectares !== null ? `${areaInHectares.toLocaleString('vi-VN')} ha` : 'N/A'}</p>
+          <p style="margin: 2px 0;"><strong>Type:</strong> ${Type === 'Wild' ? 'Wild' : 'Plantation'}</p>
+          <p style="margin: 2px 0;"><strong>Season:</strong> ${Season || 'N/A'} ${seasonIcon}</p>
+          <p style="margin: 2px 0;"><strong>Area:</strong> ${areaInHectares !== null ? `${areaInHectares.toLocaleString('en-US')} ha` : 'N/A'}</p>
         </div>
       `;
       layer.bindPopup(popupContent);
