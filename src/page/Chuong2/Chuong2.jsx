@@ -182,7 +182,6 @@ const Chuong2 = () => {
           </section>
         </main>
         
-        <footer className="bg-slate-900 py-6 text-center text-slate-400"><p><strong>BloomWatch Project © 2025</strong></p></footer>
 
         <Modal isOpen={activeModal === 'garden'} onClose={() => setActiveModal(null)} title="Câu Chuyện Của Ánh Sáng" characterName="Lời Giải Thích Của Thám Tử" imageSrc={detectiveImage}>
           <div className="space-y-4">

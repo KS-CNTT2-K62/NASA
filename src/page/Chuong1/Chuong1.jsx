@@ -17,99 +17,99 @@ import HinhAnhSuperbloomNone from '../../assets/chuong1/superbloom-none.jpg';
 
 // --- Dữ liệu cho các hoạt động ---
 const FLOWERS_DATA = [
-  { id: 1, color: 'Vàng', colorHex: '#FFD700', petals: 5, diameter: 7, pigment: 'Carotenoids' },
-  { id: 2, color: 'Tím', colorHex: '#8A2BE2', petals: 8, diameter: 6, pigment: 'Anthocyanins' },
-  { id: 3, color: 'Đỏ', colorHex: '#DC143C', petals: 6, diameter: 8, pigment: 'Anthocyanins' },
-  { id: 4, color: 'Cam', colorHex: '#FFA500', petals: 12, diameter: 9, pigment: 'Carotenoids' },
-  { id: 5, color: 'Đỏ Tươi', colorHex: '#FF4500', petals: 7, diameter: 7, pigment: 'Betalains' },
+    { id: 1, color: 'Vàng', colorHex: '#FFD700', petals: 5, diameter: 7, pigment: 'Carotenoids' },
+    { id: 2, color: 'Tím', colorHex: '#8A2BE2', petals: 8, diameter: 6, pigment: 'Anthocyanins' },
+    { id: 3, color: 'Đỏ', colorHex: '#DC143C', petals: 6, diameter: 8, pigment: 'Anthocyanins' },
+    { id: 4, color: 'Cam', colorHex: '#FFA500', petals: 12, diameter: 9, pigment: 'Carotenoids' },
+    { id: 5, color: 'Đỏ Tươi', colorHex: '#FF4500', petals: 7, diameter: 7, pigment: 'Betalains' },
 ];
 const PIGMENTS = ['Carotenoids', 'Anthocyanins', 'Betalains'];
 const ItemTypes = {
-  PROPERTY: 'property',
+    PROPERTY: 'property',
 };
 
 // --- Các Component con cho Hoạt động Tương tác ---
 const DraggableProperty = ({ text, type, flowerId }) => {
     const [{ isDragging }, drag] = useDrag(() => ({
-      type: ItemTypes.PROPERTY,
-      item: { text, type, flowerId },
-      collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
+        type: ItemTypes.PROPERTY,
+        item: { text, type, flowerId },
+        collect: (monitor) => ({ isDragging: !!monitor.isDragging() }),
     }));
     return (
-      <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} className="p-2 m-1 bg-gray-200 rounded-md text-center cursor-pointer hover:bg-gray-300">
-        {text}
-      </div>
+        <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }} className="p-2 m-1 bg-gray-200 rounded-md text-center cursor-pointer hover:bg-gray-300">
+            {text}
+        </div>
     );
 };
 
 const DropZone = ({ title, onDrop, droppedItems }) => {
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: ItemTypes.PROPERTY,
-    drop: (item) => onDrop(item, title),
-    collect: (monitor) => ({ isOver: !!monitor.isOver() }),
-  }));
-  return (
-    <div ref={drop} className={`p-4 border-2 border-dashed rounded-lg min-h-[100px] transition-colors ${isOver ? 'bg-green-100 border-green-500' : 'bg-gray-50 border-gray-300'}`}>
-      <h3 className="text-lg font-semibold text-center text-gray-700 mb-2">{title}</h3>
-      <div className="flex flex-wrap gap-2 justify-center">
-        {droppedItems.map((item, index) => (
-          <div key={index} className="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">
-            {item.text}
-          </div>
-        ))}
-      </div>
-    </div>
-  );
+    const [{ isOver }, drop] = useDrop(() => ({
+        accept: ItemTypes.PROPERTY,
+        drop: (item) => onDrop(item, title),
+        collect: (monitor) => ({ isOver: !!monitor.isOver() }),
+    }));
+    return (
+        <div ref={drop} className={`p-4 border-2 border-dashed rounded-lg min-h-[100px] transition-colors ${isOver ? 'bg-green-100 border-green-500' : 'bg-gray-50 border-gray-300'}`}>
+            <h3 className="text-lg font-semibold text-center text-gray-700 mb-2">{title}</h3>
+            <div className="flex flex-wrap gap-2 justify-center">
+                {droppedItems.map((item, index) => (
+                    <div key={index} className="bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm">
+                        {item.text}
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
 };
 
 const HoatDongGhepSacTo = () => {
-  const [pigmentMatches, setPigmentMatches] = useState({});
-  const [feedback2, setFeedback2] = useState('');
+    const [pigmentMatches, setPigmentMatches] = useState({});
+    const [feedback2, setFeedback2] = useState('');
 
-  const handlePigmentSelect = (flowerId, selectedPigment) => {
-    setPigmentMatches(prev => ({ ...prev, [flowerId]: selectedPigment }));
-  };
+    const handlePigmentSelect = (flowerId, selectedPigment) => {
+        setPigmentMatches(prev => ({ ...prev, [flowerId]: selectedPigment }));
+    };
 
-  const checkPigmentMatches = () => {
-    const allSelected = FLOWERS_DATA.length === Object.keys(pigmentMatches).length;
-    if (!allSelected) {
-        setFeedback2('Bạn ơi, hãy chọn đủ sắc tố cho tất cả các bông hoa nhé!');
-        return;
-    }
-    const correctMatches = FLOWERS_DATA.every(
-      flower => pigmentMatches[flower.id] === flower.pigment
+    const checkPigmentMatches = () => {
+        const allSelected = FLOWERS_DATA.length === Object.keys(pigmentMatches).length;
+        if (!allSelected) {
+            setFeedback2('Bạn ơi, hãy chọn đủ sắc tố cho tất cả các bông hoa nhé!');
+            return;
+        }
+        const correctMatches = FLOWERS_DATA.every(
+            flower => pigmentMatches[flower.id] === flower.pigment
+        );
+        if (correctMatches) {
+            setFeedback2('Tuyệt vời! Bạn đã trở thành một chuyên gia về sắc tố hoa.');
+        } else {
+            setFeedback2('Vẫn còn một vài sắc tố chưa đúng. Hãy thử lại nào!');
+        }
+    };
+
+    return (
+        <div className="bg-white p-6 rounded-lg shadow-md">
+            <h4 className="text-xl font-semibold text-gray-800 mb-4">Hoạt động 1.2: Ghép nối Họa Sĩ Sắc Tố</h4>
+            <p className="mb-4">Mỗi màu sắc được tạo ra bởi một "họa sĩ" sắc tố. Hãy chọn đúng họa sĩ cho từng bông hoa nhé!</p>
+            <div className="space-y-4">
+                {FLOWERS_DATA.map(flower => (
+                    <div key={flower.id} className="flex items-center gap-4">
+                        <div style={{ backgroundColor: flower.colorHex }} className="w-10 h-10 rounded-full flex-shrink-0"></div>
+                        <span className="font-medium w-20">{flower.color}</span>
+                        <select
+                            onChange={(e) => handlePigmentSelect(flower.id, e.target.value)}
+                            className="flex-grow p-2 border border-gray-300 rounded-md"
+                            value={pigmentMatches[flower.id] || ''}
+                        >
+                            <option value="">Chọn sắc tố...</option>
+                            {PIGMENTS.map(p => <option key={p} value={p}>{p}</option>)}
+                        </select>
+                    </div>
+                ))}
+            </div>
+            <button onClick={checkPigmentMatches} className="mt-4 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Kiểm tra</button>
+            {feedback2 && <p className={`mt-2 font-semibold ${feedback2.includes('Tuyệt vời') ? 'text-green-600' : (feedback2.includes('Bạn ơi') ? 'text-orange-500' : 'text-red-600')}`}>{feedback2}</p>}
+        </div>
     );
-    if (correctMatches) {
-      setFeedback2('Tuyệt vời! Bạn đã trở thành một chuyên gia về sắc tố hoa.');
-    } else {
-      setFeedback2('Vẫn còn một vài sắc tố chưa đúng. Hãy thử lại nào!');
-    }
-  };
-
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h4 className="text-xl font-semibold text-gray-800 mb-4">Hoạt động 1.2: Ghép nối Họa Sĩ Sắc Tố</h4>
-      <p className="mb-4">Mỗi màu sắc được tạo ra bởi một "họa sĩ" sắc tố. Hãy chọn đúng họa sĩ cho từng bông hoa nhé!</p>
-      <div className="space-y-4">
-        {FLOWERS_DATA.map(flower => (
-          <div key={flower.id} className="flex items-center gap-4">
-            <div style={{ backgroundColor: flower.colorHex }} className="w-10 h-10 rounded-full flex-shrink-0"></div>
-            <span className="font-medium w-20">{flower.color}</span>
-            <select 
-              onChange={(e) => handlePigmentSelect(flower.id, e.target.value)}
-              className="flex-grow p-2 border border-gray-300 rounded-md"
-              value={pigmentMatches[flower.id] || ''}
-            >
-              <option value="">Chọn sắc tố...</option>
-              {PIGMENTS.map(p => <option key={p} value={p}>{p}</option>)}
-            </select>
-          </div>
-        ))}
-      </div>
-      <button onClick={checkPigmentMatches} className="mt-4 bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition-colors">Kiểm tra</button>
-      {feedback2 && <p className={`mt-2 font-semibold ${feedback2.includes('Tuyệt vời') ? 'text-green-600' : (feedback2.includes('Bạn ơi') ? 'text-orange-500' : 'text-red-600')}`}>{feedback2}</p>}
-    </div>
-  );
 }
 
 // --- Component Hoạt Động Superbloom với ảnh thực tế từ API NASA ---
@@ -118,13 +118,13 @@ const HoatDongSuperbloomThucTe = ({ title, challenge, concepts }) => {
     const [rainfall, setRainfall] = useState(150);
     const [temperature, setTemperature] = useState(18);
     const [bloomStrength, setBloomStrength] = useState(0);
-    
+
     // State quản lý dữ liệu từ API
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [optimalConditions, setOptimalConditions] = useState(null);
     const [yearExamples, setYearExamples] = useState(null);
-    
+
     // State cho hình ảnh hiển thị
     const [imageUrl, setImageUrl] = useState(HinhAnhSuperbloomNone);
     const [imageDescription, setImageDescription] = useState('');
@@ -143,7 +143,7 @@ const HoatDongSuperbloomThucTe = ({ title, challenge, concepts }) => {
                 yearlyData[year] = { year: year, winterRain: 0, springTemp: [], springMonthCount: 0 };
             }
             if (month === 11 || month === 12) {
-                 if (yearlyData[year + 1]) yearlyData[year + 1].winterRain += monthlyRain[date];
+                if (yearlyData[year + 1]) yearlyData[year + 1].winterRain += monthlyRain[date];
             } else if (month === 1 || month === 2) {
                 yearlyData[year].winterRain += monthlyRain[date];
             }
@@ -157,11 +157,11 @@ const HoatDongSuperbloomThucTe = ({ title, challenge, concepts }) => {
             ...y,
             avgSpringTemp: y.springTemp.reduce((a, b) => a + b, 0) / y.springMonthCount
         }));
-        
+
         validYears.sort((a, b) => b.winterRain - a.winterRain);
-        
+
         if (validYears.length < 4) {
-             throw new Error("Không đủ dữ liệu lịch sử để phân loại các năm.");
+            throw new Error("Không đủ dữ liệu lịch sử để phân loại các năm.");
         }
 
         const bestYear = validYears[0];
@@ -190,7 +190,7 @@ const HoatDongSuperbloomThucTe = ({ title, challenge, concepts }) => {
         const startYear = 2005;
         const endYear = 2024;
         const apiUrl = `https://power.larc.nasa.gov/api/temporal/monthly/point?parameters=T2M,PRECTOTCORR&community=RE&longitude=${lon}&latitude=${lat}&start=${startYear}&end=${endYear}&format=JSON`;
-        
+
         fetch(apiUrl)
             .then(res => res.ok ? res.json() : Promise.reject('Network response was not ok'))
             .then(data => {
@@ -208,7 +208,31 @@ const HoatDongSuperbloomThucTe = ({ title, challenge, concepts }) => {
 
     // useCallback để tính toán sức mạnh nở hoa và cập nhật ảnh (GIỮ NGUYÊN)
     const calculateBloom = useCallback(() => {
-        // ... (Không có thay đổi trong hàm này)
+        if (!optimalConditions || !yearExamples) return;
+
+        const rainDiff = Math.abs(rainfall - optimalConditions.rainfall);
+        const rainScore = Math.max(0, 100 - (rainDiff / optimalConditions.rainfall) * 100);
+
+        const tempDiff = Math.abs(temperature - parseInt(optimalConditions.temperature));
+        const tempScore = Math.max(0, 100 - (tempDiff / parseInt(optimalConditions.temperature)) * 50);
+
+        const finalStrength = (rainScore * 0.7) + (tempScore * 0.3);
+        setBloomStrength(finalStrength);
+
+        // *** THAY ĐỔI CHÍNH: Cập nhật ảnh từ source code thay vì API ***
+        if (finalStrength > 85) {
+            setImageUrl(HinhAnhSuperbloomHigh);
+            setImageDescription(`Minh họa cho một mùa superbloom cực thịnh (ví dụ như năm ${yearExamples.high}).`);
+        } else if (finalStrength > 60) {
+            setImageUrl(HinhAnhSuperbloomMedium);
+            setImageDescription(`Minh họa cho mùa hoa nở rộ mạnh mẽ (ví dụ như năm ${yearExamples.medium}).`);
+        } else if (finalStrength > 30) {
+            setImageUrl(HinhAnhSuperbloomLow);
+            setImageDescription(`Minh họa cho mùa hoa nở ở mức vừa phải (ví dụ như năm ${yearExamples.low}).`);
+        } else {
+            setImageUrl(HinhAnhSuperbloomNone);
+            setImageDescription(`Minh họa cho một năm khô hạn, không có superbloom (ví dụ như năm ${yearExamples.none}).`);
+        }
     }, [rainfall, temperature, optimalConditions, yearExamples]);
 
     // useEffect để chạy lại tính toán khi dữ liệu thay đổi (GIỮ NGUYÊN)
@@ -231,7 +255,7 @@ const HoatDongSuperbloomThucTe = ({ title, challenge, concepts }) => {
             ) : (
                 // Giao diện chính sau khi tải xong
                 <div className="bg-white p-6 rounded-lg shadow-md">
-                    <p className="mb-6 text-center">{`Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường. Dựa trên dữ liệu 20 năm của NASA tại California, điều kiện lý tưởng được xác định là mưa khoảng ${Math.round(optimalConditions.rainfall)}mm và nhiệt độ ${optimalConditions.temperature.toFixed(1)}°C.`}</p>
+                    <p className="mb-6 text-center">{`Trên "Bảng Điều Khiển Superbloom", hãy điều chỉnh các yếu tố môi trường. Dựa trên dữ liệu 20 năm của NASA tại California, điều kiện lý tưởng được xác định là mưa khoảng ${Math.round(optimalConditions.rainfall)}mm và nhiệt độ ${optimalConditions.temperature.toFixed(0)}°C.`}</p>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-center">
                         <div className="md:col-span-1 lg:col-span-2 space-y-6">
                             {/* Thanh trượt điều khiển */}
@@ -352,7 +376,7 @@ function Chuong1() {
                     <p>"Ta là Người Gác Vườn Kỳ Diệu," ông lão với mái tóc bạc trắng nói, nở nụ cười hiền hậu. "Ta có nhiệm vụ bảo vệ và quan sát những thảm hoa vĩ đại của Trái Đất."</p>
                 </StorySection>
             </section>
-            
+
             {/* SECTION 3: STORY 2 */}
             <section className="bg-slate-100 p-6 md:p-12 justify-center">
                 <StorySection title="Tấm Thảm Hoa Nhìn Từ Không Gian" imageSrc={HinhAnhSuperbloom} imageAlt="Hiện tượng superbloom" reverse={true}>
@@ -363,7 +387,7 @@ function Chuong1() {
 
             {/* SECTION 4: STORY 3 */}
             <section className="bg-yellow-50 p-6 md:p-12 justify-center">
-                 <StorySection title="Vườn Sắc Tố" imageSrc={HinhAnhVuonSacTo} imageAlt="Vườn Sắc Tố">
+                <StorySection title="Vườn Sắc Tố" imageSrc={HinhAnhVuonSacTo} imageAlt="Vườn Sắc Tố">
                     <p>"Màu sắc của hoa không chỉ để đẹp mắt đâu," Người Gác Vườn dẫn Alice vào một "Vườn Sắc Tố" lung linh. "Mỗi màu là một 'ngôn ngữ' riêng, được tạo ra bởi những 'họa sĩ' bí mật:</p>
                     <ul className="list-disc list-inside space-y-2 pl-4">
                         <li><strong>Carotenoids:</strong> 'Họa sĩ màu vàng, cam'.</li>
@@ -372,7 +396,7 @@ function Chuong1() {
                     </ul>
                 </StorySection>
             </section>
-            
+
             {/* SECTION 5: PRACTICE STATION 1 */}
             <section className="bg-yellow-100 justify-center items-center">
                 <PracticeStation title="Giải Mã Bí Mật Sắc Màu" challenge="Hãy giúp Người Gác Vườn phân loại các thuộc tính của hoa và ghép nối chúng với đúng 'họa sĩ' sắc tố." concepts="Dữ liệu Định tính (Categorical), Dữ liệu Định lượng (Numerical), Sắc tố (Pigments).">
@@ -410,12 +434,12 @@ function Chuong1() {
                     </DndProvider>
                 </PracticeStation>
             </section>
-            
+
             {/* SECTION 6: STORY 4 */}
             <section className="bg-slate-100 justify-center">
                 <StorySection title="Nhà Bếp Thiên Nhiên" imageSrc={HinhAnhNhaBep} imageAlt="Nhà Bếp Thiên Nhiên" reverse={true}>
                     <p>"Để tạo ra superbloom, thiên nhiên cần một 'công thức nấu ăn' hoàn hảo," Người Gác Vườn nói. "Và dữ liệu chính là những 'nguyên liệu' chúng ta cần để hiểu công thức đó."</p>
-                     <ol className="list-decimal list-inside space-y-2 pl-4">
+                    <ol className="list-decimal list-inside space-y-2 pl-4">
                         <li><strong>Mưa vừa đủ:</strong> Dữ liệu chuỗi thời gian về lượng mưa.</li>
                         <li><strong>Những năm khô trước đó:</strong> Dữ liệu lịch sử về hạn hán.</li>
                         <li><strong>Nhiệt độ tăng dần:</strong> Dữ liệu nhiệt độ đất và không khí.</li>
@@ -423,19 +447,19 @@ function Chuong1() {
                     </ol>
                 </StorySection>
             </section>
-            
+
             {/* SECTION 7: PRACTICE STATION 2 */}
             <section className="bg-blue-100 justify-center items-center">
-                 <HoatDongSuperbloomThucTe 
+                <HoatDongSuperbloomThucTe
                     title="Thí Nghiệm Bếp Trưởng Superbloom"
                     challenge="Hãy thử làm 'bếp trưởng', điều chỉnh các 'nguyên liệu' thời tiết để xem cháu có thể tạo ra một mùa superbloom rực rỡ nhất không!"
                     concepts="Phân tích Tương quan (Correlation Analysis), Dữ liệu Chuỗi thời gian (Time-Series Data), Mô hình hóa (Modeling)."
-                 />
+                />
             </section>
-            
+
             {/* SECTION 8: KẾT LUẬN & FOOTER */}
             <section className="p-6 md:p-12 text-white bg-gradient-to-br from-green-500 to-teal-600 justify-center">
-                <div className="max-w-4xl mx-auto text-center flex-1">
+                <div className="max-w-4xl mx-auto text-center flex-1 mt-8">
                     <h2 className="text-3xl font-bold mb-6 drop-shadow">Bài học đúc kết</h2>
                     <p className="text-xl leading-relaxed mb-6 bg-black/10 p-4 rounded-lg backdrop-blur-sm">
                         Superbloom là kết quả của sự tương quan giữa nhiều yếu tố môi trường. Bằng cách thu thập và phân tích các loại dữ liệu khác nhau, chúng ta có thể bắt đầu hiểu được ngôn ngữ bí mật của thiên nhiên.
@@ -444,7 +468,7 @@ function Chuong1() {
                 </div>
                 <footer className="w-full max-w-5xl mx-auto mt-12 pt-8 border-t border-white/20">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                        <p className="text-sm text-white/70">© 2025 Dự án Hoa Kể Chuyện.</p>
+                        <p className="text-sm text-white/70"></p>
                         <div className="flex items-center gap-6">
                             <Link to="/chuong2" className="bg-yellow-300 text-green-900 font-bold py-2 px-5 rounded-full hover:bg-white hover:text-green-900 transition-colors shadow-lg">
                                 Chuyển tới Chương 2 →

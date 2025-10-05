@@ -235,10 +235,9 @@ function App() {
         <footer className="w-full max-w-5xl mx-auto mt-0 pt-8 border-t border-white/20">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <p className="text-sm text-white/70">
-              © 2025 Dự án Hoa Kể Chuyện.
             </p>
             <div className="flex items-center gap-6">
-              <Link href="/chuong3" className="font-medium hover:text-yellow-300 transition-colors">
+              <Link to="/chuong3" className="font-medium hover:text-yellow-300 transition-colors">
                 ← Quay lại Chương 3
               </Link>
               <Link to="/chuong5" className="bg-yellow-300 text-orange-900 font-bold py-2 px-5 rounded-full hover:bg-white hover:text-orange-900 transition-colors shadow-lg">
