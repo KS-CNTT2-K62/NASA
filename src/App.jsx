@@ -8,11 +8,10 @@ import Chuong5 from './page/Chuong5/Chuong5.jsx';
 function App() {
   return (
     <>
-      {/* nav bar */}
       <div className='fixed top-0 w-full z-5000 bg-white/80 backdrop-blur-sm'>
         <nav className="text-sky-600 p-4">
           <div className="container mx-auto flex justify-between items-center">
-            <div className="text-2xl font-bold">Dự án Hoa Kể Chuyện</div>
+            <div className="text-2xl font-bold">A Global Learning Hub for Planetary Observation</div>
             <div className="space-x-4 font-bold text-lg">
               <Link to="/chuong1" className="text-slate-600 hover:text-sky-600 transition-colors">Chương 1</Link>
               <Link to="/chuong2" className="text-slate-600 hover:text-sky-600 transition-colors">Chương 2</Link>
@@ -23,14 +22,14 @@ function App() {
           </div>
         </nav>
       </div>
-        <Routes>
-          <Route path="/" element={<Chuong1 />} />
-          <Route path="/chuong1" element={<Chuong1 />} />
-          <Route path="/chuong2" element={<Chuong2 />} />
-          <Route path="/chuong3" element={<Chuong3 />} />
-          <Route path="/chuong4" element={<Chuong4 />} />
-          <Route path="/chuong5" element={<Chuong5 />} />
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Chuong1 />} />
+        <Route path="/chuong1" element={<Chuong1 />} />
+        <Route path="/chuong2" element={<Chuong2 />} />
+        <Route path="/chuong3" element={<Chuong3 />} />
+        <Route path="/chuong4" element={<Chuong4 />} />
+        <Route path="/chuong5" element={<Chuong5 />} />
+      </Routes>
     </>
   )
 }

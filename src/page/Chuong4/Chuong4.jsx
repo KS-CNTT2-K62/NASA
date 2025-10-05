@@ -200,6 +200,7 @@ function App() {
         <div className="max-w-4xl mx-auto">
           <div className="grid md:grid-cols-1 lg:grid-cols-1 gap-8">
             <PracticeStation title="Trạm thực hành dữ liệu: Sáng Tạo Công Nghệ Tương Lai" challenge="Kiến Trúc Sư Tương Lai đưa Alice một 'bảng phác thảo ý tưởng' ảo. 'Alice, nếu cháu có một 'cỗ máy drone' để nghiên cứu hoa, cháu sẽ trang bị cho nó những 'cảm biến' gì (ví dụ: máy ảnh RGB, cảm biến quang phổ, cảm biến nhiệt độ) để thu thập dữ liệu đa quang phổ và dữ liệu môi trường? Hãy 'vẽ concept' và 'giải thích cách hoạt động' của nó.'" concepts="Dữ liệu đa quang phổ (Multispectral Data), Cảm biến (Sensors), Hệ thống tự động (Automated Systems).">
+              <p>Hình ảnh chỉ mang tính chất tham khảo từ nội dung AI, không phải là dữ liệu thực tế</p>
               <div className="grid md:grid-cols-2 gap-6 items-center">
                 <div>
                   <h4 className="font-bold mb-3">Chọn cảm biến để trang bị:</h4>
