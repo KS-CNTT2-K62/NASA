@@ -42,9 +42,7 @@ function App() {
         {/* =================== NỘI DUNG CÂU CHUYỆN CHƯƠNG 5 =================== */}
         {/* ==================================================================== */}
         <div className="max-w-5xl mx-auto bg-white p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 mb-12">
-          <h2 className="text-4xl font-bold text-green-800 mb-4 text-center border-b-2 pb-2">
-            Chương 5: Biến Dữ Liệu Thành Hành Động Xanh và Truyền Cảm Hứng
-          </h2>
+          
           <p className="text-center italic text-gray-600 mb-8">
             (Trang 33-40) | Mục tiêu học tập: Hiểu ứng dụng thực tiễn của dữ liệu hoa nở trong các lĩnh vực khác nhau, khuyến khích tư duy phản biện và truyền cảm hứng hành động vì môi trường.
           </p>

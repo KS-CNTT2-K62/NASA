@@ -49,7 +49,7 @@ const DropZone = ({ title, onDrop, droppedItems }) => {
     collect: (monitor) => ({ isOver: !!monitor.isOver() }),
   }));
   return (
-    <div ref={drop} className={`p-4 border-2 border-dashed rounded-lg min-h-[120px] transition-colors ${isOver ? 'bg-green-100 border-green-500' : 'bg-gray-50 border-gray-300'}`}>
+    <div ref={drop} className={`p-4 border-2 border-dashed rounded-lg min-h-[100px] transition-colors ${isOver ? 'bg-green-100 border-green-500' : 'bg-gray-50 border-gray-300'}`}>
       <h3 className="text-lg font-semibold text-center text-gray-700 mb-2">{title}</h3>
       <div className="flex flex-wrap gap-2 justify-center">
         {droppedItems.map((item, index) => (
@@ -446,7 +446,6 @@ function Chuong1() {
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6">
                         <p className="text-sm text-white/70">© 2025 Dự án Hoa Kể Chuyện.</p>
                         <div className="flex items-center gap-6">
-                            <a href="#" className="font-medium hover:text-yellow-300 transition-colors">Quay về Trang chủ</a>
                             <Link to="/chuong2" className="bg-yellow-300 text-green-900 font-bold py-2 px-5 rounded-full hover:bg-white hover:text-green-900 transition-colors shadow-lg">
                                 Chuyển tới Chương 2 →
                             </Link>

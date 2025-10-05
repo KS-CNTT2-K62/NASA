@@ -3,8 +3,11 @@ import React from 'react';
 
 function Header() {
   return (
-    <header className="text-center p-6 bg-green-700 text-white shadow-md">
-      <h1 className="text-4xl font-bold">Trạm Thực Hành Dữ Liệu</h1>
+    <header className="text-center p-6 bg-green-700 text-white shadow-md pt-20">
+      <h1 className='text-6xl mb-2 font-bold'>
+        Chương 5
+      </h1>
+      <h1 className="text-4xl font-bold">Biến Dữ Liệu Thành Hành Động Xanh và Truyền Cảm Hứng</h1>
       <p className="text-xl mt-2 italic">"Nhà Khoa Học Dữ Liệu Hoa trong em"</p>
     </header>
   );

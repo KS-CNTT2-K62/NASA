@@ -238,9 +238,9 @@ function App() {
               © 2025 Dự án Hoa Kể Chuyện.
             </p>
             <div className="flex items-center gap-6">
-              <a href="#" className="font-medium hover:text-yellow-300 transition-colors">
-                Quay về Trang chủ
-              </a>
+              <Link href="/chuong3" className="font-medium hover:text-yellow-300 transition-colors">
+                ← Quay lại Chương 3
+              </Link>
               <Link to="/chuong5" className="bg-yellow-300 text-orange-900 font-bold py-2 px-5 rounded-full hover:bg-white hover:text-orange-900 transition-colors shadow-lg">
                 Chuyển tới Chương 5 →
               </Link>

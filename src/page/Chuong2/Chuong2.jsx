@@ -43,7 +43,7 @@ const Chuong2 = () => {
     <>
       <style>{customStyles}</style>
       <div className="bg-slate-100 font-sans">
-      
+{/*       
         <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-sm shadow-md">
           <div className="container mx-auto flex items-center justify-between p-4">
             <Link to="/" aria-current="page" className="font-serif text-2xl font-bold text-sky-600">BloomWatch</Link>
@@ -55,7 +55,7 @@ const Chuong2 = () => {
             </nav>
             <a href="#TOC" className="rounded-md bg-sky-600 px-4 py-2 font-bold text-white hover:bg-sky-700 transition-colors">Mục Lục</a>
           </div>
-        </header>
+        </header> */}
 
         <main>
           <section className="text-white text-center py-20 px-4 relative overflow-hidden bg-gradient-to-br from-sky-400 to-cyan-400">
